@@ -22,6 +22,7 @@ public class main extends Activity {
             public void onClick(View view) {
                 Intent intent = new Intent(main.this, picture.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
             }
         });
     }
