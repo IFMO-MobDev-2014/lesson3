@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">lesson3</string>
-    <string name="translate">Translate</string>
+    <string name="translate">Перевести</string>
 
 </resources>
