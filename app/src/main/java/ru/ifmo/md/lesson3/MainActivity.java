@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -37,17 +36,13 @@ public class MainActivity extends Activity {
 
     class TranslationTask extends AsyncTask<String, Void, Void> {
         @Override
-        protected Void doInBackground(String... urls) {
+        protected Void doInBackground(String... word) {
             try {
-                String url = apiPrefix + URLEncoder.encode(urls[0], "utf-8");
+                String url = apiPrefix + URLEncoder.encode(word[0], "utf-8");
                 DefaultHttpClient httpClient = new DefaultHttpClient();
-                HttpEntity httpEntity = null;
-                HttpResponse httpResponse = null;
-                HttpGet httpGet = new HttpGet(url);
-                httpResponse = httpClient.execute(httpGet);
-                httpEntity = httpResponse.getEntity();
-                String answer = EntityUtils.toString(httpEntity);
-                JSONObject jsonObject = new JSONObject(answer);
+                HttpResponse httpResponse = httpClient.execute(new HttpGet(url));
+                String response = EntityUtils.toString(httpResponse.getEntity());
+                JSONObject jsonObject = new JSONObject(response);
                 Log.i("lal", jsonObject.getJSONArray("text").getString(0));
             } catch (Exception e) {
                 e.printStackTrace();
