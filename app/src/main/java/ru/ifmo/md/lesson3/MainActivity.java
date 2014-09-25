@@ -12,6 +12,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 import java.lang.Exception;
 import java.lang.Override;
@@ -23,7 +24,7 @@ import java.net.URLEncoder;
 public class MainActivity extends Activity {
 
     private final static String translatorPrefix = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20140924T073928Z.75f4072f7ba0940a.0e25b6e1b08d1c03dfb34d22a4055d8118e44d77&lang=en-ru&text=";
-    private final static String imageLoaderPrefix = "http://api.bing.net/json.aspx?AppId=Dg5LmYsY18A3Dy+pAb+LISIlcwfo2G2NOjkAR1+CdYw&Sources=Image&Query=";
+    private final static String imageLoaderPrefix = "https://api.datamarket.azure.com/Bing/Search/Image?$format=Json&top=10&Query=%27";
     private EditText editText;
     private TranslationTask translationTask;
     private ImageLoadingTask imageLoadingTask;
@@ -60,6 +61,7 @@ public class MainActivity extends Activity {
                 return jsonObject.getJSONArray("text").getString(0);
             } catch (Exception e) {
                 e.printStackTrace();
+                return null;
             }
         }
     }
@@ -68,19 +70,25 @@ public class MainActivity extends Activity {
         @Override
         protected String[] doInBackground(String... word) {
             try {
-                String url = imageLoaderPrefix + URLEncoder.encode(word[0], "utf-8");
+                String url = imageLoaderPrefix + URLEncoder.encode(word[0], "utf-8") + "%27";
                 DefaultHttpClient httpClient = new DefaultHttpClient();
-                HttpResponse httpResponse = httpClient.execute(new HttpGet(url));
+                HttpGet httpGet = new HttpGet(url);
+                httpGet.setHeader("Authorization", "Basic Vik8blAkuBkO6VyX8qJV+74lq79nNifdTToND5N8pQo=");
+                HttpResponse httpResponse = httpClient.execute(httpGet);
                 String response = EntityUtils.toString(httpResponse.getEntity());
                 JSONObject jsonObject = new JSONObject(response);
-                JSONObject[] responses = jsonObject.getJSONArray("SearchResponse").getJSONArray("Image").getJSONArray("Results");
-                String[] results = new String[responses.length];
-                for (int i = 0; i < responses.length; i++) {
-                    results[i] = responses[i].getJSONArray("Url").getString(0);
+                JSONArray responses = jsonObject.getJSONObject("SearchResponse").getJSONObject("Image").getJSONArray("Results");
+                String[] results = new String[responses.length()];
+                for (int i = 0; i < responses.length(); i++) {
+                    results[i] = responses.getJSONObject(i).getString("Url");
+                }
+                for (String result : results) {
+                    Log.i("Response", "URL = " + result);
                 }
                 return results;
             } catch (Exception e) {
                 e.printStackTrace();
+                return null;
             }
         }
     }
