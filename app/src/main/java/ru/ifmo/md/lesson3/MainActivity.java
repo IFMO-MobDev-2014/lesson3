@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
 
     class TranslationTask extends AsyncTask<String, Void, String> {
         @Override
-        protected Void doInBackground(String... word) {
+        protected String doInBackground(String... word) {
             try {
                 String url = translatorPrefix + URLEncoder.encode(word[0], "utf-8");
                 DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -64,9 +64,9 @@ public class MainActivity extends Activity {
         }
     }
 
-    class ImageLoadingTask extends AsyncTask<String, Void, String> {
+    class ImageLoadingTask extends AsyncTask<String, Void, String[]> {
         @Override
-        protected Void doInBackground(String... word) {
+        protected String[] doInBackground(String... word) {
             try {
                 String url = imageLoaderPrefix + URLEncoder.encode(word[0], "utf-8");
                 DefaultHttpClient httpClient = new DefaultHttpClient();
