@@ -1,4 +1,4 @@
-package ru.md.ifmo.lesson3;
+package ru.ifmo.md.lesson3;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

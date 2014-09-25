@@ -5,7 +5,7 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "ru.md.ifmo.lesson3"
+        applicationId "lesson3.md.ifmo.lesson3"
         minSdkVersion 18
         targetSdkVersion 20
         versionCode 1
