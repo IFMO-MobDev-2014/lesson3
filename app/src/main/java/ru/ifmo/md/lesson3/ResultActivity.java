@@ -61,7 +61,7 @@ public class ResultActivity extends Activity {
             textView.setText(result);
         }
     }
-
+/*
 
 
     private class FindImageTask extends AsyncTask<String, Void, String> {
@@ -90,6 +90,6 @@ public class ResultActivity extends Activity {
         protected void onPostExecute(String[] result) {
             textView.setText(result[0]);
         }
-    }
+    }*/
 }
 
