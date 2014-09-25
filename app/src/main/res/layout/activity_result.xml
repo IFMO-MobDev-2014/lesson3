@@ -5,9 +5,17 @@
     tools:context="ru.ifmo.md.lesson3.ResultActivity">
 
     <TextView
-        android:text="@string/hello_world"
+        android:text="Waiting for result..."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView" />
+        android:id="@+id/textView"
+        android:layout_marginTop="29dp" android:textSize="20dp"
+        android:layout_alignParentTop="true" android:layout_centerHorizontal="true"/>
+    <GridView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/gridView"
+            android:layout_below="@+id/textView" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:layout_marginTop="65dp"/>
 
 </RelativeLayout>

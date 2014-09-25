@@ -4,18 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-
-import java.lang.reflect.Array;
-import java.net.URL;
-import java.net.URLConnection;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 public class ResultActivity extends Activity {
 
@@ -30,31 +19,17 @@ public class ResultActivity extends Activity {
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_QUERY);
         new FindTranslationTask().execute(message);
-
-
     }
 
     private class FindTranslationTask extends AsyncTask<String, Void, String> {
-        protected String doInBackground(String... strings) {
-            String urlTemplate = "https://translate.yandex.net/api/v1.5/tr/translate?key=%s&lang=%s&text=%s";
-            String key = "trnsl.1.1.20140924T160000Z.13a5048fefdf6ede.90e14a1a1fb4eb21cb6ffad6e8cd4b1bf0051860";
-            String lang = "en-ru";
-            String urlString = String.format(urlTemplate, key, lang, strings[0]);
-            try {
-                URL url = new URL(urlString);
-                URLConnection conn = url.openConnection();
-
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = factory.newDocumentBuilder();
-                Document doc = builder.parse(conn.getInputStream());
-
-                Node node = doc.getElementsByTagName("text").item(0);
-                String result = node.getTextContent();
-                return result;
-            } catch (Exception e) {
-                Log.e("error", "", e);
-                return e.toString();
-            }
+        @Override
+        protected String doInBackground(String[] strings) {
+            String input = strings[0];
+            Translator translator;
+            if (input.matches("[А-я\\s\\d]+"))
+                translator = new Translator(Translator.TranslateDirection.RussianToEnglish);
+            else translator = new Translator(Translator.TranslateDirection.EnglishToRussian);
+            return translator.translate(input);
         }
 
         protected void onPostExecute(String result) {
