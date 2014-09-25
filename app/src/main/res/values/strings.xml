@@ -2,5 +2,9 @@
 <resources>
 
     <string name="app_name">Lesson3</string>
+    <string name="translate">Перевести</string>
+    <string name="title_activity_result">Result</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
