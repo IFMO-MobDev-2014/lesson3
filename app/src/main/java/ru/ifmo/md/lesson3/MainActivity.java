@@ -23,8 +23,7 @@ import java.net.URLEncoder;
 public class MainActivity extends Activity {
 
     private final static String translatorPrefix = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20140924T073928Z.75f4072f7ba0940a.0e25b6e1b08d1c03dfb34d22a4055d8118e44d77&lang=en-ru&text=";
-    private final static String imageLoaderPrefix = "http://api.bing.net/json.aspx?AppId=Dg5LmYsY18A3Dy+pAb+LISIlcwfo2G2NOjkAR1+CdYw&Query=";
-    private final static String imageLoaderPostfix = "&Sources=Image";
+    private final static String imageLoaderPrefix = "http://api.bing.net/json.aspx?AppId=Dg5LmYsY18A3Dy+pAb+LISIlcwfo2G2NOjkAR1+CdYw&Sources=Image&Query=";
     private EditText editText;
     private TranslationTask translationTask;
     private ImageLoadingTask imageLoadingTask;
