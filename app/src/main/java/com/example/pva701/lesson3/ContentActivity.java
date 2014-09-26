@@ -7,9 +7,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import odeenpva.lesson3.*;
 
 public class ContentActivity extends Activity {
@@ -42,10 +44,7 @@ public class ContentActivity extends Activity {
         translater = new Translater(word, Translater.Language.EN, Translater.Language.RU) {
             @Override
             protected void onPostExecute(String result) {
-                if (result == null) {
-                    Log.i("ERROR", "SHIT");
-                } else
-                    tvTranslateWord.setText(result);
+                tvTranslateWord.setText(result);
             }
         };
         translater.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -57,6 +56,7 @@ public class ContentActivity extends Activity {
         display.getSize(size);
         int width = size.x;
         int height = size.y;
+
         adapter = new ImageAdapter(this, width, height);
         gvPictures.setAdapter(adapter);
     }

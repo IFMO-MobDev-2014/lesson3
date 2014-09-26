@@ -67,8 +67,6 @@ public class ImageAdapter extends BaseAdapter {
         int w = images.get(i).getWidth();
         int h = images.get(i).getHeight();
         Bitmap split = Bitmap.createBitmap(images.get(i), 0, 0, Math.min(w, h), Math.min(w, h), null, false);
-        //imageView.setImageBitmap(Bitmap.createScaledBitmap(images.get(i), w, h, false));
-        //imageView.setImageBitmap(images.get(i));
         imageView.setImageBitmap(split);
         return imageView;
     }

@@ -1,11 +1,15 @@
 package com.example.pva701.lesson3;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
@@ -14,6 +18,16 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
     }
 
     private boolean isEnglish(char c) {
@@ -32,11 +46,17 @@ public class MainActivity extends Activity {
         String word = editText.getText().toString();
 
         if (word.isEmpty()) {
-            Log.i("INPUT ERROR", "Empty");
+            Toast.makeText(this, "Empty word", Toast.LENGTH_SHORT).show();
             return;
         }
+
         if (!englishWord(word)) {
-            Log.i("INPUT ERROR", "Not english word");
+            Toast.makeText(this, "Wrong word", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!isOnline()) {
+            Toast.makeText(this, "Check your Internet connection", Toast.LENGTH_SHORT).show();
             return;
         }
 
