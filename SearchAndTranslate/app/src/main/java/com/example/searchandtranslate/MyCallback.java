@@ -6,3 +6,4 @@ package com.example.searchandtranslate;
 public interface MyCallback<T> {
     public void run(T param);
 }
+
