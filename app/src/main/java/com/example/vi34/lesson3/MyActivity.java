@@ -21,9 +21,6 @@ public class MyActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // make this call by button
-        //downloadImages();
-        //-------
         setContentView(R.layout.firstscreen);
     }
 
@@ -55,14 +52,6 @@ public class MyActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    /*// move this method to second activity
-    protected void downloadImages()
-    {
-        // now try to return single image - later need to add Adapter
-        ImageDownloader imageDownloader = new ImageDownloader();
-        Bitmap[] result = imageDownloader.search("cat");
-
-    }*/
 
     public void onClick(View view) {
         EditText textInEnglish = (EditText) findViewById(R.id.editText);
@@ -75,5 +64,6 @@ public class MyActivity extends Activity {
         Intent intent = new Intent(MyActivity.this, SecondActivity.class);
         startActivity(intent);
     }
+
 
 }
