@@ -26,6 +26,6 @@
         android:text="Перевести"
         android:id="@+id/button"
         android:onClick="buttonTranslateClick"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/teInputWord"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

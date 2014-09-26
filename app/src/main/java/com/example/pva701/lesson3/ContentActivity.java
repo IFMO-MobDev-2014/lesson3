@@ -2,26 +2,30 @@ package com.example.pva701.lesson3;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import odeenpva.lesson3.*;
 
 public class ContentActivity extends Activity {
     private ImageAdapter adapter;
     private TextView tvTranslateWord;
+    private PictureLoader pictureLoader;
+    private Translater translater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content);
         String word = getIntent().getExtras().getString("word").trim();
-        Log.i("WORD=", word);
         tvTranslateWord = (TextView)findViewById(R.id.tvTranslateWord);
 
-        new PictureLoader(word, 12) {
+        pictureLoader = new PictureLoader(word, 12) {
             @Override
             protected void onProgressUpdate(Bitmap... progress) {
                 adapter.addImage(progress[0]);
@@ -32,10 +36,10 @@ public class ContentActivity extends Activity {
             protected void onPostExecute(Boolean status) {
                 Log.i("BITMAP", "ALL Bitmaps loaded with status " + status);
             }
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        };
+        pictureLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-
-        new Translater(word, Translater.Language.EN, Translater.Language.RU) {
+        translater = new Translater(word, Translater.Language.EN, Translater.Language.RU) {
             @Override
             protected void onPostExecute(String result) {
                 if (result == null) {
@@ -43,16 +47,24 @@ public class ContentActivity extends Activity {
                 } else
                     tvTranslateWord.setText(result);
             }
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        };
+        translater.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-        Log.i("START", "started bitmap!");
         GridView gvPictures = (GridView)findViewById(R.id.gvPictures);
-        adapter = new ImageAdapter(this);
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        adapter = new ImageAdapter(this, width, height);
         gvPictures.setAdapter(adapter);
     }
 
     @Override
     public void onDestroy() {
-        Log.i("DESTROY", "in onDestroy");
+        super.onDestroy();
+        pictureLoader.cancel(true);
+        translater.cancel(true);
     }
 }
