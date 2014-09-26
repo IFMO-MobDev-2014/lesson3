@@ -3,6 +3,7 @@ package odeenpva.lesson3;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -18,7 +19,7 @@ public class PictureLoader extends AsyncTask<Void, Bitmap, Boolean> {
 
     private String word;
     private int cnt;
-    public PictureLoader(String word, int cnt ) {
+    public PictureLoader(String word, int cnt) {
         this.word = word;
         this.cnt = cnt;
     }
@@ -29,7 +30,7 @@ public class PictureLoader extends AsyncTask<Void, Bitmap, Boolean> {
         Bitmap bitmap = null;
         org.jsoup.nodes.Document doc = null;
         try {
-            doc = Jsoup.connect(link).get();
+            doc = Jsoup.connect(link).userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0").get();
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -39,7 +40,7 @@ public class PictureLoader extends AsyncTask<Void, Bitmap, Boolean> {
         for (org.jsoup.nodes.Element e : images) {
             URL url = null;
             try {
-                url = new URL(e.attr("src"));
+                url = new URL("http:" + e.attr("src"));
             } catch (MalformedURLException ex) {
                 ex.printStackTrace();
                 return false;
@@ -50,9 +51,9 @@ public class PictureLoader extends AsyncTask<Void, Bitmap, Boolean> {
                 e1.printStackTrace();
                 return false;
             }
+            publishProgress(bitmap);
             if (--cnt == 0)
                 break;
-            publishProgress(bitmap);
         }
         return true;
     }
