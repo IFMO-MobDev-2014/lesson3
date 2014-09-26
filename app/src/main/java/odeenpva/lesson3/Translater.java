@@ -14,7 +14,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
- * Created by Женя on 26.09.2014.
+ * Created by gshark on 26.09.2014.
  */
 public class Translater extends AsyncTask<Void, Void, String> {
     public enum Language {
