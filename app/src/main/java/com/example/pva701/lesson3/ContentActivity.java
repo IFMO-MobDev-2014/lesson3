@@ -7,8 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -18,7 +16,7 @@ public class ContentActivity extends Activity {
     private ImageAdapter adapter;
     private TextView tvTranslateWord;
     private PictureLoader pictureLoader;
-    private Translater translater;
+    private Translator translator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +39,13 @@ public class ContentActivity extends Activity {
         };
         pictureLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-        translater = new Translater(word, Translater.Language.EN, Translater.Language.RU) {
+        translator = new Translator(word, Translator.Language.EN, Translator.Language.RU) {
             @Override
             protected void onPostExecute(String result) {
                 tvTranslateWord.setText(result);
             }
         };
-        translater.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        translator.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         GridView gvPictures = (GridView)findViewById(R.id.gvPictures);
 
@@ -65,6 +63,6 @@ public class ContentActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
         pictureLoader.cancel(true);
-        translater.cancel(true);
+        translator.cancel(true);
     }
 }
