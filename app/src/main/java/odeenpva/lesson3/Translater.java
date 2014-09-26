@@ -1,5 +1,6 @@
 package odeenpva.lesson3;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 import org.w3c.dom.Document;
@@ -14,9 +15,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
- * Created by Женя on 26.09.2014.
+ * Created by gshark on 26.09.2014.
  */
-public class Translater extends AsyncTask<Void, Void, String> {
+public class Translater extends AsyncTask<Void, Void, Boolean> {
     public enum Language {
         EN("en"),
         RU("ru");
@@ -44,7 +45,7 @@ public class Translater extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected String doInBackground(Void... voids) {
+    protected Boolean doInBackground(Void... voids) {
         Document doc = null;
         String link = "https://translate.yandex.net/api/v1.5/tr/translate?" +
                 "key=" + key +
@@ -58,21 +59,22 @@ public class Translater extends AsyncTask<Void, Void, String> {
             doc = db.parse(new URL(link).openStream());
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
-            return null;
+            return false;
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            return null;
+            return false;
         } catch (SAXException e) {
             e.printStackTrace();
-            return null;
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
         try {
-            return doc.getElementsByTagName("text").item(0).getTextContent();
+            String ans = doc.getElementsByTagName("text").item(0).getTextContent();
         } catch (NullPointerException e) {
-            return null;
+            return false;
         }
+        return true;
     }
 }
