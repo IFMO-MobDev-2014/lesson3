@@ -51,8 +51,8 @@ public class ContentActivity extends Activity {
         gvPictures.setAdapter(adapter);
     }
 
-    /*@Override
+    @Override
     public void onDestroy() {
-        Log.i("onDestroy");
-    }*/
+        Log.i("DESTROY", "in onDestroy");
+    }
 }
