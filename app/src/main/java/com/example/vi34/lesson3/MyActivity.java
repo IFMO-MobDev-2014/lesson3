@@ -56,7 +56,7 @@ public class MyActivity extends Activity {
     {
         // now try to return single image - later need to add Adapter
         ImageDownloader imageDownloader = new ImageDownloader();
-        Bitmap result = imageDownloader.search("cat");
+        Bitmap[] result = imageDownloader.search("cat");
 
     }
 

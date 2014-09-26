@@ -20,30 +20,28 @@ import java.net.URLConnection;
  */
 public class ImageDownloader {
 
-    Bitmap bmp = null;
+    Bitmap bmp[] = null;
 
-    public Bitmap search(String querry) {
+    public Bitmap[] search(String querry) {
 
         new DownloadImageTask().execute(querry);
         return bmp;
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Integer, Bitmap> {
+    private class DownloadImageTask extends AsyncTask<String, Integer, Bitmap[]> {
 
-        protected void onPreExecute() {
-        }
-
-        protected Bitmap doInBackground(String... querry) {
-            Bitmap bmp = null;
+        protected Bitmap[] doInBackground(String... query) {
+            Bitmap[] bmp = new Bitmap[10];
 
             try {
 
+                // Google allows only 8 results per query - think about fix
                 URL url = new URL("https://ajax.googleapis.com/ajax/services/search/images?" +
-                        "v=1.0&q=nyan%20cat&userip=INSERT-USER-IP");
+                        "v=1.0&q=" + "nyan%20cat" + "&imgsz=medium&rsz=8&userip=INSERT-USER-IP");
 
 
                 URLConnection connection = url.openConnection();
-                connection.addRequestProperty("Referer", "app");
+                connection.addRequestProperty("Referer", "ITMO homework app");
 
                 String line;
                 StringBuilder builder = new StringBuilder();
@@ -58,18 +56,22 @@ public class ImageDownloader {
                 JSONArray resultArray = json.getJSONObject("responseData").getJSONArray("results");
                 String[] imageLinks = new String[resultArray.length()];
 
+                InputStream input;
+
                 for (int i = 0; i < resultArray.length(); i++) {
                     json = resultArray.getJSONObject(i);
                     imageLinks[i] = json.getString("url");
+                    url = new URL(imageLinks[0]);
+                    connection = url.openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    input = connection.getInputStream();
+                    bmp[i] = BitmapFactory.decodeStream(input);
                 }
                 Log.i("ASYNC", imageLinks[0] + " " + resultArray.length() + " results");
 
-                url = new URL(imageLinks[0]);
-                connection = url.openConnection();
-                connection.setDoInput(true);
-                connection.connect();
-                InputStream input = connection.getInputStream();
-                return BitmapFactory.decodeStream(input);
+
+
 
             } catch (Exception e) {
                 Log.i("ASYNC", "AAA, SOMETHING GOES WRONG!!!!! AAAA");
@@ -81,11 +83,7 @@ public class ImageDownloader {
             return bmp;
         }
 
-        protected void onProgressUpdate(Integer... progress) {
-            Log.i("ASYNC", "Update OK");
-        }
-
-        protected void onPostExecute(Bitmap result) {
+        protected void onPostExecute(Bitmap[] result) {
             Log.i("ASYNC", "Done");
             bmp = result;
         }
