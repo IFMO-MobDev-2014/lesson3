@@ -3,5 +3,6 @@
 
     <string name="app_name">translator</string>
     <string name="translate">Translate!</string>
+    <string name="image_desc">Image illustrating translation</string>
 
 </resources>
