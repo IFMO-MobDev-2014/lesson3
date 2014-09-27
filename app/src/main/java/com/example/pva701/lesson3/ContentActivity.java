@@ -20,6 +20,7 @@ public class ContentActivity extends Activity {
     private TextView tvTranslateWord;
     private PictureLoader pictureLoader;
     private Translator translator;
+    private final int NUMBER_OF_PICTURES = 12;
 
     private ArrayList<PictureProfiler> pictureProfilers = new ArrayList<PictureProfiler>();
     @Override
@@ -29,7 +30,7 @@ public class ContentActivity extends Activity {
         String word = getIntent().getExtras().getString("word").trim();
         tvTranslateWord = (TextView)findViewById(R.id.tvTranslateWord);
 
-        pictureLoader = new PictureLoader(word, 12) {
+        pictureLoader = new PictureLoader(word, NUMBER_OF_PICTURES) {
             @Override
             protected void onProgressUpdate(PictureProfiler... progress) {
                 adapter.addImage(progress[0].getImage());

@@ -1,17 +1,14 @@
 package com.example.pva701.lesson3;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.IOException;
 import java.net.URL;
-
 
 public class FullScreenShowActivity extends Activity {
     private Bitmap picture;

@@ -12,7 +12,7 @@
     >
 
     <EditText
-        android:layout_width="400dp"
+        android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:id="@+id/teInputWord"
         android:layout_alignParentTop="true"
@@ -30,4 +30,12 @@
         android:onClick="buttonTranslateClick"
         android:layout_below="@+id/teInputWord"
         android:layout_centerHorizontal="true" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lvHistory"
+        android:layout_below="@+id/button"
+        android:layout_alignRight="@+id/teInputWord"
+        android:layout_alignEnd="@+id/teInputWord" />
 </RelativeLayout>
