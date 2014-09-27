@@ -1,15 +1,18 @@
 package com.example.pva701.lesson3;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
-
+import java.util.ArrayList;
 import odeenpva.lesson3.*;
 
 public class ContentActivity extends Activity {
@@ -18,6 +21,9 @@ public class ContentActivity extends Activity {
     private PictureLoader pictureLoader;
     private Translator translator;
 
+    private ArrayList<PictureProfiler> pictureProfilers = new ArrayList<PictureProfiler>();
+    private final int FULL_SCREEN = 0;
+    private int lastRequest = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,8 +33,9 @@ public class ContentActivity extends Activity {
 
         pictureLoader = new PictureLoader(word, 12) {
             @Override
-            protected void onProgressUpdate(Bitmap... progress) {
-                adapter.addImage(progress[0]);
+            protected void onProgressUpdate(PictureProfiler... progress) {
+                adapter.addImage(progress[0].getImage());
+                pictureProfilers.add(progress[0]);
                 Log.i("BITMAP", "bitmap loaded!");
             }
 
@@ -57,6 +64,23 @@ public class ContentActivity extends Activity {
 
         adapter = new ImageAdapter(this, width, height);
         gvPictures.setAdapter(adapter);
+        gvPictures.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(ContentActivity.this, FullScreenShowActivity.class);
+                Bitmap b = pictureProfilers.get(i).getQualityImage();
+                String ref = pictureProfilers.get(i).getQRef();
+                if (b == null)
+                    b = pictureProfilers.get(i).getImage();
+                else
+                    ref = null;
+                intent.putExtra("image", b);
+                intent.putExtra("ref", ref);
+                lastRequest = i;
+                startActivityForResult(intent, FULL_SCREEN);
+            }
+        });
+
     }
 
     @Override
@@ -64,5 +88,15 @@ public class ContentActivity extends Activity {
         super.onDestroy();
         pictureLoader.cancel(true);
         translator.cancel(true);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FULL_SCREEN) {
+            if (resultCode == RESULT_OK) {
+                Bitmap b = (Bitmap) data.getExtras().get("loadedPicture");
+                pictureProfilers.get(lastRequest).setQualityImage(b);
+            }
+        }
     }
 }

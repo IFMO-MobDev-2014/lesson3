@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -15,13 +16,25 @@ import java.net.URL;
 /**
  * Created by Женя on 26.09.2014.
  */
-public class PictureLoader extends AsyncTask<Void, Bitmap, Boolean> {
+public class PictureLoader extends AsyncTask<Void, PictureProfiler, Boolean> {
 
     private String word;
     private int cnt;
     public PictureLoader(String word, int cnt) {
         this.word = word;
         this.cnt = cnt;
+    }
+
+    private String parseFunc(String f) {
+    	for (int i = 0; i + 4 < f.length(); i++) {
+    		if (f.substring(i, i + 4).equals("http")) {
+    			String ans = "";
+    			for (int j = i; f.charAt(j) != '"'; j++)
+    				ans += f.charAt(j);
+    			return ans;
+    		}
+    	}
+    	return null;
     }
 
     @Override
@@ -36,9 +49,12 @@ public class PictureLoader extends AsyncTask<Void, Bitmap, Boolean> {
             return false;
         }
         Elements images = doc.select("a[class^=serp]");
+        Elements qualityImages = images;
         images = images.select("img[src]");
+        int c = 0;
         for (org.jsoup.nodes.Element e : images) {
             URL url = null;
+            PictureProfiler profiler;
             try {
                 url = new URL("http:" + e.attr("src"));
             } catch (MalformedURLException ex) {
@@ -47,13 +63,18 @@ public class PictureLoader extends AsyncTask<Void, Bitmap, Boolean> {
             }
             try {
                 bitmap = BitmapFactory.decodeStream(url.openStream());
+                String ref = null;
+                ref =parseFunc(qualityImages.get(c).attr("onmousedown"));
+                Log.i("LINK", ref);
+                profiler = new PictureProfiler(bitmap, ref);
             } catch (IOException e1) {
                 e1.printStackTrace();
                 return false;
             }
-            publishProgress(bitmap);
+            publishProgress(profiler);
             if (--cnt == 0)
                 break;
+            ++c;
         }
         return true;
     }
