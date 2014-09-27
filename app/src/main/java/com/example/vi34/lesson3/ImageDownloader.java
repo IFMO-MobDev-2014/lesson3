@@ -6,9 +6,12 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOError;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -36,52 +39,61 @@ public class ImageDownloader {
             JSONArray resultArray;
             String[] imageLinks = new String[10];
             InputStream input;
+            int done = 0;
 
             try {
                 // need modify query (check for spaces, and prohibited symbols)
                 query[0] = URLEncoder.encode(query[0], "UTF-8"); // I think here are some problems with correct encoding
 
             } catch (Exception e) {
-                Log.e("ASYNC", "Encode problems");
+                Log.e("ASYNC", "encode query problems");
             }
-            try {
-                for (int k = 0; k < 2; k++) {
-
-                    url = new URL("https://ajax.googleapis.com/ajax/services/search/images?" +
-                            "v=1.0&q=" + query[0] + "&imgsz=medium&rsz=5&userip=INSERT-USER-IP" + "&start=" + (k * 5));
-                    connection = url.openConnection();
-                    connection.addRequestProperty("Referer", "ITMO homework app");
-                    StringBuilder builder = new StringBuilder();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    while ((line = reader.readLine()) != null) {
-                        builder.append(line);
-                    }
-                    json = new JSONObject(builder.toString());
-                    resultArray = json.getJSONObject("responseData").getJSONArray("results");
-
+                for (int k = 0; done < 10; k++) {
 
                     try {
-                        for (int i = 0; i < 5; i++) {
-                            json = resultArray.getJSONObject(i);
-                            imageLinks[i + k * 5] = json.getString("url");
-                            url = new URL(imageLinks[i + k * 5]);
-                            connection = url.openConnection();
-                            connection.setDoInput(true);
 
-                            connection.connect();
 
-                            input = connection.getInputStream();
-                            bmp[i + k * 5] = BitmapFactory.decodeStream(input);
+                        url = new URL("https://ajax.googleapis.com/ajax/services/search/images?" +
+                                "v=1.0&q=" + query[0] + "&imgsz=medium&rsz=8&userip=INSERT-USER-IP" + "&start=" + (k * 8));
+                        connection = url.openConnection();
+                        connection.addRequestProperty("Referer", "ITMO homework app");
+                        StringBuilder builder = new StringBuilder();
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        while ((line = reader.readLine()) != null) {
+                            builder.append(line);
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        json = new JSONObject(builder.toString());
+                        resultArray = json.getJSONObject("responseData").getJSONArray("results");
+
+
+                        for (int i = 0; i < 8; i++) {
+                            try {
+
+                                json = resultArray.getJSONObject(i);
+                                imageLinks[done] = json.getString("url");
+                                url = new URL(imageLinks[done]);
+                                connection = url.openConnection();
+                                connection.setDoInput(true);
+
+                                connection.connect();
+
+                                input = connection.getInputStream();
+                                bmp[done] = BitmapFactory.decodeStream(input);
+                                done++;
+
+                            } catch (IOException ie) {
+                                Log.e("Error", "Connection problems");
+
+                            } catch (JSONException e) {
+                            }
+
+                        }
+                    } catch (Exception e)
+                    {
+
                     }
 
                 }
-            } catch (Exception e) {
-
-            }
-
             return bmp;
         }
 
