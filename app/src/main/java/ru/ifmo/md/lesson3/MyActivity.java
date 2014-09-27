@@ -8,12 +8,55 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MyActivity extends Activity {
+    ImageView animView;
+    Button back;
+    TextView eng;
+    TextView rus;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        animView = (ImageView)findViewById(R.id.imageView2);
+        Button translator = (Button)findViewById(R.id.button);
+        back = (Button)findViewById(R.id.button2);
+        eng = (TextView)findViewById(R.id.textView);
+        rus = (TextView)findViewById(R.id.textView5);
+        final Animation falling = AnimationUtils.loadAnimation(this, R.anim.falling);
+        final Animation rising = AnimationUtils.loadAnimation(this, R.anim.rising);
+        translator.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                animView.startAnimation(falling);
+                back.startAnimation(falling);
+                eng.startAnimation(falling);
+                rus.startAnimation(falling);
+                animView.setVisibility(View.VISIBLE);
+                back.setVisibility(View.VISIBLE);
+                eng.setVisibility(View.VISIBLE);
+                rus.setVisibility(View.VISIBLE);
+            }
+        });
+        back.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                animView.startAnimation(rising);
+                back.startAnimation(rising);
+                eng.startAnimation(rising);
+                rus.startAnimation(rising);
+                animView.setVisibility(View.INVISIBLE);
+                back.setVisibility(View.INVISIBLE);
+                eng.setVisibility(View.INVISIBLE);
+                rus.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     @Override
@@ -51,4 +94,5 @@ public class MyActivity extends Activity {
         Intent intent = new Intent(this, MySecondActivity.class);
         startActivity(intent);
     }
+
 }
