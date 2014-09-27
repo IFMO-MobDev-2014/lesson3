@@ -55,7 +55,7 @@ public class PicturesDownloader extends AsyncTask<String, Void, Bitmap[]> {
 
     @Override
     protected Bitmap[] doInBackground(String... strings) {
-        int numOfPictures = 5;
+        int numOfPictures = 10;
         Bitmap[] resImages = new Bitmap[numOfPictures];
         String bingUrl = "https://api.datamarket.azure.com/Bing/Search/Image?$format=json&$top=" +
                 numOfPictures + "&Query=%27" + strings[0].replaceAll(" ", "+") + "%27";
