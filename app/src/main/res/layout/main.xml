@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -10,12 +10,15 @@
         android:layout_height="wrap_content"
         android:id="@+id/editText"
         android:editable="true"
-        android:singleLine="true" />
-
+        android:singleLine="true"
+        android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
+        android:layout_above="@+id/button"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/translate"
-        android:onClick="translate"
-        android:id="@+id/button" />
-</LinearLayout>
+        android:onClick="onButtonTranslatePushed"
+        android:id="@+id/button"
+        android:layout_centerVertical="true" android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+</RelativeLayout>
