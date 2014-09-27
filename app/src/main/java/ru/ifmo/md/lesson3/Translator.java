@@ -8,6 +8,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 
 /**
  * @author volhovm
@@ -41,14 +42,14 @@ public class Translator {
 
     public String translate(String input) {
         try {
-            urlString = String.format(urlTemplate, key, direction.lang, input);
+            urlString = String.format(urlTemplate, key, direction.lang, URLEncoder.encode(input, "UTF-8"));
             URL url = new URL(urlString);
             URLConnection conn = url.openConnection();
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(conn.getInputStream());
             Node node = doc.getElementsByTagName("text").item(0);
-            String out = node.getTextContent(); //FIXME Fails on ru-en direction
+            String out = node.getTextContent();
             return out;
         } catch (Exception e) {
             Log.e("Transator error", "", e);
