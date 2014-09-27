@@ -2,6 +2,7 @@ package com.example.home.lesson3;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ public class Picture extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             Intent intent = new Intent(Picture.this, Main.class);
+            intent.putExtra("textField", query);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
             finish();
@@ -34,11 +36,20 @@ public class Picture extends Activity {
         return super.onKeyDown(keyCode, event);
     }
 
-    public static final Integer[] images = { R.drawable.cat,
-            R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher };
-
     ListView listView;
     List<RowItem> rowItems;
+
+    public void setListWiew(Bitmap[] bmps) {
+        rowItems = new ArrayList<RowItem>();
+        for (Bitmap bmp : bmps) {
+            RowItem item = new RowItem(bmp);
+            rowItems.add(item);
+        }
+        listView = (ListView) findViewById(R.id.listView);
+        CustomListViewAdapter adapter = new CustomListViewAdapter(this,
+                R.layout.list_item, rowItems);
+        listView.setAdapter(adapter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,32 +62,24 @@ public class Picture extends Activity {
             query = b.getString("query");
         }
 
-        rowItems = new ArrayList<RowItem>();
-        for (int i = 0; i < images.length; i++) {
-            RowItem item = new RowItem(BitmapFactory.decodeResource(getResources(), images[i]));
-            rowItems.add(item);
-        }
-
         TextView textView = (TextView) findViewById(R.id.textView3);
         textView.setText(translation);
         textView = (TextView) findViewById(R.id.textView2);
         textView.setText(query);
-
-        listView = (ListView) findViewById(R.id.listView);
-        CustomListViewAdapter adapter = new CustomListViewAdapter(this,
-                R.layout.list_item, rowItems);
-        listView.setAdapter(adapter);
 
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Picture.this, Main.class);
+                intent.putExtra("textField", query);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                 finish();
             }
         });
+
+        new PicturesDownloader(this).execute("cats");
     }
 
 

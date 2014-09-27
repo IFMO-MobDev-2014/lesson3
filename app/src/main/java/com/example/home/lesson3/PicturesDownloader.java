@@ -21,6 +21,13 @@ import java.net.URLConnection;
  * Created by Snopi on 27.09.2014.
  */
 public class PicturesDownloader extends AsyncTask<String, Void, Bitmap[]> {
+
+    private Picture picture;
+
+    public PicturesDownloader(Picture p) {
+        picture = p;
+    }
+
     private static final String apiKey = "PXaJFgnFYAKfNdr3Gir/NfxjKVEOvt4kkQWAd9KMusM=";
     private static String readStream(InputStream data) {
         String ans = "";
@@ -43,6 +50,7 @@ public class PicturesDownloader extends AsyncTask<String, Void, Bitmap[]> {
     @Override
     protected void onPostExecute(Bitmap[] bitmaps) {
         super.onPostExecute(bitmaps);
+        picture.setListWiew(bitmaps);
     }
 
     @Override
