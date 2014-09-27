@@ -5,5 +5,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_picture">picture</string>
+    <string name="name">ListViewBaseAdapter</string>
+    <string name="image">Thumbnail</string>
+    <string name="back">Назад</string>
+    <string name="translation">Перевод: </string>
+    <string name="images">Картинки: </string>
+    <string name="mainButtonName">Поиск</string>
+    <string name="mainText">Введите запрос: </string>
 
 </resources>

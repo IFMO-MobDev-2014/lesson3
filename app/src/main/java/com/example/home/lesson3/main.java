@@ -7,9 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
-
-public class main extends Activity {
+public class Main extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +20,10 @@ public class main extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(main.this, picture.class);
+                Intent intent = new Intent(Main.this, Picture.class);
+                intent.putExtra("translation", "лол тут будет перевод");
+                EditText editText = (EditText) findViewById(R.id.editText);
+                intent.putExtra("query", editText.getText().toString());
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                 finish();
