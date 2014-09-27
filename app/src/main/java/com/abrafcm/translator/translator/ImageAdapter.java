@@ -21,17 +21,17 @@ public class ImageAdapter extends ArrayAdapter{
         private ImageView imageView;
     }
 
-    public ImageAdapter(Context context, ArrayList<ImageItem> items,
-                        IImagesProvider provider) {
+    public ImageAdapter(Context context, ArrayList<ImageItem> items) {
         super(context, 0, items);
-        this.provider = provider;
+        provider = new FakeImagesProvider(context);
+        mItems = items;
     }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         final ViewHolder viewHolder;
         if (view == null) {
-            LayoutInflater.from(getContext())
+            view = LayoutInflater.from(getContext())
                     .inflate(R.layout.item_image, parent, false);
 
             viewHolder = new ViewHolder();

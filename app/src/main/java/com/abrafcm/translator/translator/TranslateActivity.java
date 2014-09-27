@@ -21,10 +21,10 @@ public class TranslateActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_translate);
 
-        initViews();
+        setupViews();
     }
 
-    private void initViews() {
+    private void setupViews() {
         mTranslateButton = (Button) findViewById(R.id.button_translate);
         mTranslateEdit = (EditText) findViewById(R.id.edit_translate);
 

@@ -11,6 +11,7 @@
     <EditText
         android:id="@+id/edit_translate"
         android:gravity="center"
+        android:textAlignment="center"
         android:hint="@string/translate_hint"
         android:layout_centerVertical="true"
         android:layout_width="match_parent"
