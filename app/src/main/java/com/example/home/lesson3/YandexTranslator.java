@@ -3,6 +3,8 @@ package com.example.home.lesson3;
 import android.os.AsyncTask;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -41,11 +43,10 @@ public class YandexTranslator extends AsyncTask<String, Void, String> {
         try {
             Document xmlResponse = DocumentBuilderFactory.newInstance()
                     .newDocumentBuilder().parse((InputStream) new URL(url).getContent());
-            return xmlResponse.getDocumentElement().
-                    getElementsByTagName("text").
-                    item(0).
-                    getFirstChild().
-                    getNodeValue();
+            Node child = xmlResponse.getDocumentElement().
+                    getElementsByTagName("text").item(0).getFirstChild();
+            if (child != null)
+                return child.getNodeValue();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (IOException e) {
