@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ListView;
@@ -82,5 +83,17 @@ public class RetrievedContentActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.retrieved_content_actionbar, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.changeWord) {
+            Intent intent = new Intent(this, InputWordActivity.class);
+            String text = ((TextView) findViewById(R.id.set_name_text)).getText().toString();
+            intent.putExtra(InputWordActivity.EXTRA_PREV_NAME, text);
+            startActivityForResult(intent, 0);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

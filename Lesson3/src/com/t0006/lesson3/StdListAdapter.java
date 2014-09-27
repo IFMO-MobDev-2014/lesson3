@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListAdapter;
 
 import java.util.ArrayList;
@@ -70,6 +72,10 @@ public abstract class StdListAdapter<T> implements ListAdapter {
     @Override
     public void unregisterDataSetObserver(DataSetObserver observer) {
         observers.remove(observer);
+    }
+
+    protected View createLastItem(ViewGroup parent) {
+        return inflater.inflate(R.layout.ind_progress_bar, parent, false);
     }
 
     @Override

@@ -3,27 +3,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:divider="?android:attr/dividerHorizontal"
+    android:orientation="vertical"
+    android:showDividers="middle">
 
     <EditText
         android:id="@+id/inputWord"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/edit_text_margin"
+        android:layout_marginRight="@dimen/edit_text_margin"
         android:ems="10"
         android:hint="@string/word_prompt"
         android:inputType="textPersonName" />
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/inputWord"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/buttonCancel"
-            style="?android:attr/buttonStyleSmall"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -32,7 +36,7 @@
 
         <Button
             android:id="@+id/buttonOk"
-            style="?android:attr/buttonStyleSmall"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
