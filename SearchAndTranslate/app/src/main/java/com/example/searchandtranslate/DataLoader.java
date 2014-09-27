@@ -2,7 +2,21 @@ package com.example.searchandtranslate;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.widget.TextView;
+import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Scanner;
 
 /**
  * Created by knah on 24.09.2014.
@@ -29,19 +43,118 @@ public class DataLoader {
         }
     }
 
-    public static void asyncTranslate(String word, MyCallbackString callback) {
+    private static class PictureLoaderThread extends Thread {
+        private final String query;
+        private final MyCallback<Bitmap[]> callback;
+
+        public PictureLoaderThread(String query, MyCallback<Bitmap[]> callback) {
+            super();
+            this.query = query;
+            this.callback = callback;
+        }
+
+        private static String streamToString(InputStream s) {
+            Scanner scn = new Scanner(s);
+            scn.useDelimiter("\\A");
+            return scn.next();
+        }
+
+        @Override
+        public void run() {
+            Bitmap[] result = new Bitmap[10];
+
+            Log.i("HTTP","Started loading");
+
+            try {
+                URL target = new URL("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&imgsz=medium&q=" + URLEncoder.encode(query, "UTF-8"));
+                HttpURLConnection uc = (HttpURLConnection) target.openConnection();
+                uc.setConnectTimeout(1000);
+                uc.setReadTimeout(1000);
+                uc.connect();
+                JSONObject res = new JSONObject(streamToString(uc.getInputStream()));
+                uc.disconnect();
+                JSONArray arr = res.getJSONObject("responseData").getJSONArray("results");
+                int j = 0;
+                if(arr.length() != 0) {
+                    for(int i = 0; i < arr.length(); i++) {
+                        String url = arr.getJSONObject(i).getString("url");
+                        try {
+                            target = new URL(url);
+                            uc = (HttpURLConnection) target.openConnection();
+                            uc.setConnectTimeout(1000);
+                            uc.setReadTimeout(1000);
+                            uc.connect();
+                            result[j] = BitmapFactory.decodeStream(uc.getInputStream());
+                            if(result[j] != null)
+                                j++;
+                        } catch(IOException e) {
+                            Log.e("HTTP", "IOE in pic", e);
+                        }
+                    }
+                }
+                target = new URL("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=" + Math.min(10 - j, 8) + "&start=8&imgsz=medium&q=" + URLEncoder.encode(query, "UTF-8"));
+                uc = (HttpURLConnection) target.openConnection();
+                uc.setConnectTimeout(1000);
+                uc.setReadTimeout(1000);
+                uc.connect();
+                res = new JSONObject(streamToString(uc.getInputStream()));
+                uc.disconnect();
+                arr = res.getJSONObject("responseData").getJSONArray("results");
+                if(arr.length() != 0) {
+                    for(int i = 0; i < arr.length() && j < 10; i++) {
+                        String url = arr.getJSONObject(i).getString("url");
+                        try {
+                            target = new URL(url);
+                            uc = (HttpURLConnection) target.openConnection();
+                            uc.setConnectTimeout(1000);
+                            uc.setReadTimeout(1000);
+                            uc.connect();
+                            result[j] = BitmapFactory.decodeStream(uc.getInputStream());
+                            if(result[j] != null)
+                                j++;
+                        } catch(IOException e) {
+                            Log.e("HTTP", "IOE in pic 2", e);
+                        }
+                    }
+                }
+            } catch(IOException e) {
+                Log.e("HTTP", "IOE in all", e);
+            } catch(JSONException e) {
+                Log.e("HTTP", "JSE in all", e);
+            }
+
+            Log.i("HTTP", "Done loading");
+
+            final Bitmap[] finalResult = result;
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    callback.run(finalResult);
+                }
+            });
+        }
+    };
+
+    public static void asyncTranslate(String word, MyCallback<String> callback) {
         callback.run(word); // TODO: write proper code
     }
 
-    private static final int[] testBitmap = {
-            0xff0000ff, 0xff00ffff, 0xff00ff00, 0xffffff00,
-            0xffff0000, 0xffff00ff, 0xffffffff, 0xff000000,
-            0xff999999, 0xffffffff, 0xffffffff, 0xffffffff,
-            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff
-    };
+    public static void asyncLoadPictures(String word, MyCallback<Bitmap[]> callback) {
+        if(handler == null)
+            handler = new Handler(Looper.getMainLooper());
 
-    public static void asyncLoadPictures(String word, MyCallbackPicture callback) {
-        Bitmap rv = Bitmap.createBitmap(testBitmap, 4, 4, Bitmap.Config.ARGB_8888);
-        callback.run(new Bitmap[] {rv}); // TODO: write proper code
+        if(loaderThread != null) { // todo: do it better
+            loaderThread.interrupt();
+            try {
+                loaderThread.join();
+            } catch (InterruptedException ie) {}
+        }
+
+        loaderThread = new PictureLoaderThread(word, callback);
+        loaderThread.start();
+
     }
+
+    private static PictureLoaderThread loaderThread;
+    private static Handler handler;
 }
