@@ -27,7 +27,7 @@ public class Main extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Main.this, Picture.class);
-                intent.putExtra("translation", "лол тут будет перевод");
+                intent.putExtra("translation", "");
                 EditText editText = (EditText) findViewById(R.id.editText);
                 intent.putExtra("query", editText.getText().toString());
                 startActivity(intent);

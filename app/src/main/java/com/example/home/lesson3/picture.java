@@ -51,6 +51,12 @@ public class Picture extends Activity {
         listView.setAdapter(adapter);
     }
 
+    public void setTranslation(String s) {
+        translation = s;
+        TextView textView = (TextView) findViewById(R.id.textView3);
+        textView.setText(translation);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +85,8 @@ public class Picture extends Activity {
             }
         });
 
-        new PicturesDownloader(this).execute("cats");
+        new PicturesDownloader(this).execute(query);
+        new YandexTranslator(this).execute(query);
     }
 
 
