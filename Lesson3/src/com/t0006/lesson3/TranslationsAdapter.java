@@ -1,6 +1,6 @@
 package com.t0006.lesson3;
 
-import android.content.Context;
+import android.app.Fragment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -10,8 +10,8 @@ import android.widget.TextView;
  */
 public class TranslationsAdapter extends StdListAdapter<WordTranslation> {
 
-    public TranslationsAdapter(Context context) {
-        super(context);
+    public TranslationsAdapter(Fragment fragment) {
+        super(fragment);
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -19,7 +19,7 @@ public class TranslationsAdapter extends StdListAdapter<WordTranslation> {
         if (convertView == null) {
             if (translation == null)
                 return createLastItem(parent);
-            convertView = inflater.inflate(android.R.layout.two_line_list_item, parent, false);
+            convertView = getLayoutInflater().inflate(android.R.layout.two_line_list_item, parent, false);
         }
         if (translation != null) {
             TextView title = (TextView) convertView.findViewById(android.R.id.text1);

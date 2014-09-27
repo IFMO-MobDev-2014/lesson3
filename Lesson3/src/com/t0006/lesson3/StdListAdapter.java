@@ -1,7 +1,6 @@
 package com.t0006.lesson3;
 
-import android.app.Activity;
-import android.content.Context;
+import android.app.Fragment;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,7 @@ import java.util.List;
  * Created by dimatomp on 27.09.14.
  */
 public abstract class StdListAdapter<T> implements ListAdapter {
-    protected LayoutInflater inflater;
+    private final Fragment fragment;
     protected boolean doneLoading = true;
     Collection<DataSetObserver> observers = new LinkedList<>();
     final Runnable changeNotifier = new Runnable() {
@@ -28,27 +27,18 @@ public abstract class StdListAdapter<T> implements ListAdapter {
         }
     };
     List<T> items = new ArrayList<>();
-    private boolean notUpdated;
 
-    public StdListAdapter(Context context) {
-        setContext(context);
+    public StdListAdapter(Fragment fragment) {
+        this.fragment = fragment;
     }
 
-    public void setContext(Context context) {
-        if (context != null) {
-            this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            if (notUpdated)
-                notifyDataSetChanged();
-        } else
-            this.inflater = null;
+    protected LayoutInflater getLayoutInflater() {
+        return fragment.getActivity().getLayoutInflater();
     }
 
     public void notifyDataSetChanged() {
-        if (inflater != null) {
-            ((Activity) inflater.getContext()).runOnUiThread(changeNotifier);
-            notUpdated = false;
-        } else
-            notUpdated = true;
+        if (!fragment.isDetached())
+            fragment.getActivity().runOnUiThread(changeNotifier);
     }
 
     public void reset() {
@@ -88,7 +78,8 @@ public abstract class StdListAdapter<T> implements ListAdapter {
     }
 
     protected View createLastItem(ViewGroup parent) {
-        return inflater.inflate(R.layout.ind_progress_bar, parent, false);
+        return fragment.getActivity().getLayoutInflater().inflate(
+                R.layout.ind_progress_bar, parent, false);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.t0006.lesson3;
 
-import android.content.Context;
+import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +11,8 @@ import android.widget.ImageView;
  */
 public class ImagesAdapter extends StdListAdapter<Bitmap> {
 
-    public ImagesAdapter(Context context) {
-        super(context);
+    public ImagesAdapter(Fragment fragment) {
+        super(fragment);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class ImagesAdapter extends StdListAdapter<Bitmap> {
         if (convertView == null) {
             if (content == null)
                 return createLastItem(parent);
-            convertView = new ImageView(inflater.getContext());
+            convertView = new ImageView(getLayoutInflater().getContext());
         }
         if (content != null)
             ((ImageView) convertView).setImageBitmap(content);

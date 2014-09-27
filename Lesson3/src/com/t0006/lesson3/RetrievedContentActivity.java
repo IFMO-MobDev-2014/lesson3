@@ -42,8 +42,6 @@ public class RetrievedContentActivity extends Activity {
         fragment = (AsyncTaskFragment) getFragmentManager().findFragmentByTag(TAG_TASK_FRAGMENT);
         if (fragment == null) {
             fragment = new AsyncTaskFragment();
-            fragment.translationsAdapter = new TranslationsAdapter(this);
-            fragment.imagesAdapter = new ImagesAdapter(this);
             getFragmentManager().beginTransaction().add(fragment, TAG_TASK_FRAGMENT).commit();
             startActivityForResult(new Intent(this, InputWordActivity.class), 0);
         } else {
