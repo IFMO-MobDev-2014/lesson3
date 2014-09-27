@@ -5,8 +5,23 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
 
+    <LinearLayout
+            android:id="@+id/linlaHeaderProgress"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+        <ProgressBar
+                android:id="@+id/pbHeaderProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+        </ProgressBar>
+    </LinearLayout>
+
     <android.support.v4.view.ViewPager
-            android:id="@+id/newGalleryView"
+            android:id="@+id/myGalleryView"
             android:layout_width="fill_parent"
             android:layout_height="600dp"
             android:layout_below="@+id/relative_headerBar"
@@ -17,6 +32,8 @@
               android:layout_width="fill_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text=""
-            android:id="@+id/textView" android:background="#8cffffff"/>
+            android:id="@+id/translation"
+            android:background="#8cffffff"
+            android:gravity="center"/>
 
 </LinearLayout>
