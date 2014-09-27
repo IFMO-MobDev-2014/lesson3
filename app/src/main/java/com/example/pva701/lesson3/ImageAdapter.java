@@ -12,6 +12,8 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
+import odeenpva.lesson3.PictureProfiler;
+
 /**
  * Created by pva701 on 26.09.14.
  */
