@@ -30,7 +30,9 @@
                 <ListView
                     android:id="@+id/translations"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/horizontal_screen_margin"
+                    android:layout_marginRight="@dimen/horizontal_screen_margin" />
 
                 <GridView
                     android:id="@+id/images"
