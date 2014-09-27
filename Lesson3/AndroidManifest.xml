@@ -23,4 +23,7 @@
             android:theme="@android:style/Theme.Holo.Light.Dialog"
             android:title="@string/input_heading" />
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>
