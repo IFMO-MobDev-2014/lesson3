@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lesson3</string>
+    <string name="set_name_pref">"Set word: "</string>
+    <string name="set_name_none">none</string>
+    <string name="translations">Translations</string>
+    <string name="images">Images</string>
+    <string name="word_prompt">Your word</string>
+    <string name="input_heading">Specify your word&#8230;</string>
+    <string name="change_word">Change word</string>
+</resources>
