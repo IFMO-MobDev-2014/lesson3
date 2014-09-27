@@ -1,19 +1,16 @@
 package ru.ifmo.md.lesson3;
 
-/**
- * Created by 107476 on 25.09.2014.
- */
-
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
-public class MyActivity extends Activity {
+/**
+ * Created by 107476 on 27.09.2014.
+ */
+public class MySecondActivity extends Activity {
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.second);
     }
 
     @Override
@@ -44,11 +41,5 @@ public class MyActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-
-    public void onClick(View view) {
-        Intent intent = new Intent(this, MySecondActivity.class);
-        startActivity(intent);
     }
 }
