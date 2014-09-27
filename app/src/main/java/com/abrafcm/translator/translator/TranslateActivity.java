@@ -39,7 +39,7 @@ public class TranslateActivity extends Activity {
 
     private void startResultActivity(String translate) {
         Intent intent = new Intent(this, ResultActivity.class);
-        intent.putExtra(Helper.TRANSLATE, translate);
+        intent.putExtra(Helper.EXTRA_TRANSLATE, translate);
         startActivity(intent);
     }
 
