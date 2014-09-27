@@ -7,8 +7,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ImageView;
 
 import java.io.IOException;
@@ -40,16 +38,15 @@ public class FullScreenShowActivity extends Activity {
                 @Override
                 protected void onPostExecute(Bitmap bitmap) {
                     imageView.setImageBitmap(bitmap);
-                    setResult(RESULT_OK, new Intent().putExtra("loadedPicture", picture));
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
         setContentView(imageView);
     }
+
     @Override
     public void onStop() {
         super.onStop();
-        setResult(RESULT_CANCELED);
         if (loader != null)
             loader.cancel(true);
     }

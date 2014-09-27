@@ -65,7 +65,6 @@ public class PictureLoader extends AsyncTask<Void, PictureProfiler, Boolean> {
                 bitmap = BitmapFactory.decodeStream(url.openStream());
                 String ref = null;
                 ref =parseFunc(qualityImages.get(c).attr("onmousedown"));
-                Log.i("LINK", ref);
                 profiler = new PictureProfiler(bitmap, ref);
             } catch (IOException e1) {
                 e1.printStackTrace();

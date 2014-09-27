@@ -6,14 +6,17 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.pva701.lesson3.ContentActivity">
+    tools:context="com.example.pva701.lesson3.ContentActivity"
+    android:background="@drawable/background">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:id="@+id/tvTranslateWord"
-        android:textSize="25dp" />
+        android:textSize="35dp"
+        android:textColor="#ffec000b"
+        android:textIsSelectable="false" />
 
     <GridView
         android:layout_width="wrap_content"
