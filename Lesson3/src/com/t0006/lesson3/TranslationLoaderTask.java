@@ -21,6 +21,7 @@ import java.net.URL;
 public class TranslationLoaderTask extends AsyncTask<String, WordTranslation, Void> {
     private final String LOG_TAG = TranslationLoaderTask.class.getSimpleName();
     private final String API_KEY = "trnsl.1.1.20140924T073719Z.e1524a5f158bbc5d.630ee347b319b5ca49a9d1923a1d3c12d818a58a";
+    private final String[] languages = {"ru", "es", "fr", "uk", "be", "ka", "es", "it", "fi", "de", "ro", "pl", "tr", "cs", "sv"};
     private TranslationsAdapter adapter;
 
     public TranslationLoaderTask(TranslationsAdapter adapter) {
@@ -46,62 +47,59 @@ public class TranslationLoaderTask extends AsyncTask<String, WordTranslation, Vo
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String translateJSONString = null;
-        final String lang = "ru";
-        try {
-            final String TRANSLATE_BASE_URL = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
-            final String TEXT_PARAM = "text";
-            final String LANG_PARAM = "lang";
-            final String API_KEY_PARAM = "key";
-            Uri builtUri = Uri.parse(TRANSLATE_BASE_URL).buildUpon()
-                    .appendQueryParameter(API_KEY_PARAM, API_KEY)
-                    .appendQueryParameter(TEXT_PARAM, params[0])
-                    .appendQueryParameter(LANG_PARAM, lang)
-                    .build();
-            URL url = new URL(builtUri.toString());
+        for (String language : languages) {
+            try {
+                final String TRANSLATE_BASE_URL = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
+                final String TEXT_PARAM = "text";
+                final String LANG_PARAM = "lang";
+                final String API_KEY_PARAM = "key";
+                Uri builtUri = Uri.parse(TRANSLATE_BASE_URL).buildUpon().appendQueryParameter(API_KEY_PARAM, API_KEY).appendQueryParameter(TEXT_PARAM, params[0]).appendQueryParameter(LANG_PARAM, language).build();
+                URL url = new URL(builtUri.toString());
 
-            Log.v(LOG_TAG, "Built URI " + builtUri.toString());
+                Log.v(LOG_TAG, "Built URI " + builtUri.toString());
 
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.connect();
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
 
-            InputStream inputStream = urlConnection.getInputStream();
-            StringBuilder buffer = new StringBuilder();
-            if (inputStream == null) {
-                return null;
-            }
-            reader = new BufferedReader(new InputStreamReader(inputStream));
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuilder buffer = new StringBuilder();
+                if (inputStream == null) {
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
 
-            String line;
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line).append("\n");
-            }
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line).append("\n");
+                }
 
-            if (buffer.length() == 0) {
-                return null;
-            }
-            translateJSONString = buffer.toString();
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Error reading stream", e);
-            translateJSONString = null;
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
+                if (buffer.length() == 0) {
+                    return null;
+                }
+                translateJSONString = buffer.toString();
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Error reading stream", e);
+                translateJSONString = null;
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e(LOG_TAG, "Error closing stream", e);
+                    }
                 }
             }
-        }
 
-        try {
-            publishProgress(new WordTranslation("ru", getTranslateFromJSON(translateJSONString)));
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
-            e.printStackTrace();
+            try {
+                publishProgress(new WordTranslation(language, getTranslateFromJSON(translateJSONString)));
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, e.getMessage(), e);
+                e.printStackTrace();
+            }
         }
         return null;
     }
