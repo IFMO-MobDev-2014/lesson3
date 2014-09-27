@@ -20,7 +20,6 @@ public class SecondActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         textToTranslate = getIntent().getStringExtra("Text to translate");
-
         downloadImages("nyancat");
 
         setContentView(R.layout.secondscreen);
@@ -77,7 +76,7 @@ public class SecondActivity extends Activity {
     public void onBackPressed() {
         Intent intent = new Intent(SecondActivity.this, MyActivity.class);
         startActivity(intent);
-        //finish();
+        finish();
     }
 
 }
