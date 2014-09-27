@@ -22,9 +22,11 @@ public class TranslationLoaderTask extends AsyncTask<String, WordTranslation, Vo
     private final String LOG_TAG = TranslationLoaderTask.class.getSimpleName();
     private final String API_KEY = "trnsl.1.1.20140924T073719Z.e1524a5f158bbc5d.630ee347b319b5ca49a9d1923a1d3c12d818a58a";
     private final String[] languages = {"en", "ru", "es", "fr", "uk", "be", "ka", "es", "it", "fi", "de", "ro", "pl", "tr", "cs", "sv"};
+    private AsyncTaskFragment fragment;
     private TranslationsAdapter adapter;
 
-    public TranslationLoaderTask(TranslationsAdapter adapter) {
+    public TranslationLoaderTask(AsyncTaskFragment fragment, TranslationsAdapter adapter) {
+        this.fragment = fragment;
         this.adapter = adapter;
     }
 

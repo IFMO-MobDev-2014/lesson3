@@ -37,9 +37,8 @@ public class AsyncTaskFragment extends Fragment {
         translationsAdapter.reset();
         imagesAdapter.reset();
 
-        translationLoaderTask = new TranslationLoaderTask(translationsAdapter);
-        // TODO No contexts here!
-        imageLoaderTask = new ImageLoaderTask(getActivity(), imagesAdapter);
+        translationLoaderTask = new TranslationLoaderTask(this, translationsAdapter);
+        imageLoaderTask = new ImageLoaderTask(this, imagesAdapter);
         translationLoaderTask.execute(newWord);
         imageLoaderTask.execute(newWord);
     }
@@ -57,11 +56,6 @@ public class AsyncTaskFragment extends Fragment {
         for (int res : preservedMessages)
             showMessage(res);
         preservedMessages.clear();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     class MessageDisplayer implements Runnable {

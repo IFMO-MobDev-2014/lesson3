@@ -1,6 +1,5 @@
 package com.t0006.lesson3;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -9,21 +8,23 @@ import android.os.AsyncTask;
  * Created by dimatomp on 27.09.14.
  */
 public class ImageLoaderTask extends AsyncTask<String, Bitmap, Void> {
-    Context context;
-    ImagesAdapter adapter;
+    private AsyncTaskFragment fragment;
+    private ImagesAdapter adapter;
 
-    public ImageLoaderTask(Context context, ImagesAdapter adapter) {
-        this.context = context;
+    public ImageLoaderTask(AsyncTaskFragment fragment, ImagesAdapter adapter) {
+        this.fragment = fragment;
         this.adapter = adapter;
     }
 
     @Override
     protected Void doInBackground(String... params) {
         try {
+            // Please do not use fragment.getActivity() as a context
+            // since the fragment may have been detached.
             Thread.sleep(5000);
-            publishProgress(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.ic_delete));
+            publishProgress(BitmapFactory.decodeResource(fragment.getActivity().getResources(), android.R.drawable.ic_delete));
             Thread.sleep(8000);
-            publishProgress(BitmapFactory.decodeResource(context.getResources(), android.R.drawable.ic_dialog_email));
+            publishProgress(BitmapFactory.decodeResource(fragment.getActivity().getResources(), android.R.drawable.ic_dialog_email));
             Thread.sleep(1500);
         } catch (InterruptedException ignore) {
         }
