@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Translator</string>
+    <string name="title_activity_content">Translation</string>
+    <string name="title_activity_full_screen_show">Full screen mode</string>
+
+</resources>
