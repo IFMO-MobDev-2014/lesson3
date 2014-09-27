@@ -14,7 +14,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
- * Created by User on 27.09.2014.
+ * Created by Snopi on 27.09.2014.
  */
 public class YandexTranslator extends AsyncTask<String, Void, String> {
     private static final String apiKey = "trnsl.1.1.20140924T185319Z.988cfba8926139f0" +
