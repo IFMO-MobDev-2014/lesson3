@@ -1,10 +1,12 @@
 package com.example.pva701.lesson3;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -15,6 +17,7 @@ import java.net.URL;
 
 public class FullScreenShowActivity extends Activity {
     private Bitmap picture;
+    private AsyncTask<Void, Void, Bitmap> loader;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +27,7 @@ public class FullScreenShowActivity extends Activity {
         final ImageView imageView = new ImageView(this);
         imageView.setImageBitmap(picture);
         if (ref != null) {
-            new AsyncTask<Void, Void, Bitmap>() {
+            loader = new AsyncTask<Void, Void, Bitmap>() {
                 @Override
                 protected Bitmap doInBackground(Void... voids) {
                     try {
@@ -37,9 +40,17 @@ public class FullScreenShowActivity extends Activity {
                 @Override
                 protected void onPostExecute(Bitmap bitmap) {
                     imageView.setImageBitmap(bitmap);
+                    setResult(RESULT_OK, new Intent().putExtra("loadedPicture", picture));
                 }
-            }.execute();
+            }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
         setContentView(imageView);
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        setResult(RESULT_CANCELED);
+        if (loader != null)
+            loader.cancel(true);
     }
 }

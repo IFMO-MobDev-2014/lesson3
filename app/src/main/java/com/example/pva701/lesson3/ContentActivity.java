@@ -23,6 +23,8 @@ public class ContentActivity extends Activity {
     private ImageAdapter adapter;
     private TextView tvTranslateWord;
     private ArrayList<PictureProfiler> pictureProfilers;
+    private final int FULL_SCREEN = 0;
+    private int lastRequest = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,11 +72,23 @@ public class ContentActivity extends Activity {
                     b = pictureProfilers.get(i).getImage();
                 else
                     ref = null;
-                intent.putExtra("image", pictureProfilers.get(i).getQualityImage());
-                intent.putExtra("ref", pictureProfilers.get(i).getQRef());
-                startActivity(intent);
+                intent.putExtra("image", b);
+                intent.putExtra("ref", ref);
+                lastRequest = i;
+                startActivityForResult(intent, FULL_SCREEN);
             }
         });
+
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FULL_SCREEN) {
+            if (resultCode == RESULT_OK) {
+                Bitmap b = (Bitmap) data.getExtras().get("loadedPicture");
+                pictureProfilers.get(lastRequest).setQualityImage(b);
+            }
+        }
     }
 
 }

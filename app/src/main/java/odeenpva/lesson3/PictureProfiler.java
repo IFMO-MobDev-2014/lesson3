@@ -29,5 +29,8 @@ public class PictureProfiler {
     public String getQRef() {
         return qRef;
     }
+    public void setQualityImage (Bitmap b) {
+        qualityImage = b;
+    }
 
 }
