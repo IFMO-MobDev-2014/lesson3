@@ -20,7 +20,7 @@ public class SecondActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         textToTranslate = getIntent().getStringExtra("Text to translate");
-        downloadImages("nyancat");
+        downloadImages(textToTranslate);
 
         setContentView(R.layout.secondscreen);
 
