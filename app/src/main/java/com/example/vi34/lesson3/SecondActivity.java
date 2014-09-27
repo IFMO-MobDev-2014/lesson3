@@ -10,19 +10,28 @@ import android.widget.TextView;
 
 public class SecondActivity extends Activity {
 
-    ImageView[] imageView = new ImageView[10];
+    public static ImageView[] imageView = new ImageView[10];
     String translation;
+    String textToTranslate;
+    public static Bitmap[] bmp = new Bitmap[10];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        textToTranslate = getIntent().getStringExtra("Text to translate");
+
+        downloadImages("nyancat");
+
         setContentView(R.layout.secondscreen);
 
         TextView russianText = (TextView) findViewById(R.id.TextView2);
         // take a translation
         translation = "Hello, world!!!";
-        russianText.setText(translation);
+        russianText.setText(textToTranslate); // intent works
 
+
+        //Ooh Max! It's too "Bydlo code"!
         imageView[0] = (ImageView) findViewById(R.id.imageView2);
         imageView[1] = (ImageView) findViewById(R.id.imageView3);
         imageView[2] = (ImageView) findViewById(R.id.imageView4);
@@ -36,7 +45,7 @@ public class SecondActivity extends Activity {
 
         Bitmap bitmap = null;
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.source);
-        imageView[0].setImageBitmap(bitmap);
+        imageView[0].setImageBitmap(bmp[0]);
 
         imageView[1].setImageBitmap(bitmap);
         imageView[2].setImageBitmap(bitmap);
@@ -49,6 +58,21 @@ public class SecondActivity extends Activity {
         imageView[9].setImageBitmap(bitmap);
         //download and print images
     }
+
+    protected void downloadImages(String query)
+    {
+        // To do: need to add Adapter
+        ImageDownloader imageDownloader = new ImageDownloader();
+        imageDownloader.search(query);
+
+    }
+
+    /*
+    public void redrawImages(){
+        imageView[0].invalidate();
+        imageView[1].invalidate();
+    }
+*/
 
     public void onBackPressed() {
         Intent intent = new Intent(SecondActivity.this, MyActivity.class);

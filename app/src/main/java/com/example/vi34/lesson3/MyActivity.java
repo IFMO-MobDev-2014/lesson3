@@ -73,6 +73,7 @@ public class MyActivity extends Activity {
             //execution
         }
         Intent intent = new Intent(MyActivity.this, SecondActivity.class);
+        intent.putExtra("Text to translate", textToTranslate);
         startActivity(intent);
     }
 
