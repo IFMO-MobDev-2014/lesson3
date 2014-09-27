@@ -17,7 +17,7 @@ import java.util.List;
  * Created by dimatomp on 27.09.14.
  */
 public abstract class StdListAdapter<T> implements ListAdapter {
-    protected final LayoutInflater inflater;
+    protected LayoutInflater inflater;
     protected boolean doneLoading = true;
     Collection<DataSetObserver> observers = new LinkedList<>();
     final Runnable changeNotifier = new Runnable() {
@@ -28,14 +28,27 @@ public abstract class StdListAdapter<T> implements ListAdapter {
         }
     };
     List<T> items = new ArrayList<>();
+    private boolean notUpdated;
 
     public StdListAdapter(Context context) {
-        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        setContext(context);
+    }
+
+    public void setContext(Context context) {
+        if (context != null) {
+            this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            if (notUpdated)
+                notifyDataSetChanged();
+        } else
+            this.inflater = null;
     }
 
     public void notifyDataSetChanged() {
-        if (inflater.getContext() instanceof Activity)
+        if (inflater != null) {
             ((Activity) inflater.getContext()).runOnUiThread(changeNotifier);
+            notUpdated = false;
+        } else
+            notUpdated = true;
     }
 
     public void reset() {

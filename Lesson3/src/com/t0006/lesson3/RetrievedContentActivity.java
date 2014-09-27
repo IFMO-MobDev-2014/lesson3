@@ -16,11 +16,10 @@ import android.widget.TextView;
  */
 public class RetrievedContentActivity extends Activity {
     public static final String EXTRA_NEW_NAME = "com.t0006.lesson3.RetrievedContentActivity.EXTRA_NEW_NAME";
+    public static final String TAG_TASK_FRAGMENT = "com.t0006.lesson3.RetrievedContentActivity.TAG_TASK_FRAGMENT";
+    public static final String SAVED_INSTANCE_TAB_NUM = "com.t0006.lesson3.RetrievedContentActivity.SAVED_INSTANCE_TAB_NUM";
 
-    TranslationsAdapter translationsAdapter;
-    ImagesAdapter imagesAdapter;
-    TranslationLoaderTask translationLoaderTask;
-    ImageLoaderTask imageLoaderTask;
+    AsyncTaskFragment fragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,16 +36,32 @@ public class RetrievedContentActivity extends Activity {
         child.setIndicator(getString(R.string.images));
         child.setContent(R.id.images);
         tabHost.addTab(child);
+        if (savedInstanceState != null && savedInstanceState.containsKey(SAVED_INSTANCE_TAB_NUM))
+            tabHost.setCurrentTab(savedInstanceState.getInt(SAVED_INSTANCE_TAB_NUM));
+
+        fragment = (AsyncTaskFragment) getFragmentManager().findFragmentByTag(TAG_TASK_FRAGMENT);
+        if (fragment == null) {
+            fragment = new AsyncTaskFragment();
+            fragment.translationsAdapter = new TranslationsAdapter(this);
+            fragment.imagesAdapter = new ImagesAdapter(this);
+            getFragmentManager().beginTransaction().add(fragment, TAG_TASK_FRAGMENT).commit();
+            startActivityForResult(new Intent(this, InputWordActivity.class), 0);
+        } else {
+            ((TextView) findViewById(R.id.set_name_text)).setText(fragment.cWord);
+            updateWord();
+        }
 
         ListView translations = (ListView) findViewById(R.id.translations);
-        translationsAdapter = new TranslationsAdapter(this);
-        translations.setAdapter(translationsAdapter);
+        translations.setAdapter(fragment.translationsAdapter);
 
         GridView images = (GridView) findViewById(R.id.images);
-        imagesAdapter = new ImagesAdapter(this);
-        images.setAdapter(imagesAdapter);
+        images.setAdapter(fragment.imagesAdapter);
+    }
 
-        startActivityForResult(new Intent(this, InputWordActivity.class), 0);
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SAVED_INSTANCE_TAB_NUM, ((TabHost) findViewById(R.id.tabHost)).getCurrentTab());
     }
 
     private void updateWord() {
@@ -55,17 +70,7 @@ public class RetrievedContentActivity extends Activity {
             findViewById(R.id.tabHost).setVisibility(View.INVISIBLE);
             return;
         }
-        if (translationLoaderTask != null)
-            translationLoaderTask.cancel(true);
-        if (imageLoaderTask != null)
-            imageLoaderTask.cancel(true);
-        translationsAdapter.reset();
-        imagesAdapter.reset();
-
-        translationLoaderTask = new TranslationLoaderTask(translationsAdapter);
-        imageLoaderTask = new ImageLoaderTask(this, imagesAdapter);
-        translationLoaderTask.execute(word);
-        imageLoaderTask.execute(word);
+        fragment.setWord(word);
         findViewById(R.id.tabHost).setVisibility(View.VISIBLE);
     }
 
