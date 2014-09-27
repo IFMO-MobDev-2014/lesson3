@@ -21,9 +21,10 @@ public class ImageAdapter extends ArrayAdapter{
         private ImageView imageView;
     }
 
-    public ImageAdapter(Context context, ArrayList<ImageItem> items) {
+    public ImageAdapter(Context context, ArrayList<ImageItem> items,
+                        IImagesProvider provider) {
         super(context, 0, items);
-        provider = new FakeImagesProvider(context);
+        this.provider = provider;
         mItems = items;
     }
 

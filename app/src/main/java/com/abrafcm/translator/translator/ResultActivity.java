@@ -49,7 +49,7 @@ public class ResultActivity extends Activity {
         if (mItems == null) {
             mGridView.setAdapter(null);
         } else {
-            mGridView.setAdapter(new ImageAdapter(this, mItems));
+            mGridView.setAdapter(new ImageAdapter(this, mItems, mImagesProvider));
         }
     }
 
