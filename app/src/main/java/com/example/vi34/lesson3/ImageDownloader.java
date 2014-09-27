@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,7 +27,8 @@ public class ImageDownloader {
         new DownloadImageTask().execute(query);
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Integer, Bitmap[]> {
+    private class DownloadImageTask extends AsyncTask<String, Bitmap, Bitmap[]> {
+        private int done = 0;
 
         protected Bitmap[] doInBackground(String... query) {
             Bitmap[] bmp = new Bitmap[10];
@@ -39,11 +39,10 @@ public class ImageDownloader {
             JSONArray resultArray;
             String[] imageLinks = new String[10];
             InputStream input;
-            int done = 0;
 
             try {
-                // need modify query (check for spaces, and prohibited symbols)
-                query[0] = URLEncoder.encode(query[0], "UTF-8"); // I think here are some problems with correct encoding
+                // need to modify query (check for spaces, and prohibited symbols)
+                query[0] = URLEncoder.encode(query[0], "UTF-8");
 
             } catch (Exception e) {
                 Log.e("ASYNC", "encode query problems");
@@ -79,7 +78,9 @@ public class ImageDownloader {
 
                                 input = connection.getInputStream();
                                 bmp[done] = BitmapFactory.decodeStream(input);
+                                publishProgress(bmp[done]);
                                 done++;
+
 
                             } catch (IOException ie) {
                                 Log.e("Error", "Connection problems");
@@ -95,6 +96,12 @@ public class ImageDownloader {
 
                 }
             return bmp;
+        }
+
+        @Override
+        protected void onProgressUpdate(Bitmap... values) {
+            SecondActivity.imageView[done].setImageBitmap(values[0]);
+            SecondActivity.imageView[done].invalidate();
         }
 
         protected void onPostExecute(Bitmap[] result) {
