@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import ru.ifmo.mobdev.translator.models.Picture;
+
 /**
  * Created by sugakandrey on 19.09.14.
  */
@@ -22,8 +24,8 @@ public class ImageGridAdapter extends BaseAdapter {
         this.context = context;
     }
 
-    public void addPicture(Drawable pic) {
-        pictures.add(pic);
+    public void addPicture(Picture picture) {
+        pictures.add(picture.getDrawable());
         notifyDataSetChanged();
     }
 
