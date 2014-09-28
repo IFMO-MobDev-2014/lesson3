@@ -37,7 +37,8 @@
                 <GridView
                     android:id="@+id/images"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:numColumns="@integer/num_columns" />
             </FrameLayout>
         </LinearLayout>
     </TabHost>

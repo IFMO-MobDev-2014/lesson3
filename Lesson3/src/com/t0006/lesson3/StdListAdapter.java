@@ -1,6 +1,5 @@
 package com.t0006.lesson3;
 
-import android.app.Fragment;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import java.util.List;
  * Created by dimatomp on 27.09.14.
  */
 public abstract class StdListAdapter<T> implements ListAdapter {
-    private final Fragment fragment;
+    private final AsyncTaskFragment fragment;
     protected boolean doneLoading = true;
     Collection<DataSetObserver> observers = new LinkedList<>();
     final Runnable changeNotifier = new Runnable() {
@@ -26,14 +25,18 @@ public abstract class StdListAdapter<T> implements ListAdapter {
                 observer.onChanged();
         }
     };
-    List<T> items = new ArrayList<>();
+    private List<T> items = new ArrayList<>();
 
-    public StdListAdapter(Fragment fragment) {
+    public StdListAdapter(AsyncTaskFragment fragment) {
         this.fragment = fragment;
     }
 
     protected LayoutInflater getLayoutInflater() {
         return fragment.getActivity().getLayoutInflater();
+    }
+
+    public AsyncTaskFragment getFragment() {
+        return fragment;
     }
 
     public void notifyDataSetChanged() {

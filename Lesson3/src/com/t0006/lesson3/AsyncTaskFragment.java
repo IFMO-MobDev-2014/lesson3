@@ -3,6 +3,7 @@ package com.t0006.lesson3;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.Collection;
@@ -11,7 +12,7 @@ import java.util.LinkedList;
 /**
  * Created by dimatomp on 27.09.14.
  */
-public class AsyncTaskFragment extends Fragment {
+public class AsyncTaskFragment extends Fragment implements View.OnClickListener {
     /*package local*/ TranslationLoaderTask translationLoaderTask;
     /*package local*/ ImageLoaderTask imageLoaderTask;
     /*package local*/ TranslationsAdapter translationsAdapter = new TranslationsAdapter(this);
@@ -26,6 +27,12 @@ public class AsyncTaskFragment extends Fragment {
         setRetainInstance(true);
     }
 
+    public void onClick(View view) {
+        imagesAdapter.moreContent();
+        imageLoaderTask = new ImageLoaderTask(this, imagesAdapter);
+        imageLoaderTask.execute(cWord);
+    }
+
     public void setWord(String newWord) {
         if (newWord.equals(cWord))
             return;
@@ -38,9 +45,8 @@ public class AsyncTaskFragment extends Fragment {
         imagesAdapter.reset();
 
         translationLoaderTask = new TranslationLoaderTask(this, translationsAdapter);
-        imageLoaderTask = new ImageLoaderTask(this, imagesAdapter);
         translationLoaderTask.execute(newWord);
-        imageLoaderTask.execute(newWord);
+        onClick(null);
     }
 
     public void showMessage(int res) {
