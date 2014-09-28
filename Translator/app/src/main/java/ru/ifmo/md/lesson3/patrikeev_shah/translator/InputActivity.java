@@ -5,28 +5,40 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-
+import java.util.concurrent.ExecutionException;
 
 public class InputActivity extends Activity {
 
-    String wordToTranslate;
-    Button translateButton;
-    EditText wordField;
-    Intent searchIntent;
+    private EditText wordField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
-        translateButton = (Button) findViewById(R.id.translateButton);
         wordField = (EditText) findViewById(R.id.editText);
     }
 
     public void translateClicked(View view) {
-        wordToTranslate = wordField.getText().toString();
+        String wordToTranslate = wordField.getText().toString();
         Log.d("Word", "entered " + wordToTranslate);
-//        searchIntent = new Intent(this, ResultActivity.class);
+        String translation = getTranslation(wordToTranslate);
+        Intent resultScreenIntent = new Intent(this, ResultActivity.class);
+        resultScreenIntent.putExtra(getPackageName() + ".initialWord", wordToTranslate);
+        resultScreenIntent.putExtra(getPackageName() + ".translatedWord", translation);
+        startActivity(resultScreenIntent);
     }
+
+    private String getTranslation(String wordToTranslate) {
+        TranslationReceiver translationReceiver = new TranslationReceiver();
+        translationReceiver.execute(wordToTranslate);
+        String result = null;
+        try {
+            result = translationReceiver.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }
