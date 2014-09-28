@@ -21,6 +21,7 @@
         <activity
             android:name=".ResultActivity"
             android:label="@string/title_activity_result"
+            android:configChanges="orientation|screenSize"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -29,6 +30,7 @@
         <activity
             android:name=".FullImageActivity"
             android:label="@string/title_activity_result"
+            android:configChanges="orientation|screenSize"
             android:parentActivityName=".ResultActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
