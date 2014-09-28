@@ -8,4 +8,6 @@
     <string name="word_prompt">Your word</string>
     <string name="input_heading">Specify your word&#8230;</string>
     <string name="change_word">Change word</string>
+    <string name="error_translate_api">Error connecting to server</string>
+    <string name="error_internet_connection">Error connecting to internet</string>
 </resources>

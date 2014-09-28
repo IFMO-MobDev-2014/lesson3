@@ -41,7 +41,7 @@ public class TranslationLoaderTask extends AsyncTask<String, WordTranslation, Vo
             case 402:
             case 403:
             case 404:
-                //TODO: throw toast
+                fragment.showMessage(R.string.error_translate_api);
                 return null;
             case 200:
                 JSONArray textArray = translateJSON.getJSONArray(JSON_TEXT);
@@ -81,6 +81,7 @@ public class TranslationLoaderTask extends AsyncTask<String, WordTranslation, Vo
             return buffer.toString();
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error reading stream");
+            fragment.showMessage(R.string.error_internet_connection);
             return null;
         } finally {
             if (urlConnection != null) {
@@ -102,6 +103,9 @@ public class TranslationLoaderTask extends AsyncTask<String, WordTranslation, Vo
         final String API_KEY_PARAM = "key";
         Uri builtUri = Uri.parse(DETECT_BASE_URL).buildUpon().appendQueryParameter(API_KEY_PARAM, API_KEY).appendQueryParameter(TEXT_PARAM, text).build();
         String detectJSONString = fetchText(builtUri);
+        if (detectJSONString == null) {
+            return null;
+        }
         try {
             JSONObject detectJSON = new JSONObject(detectJSONString);
             return detectJSON.getString("lang");
@@ -115,6 +119,9 @@ public class TranslationLoaderTask extends AsyncTask<String, WordTranslation, Vo
     @Override
     protected Void doInBackground(String... params) {
         String sourceLanguage = detectLanguage(params[0]);
+        if (sourceLanguage == null) {
+            return null;
+        }
         publishProgress(new WordTranslation(sourceLanguage, params[0]));
         for (String language : languages) {
             if (language.equals(sourceLanguage)) {
@@ -126,6 +133,10 @@ public class TranslationLoaderTask extends AsyncTask<String, WordTranslation, Vo
             final String API_KEY_PARAM = "key";
             Uri builtUri = Uri.parse(TRANSLATE_BASE_URL).buildUpon().appendQueryParameter(API_KEY_PARAM, API_KEY).appendQueryParameter(TEXT_PARAM, params[0]).appendQueryParameter(LANG_PARAM, language).build();
             String translateJSONString = fetchText(builtUri);
+
+            if (translateJSONString == null) {
+                break;
+            }
 
             try {
                 publishProgress(new WordTranslation(language, getTranslateFromJSON(translateJSONString)));
