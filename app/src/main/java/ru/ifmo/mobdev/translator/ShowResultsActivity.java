@@ -2,21 +2,23 @@ package ru.ifmo.mobdev.translator;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.widget.GridView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * Created by sugakandrey on 19.09.14.
  */
 public class ShowResultsActivity extends Activity {
-    Button returnButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_secondary);
+        setContentView(R.layout.show_results_activity);
         final Intent caller = getIntent();
         final TextView translationField = (TextView) findViewById(R.id.translationField);
         String translation = caller.getStringExtra(MainActivity.TRANSLATED_INPUT);
@@ -25,12 +27,23 @@ public class ShowResultsActivity extends Activity {
         } else {
             translationField.setText(caller.getStringExtra(MainActivity.TRANSLATED_INPUT));
         }
-        returnButton = (Button) findViewById(R.id.returnButton);
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        final Resources resources = getResources();
+        ArrayList<Drawable> pics = new ArrayList<Drawable>(){{
+            add(resources.getDrawable(R.drawable.pic1));
+            add(resources.getDrawable(R.drawable.pic2));
+            add(resources.getDrawable(R.drawable.pic3));
+            add(resources.getDrawable(R.drawable.pic4));
+            add(resources.getDrawable(R.drawable.pic5));
+            add(resources.getDrawable(R.drawable.pic6));
+        }};
+        GridView view = (GridView) findViewById(R.id.picsGv);
+        ImageGridAdapter adapter = new ImageGridAdapter(this);
+        view.setAdapter(adapter);
+        adapter.addPicture(pics.get(0));
+        adapter.addPicture(pics.get(1));
+        adapter.addPicture(pics.get(2));
+        adapter.addPicture(pics.get(3));
+        adapter.addPicture(pics.get(4));
+        adapter.addPicture(pics.get(5));
     }
 }
