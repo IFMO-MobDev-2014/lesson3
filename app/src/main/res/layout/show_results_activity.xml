@@ -23,6 +23,7 @@
         android:verticalSpacing="20dp"
         android:horizontalSpacing="15dp"
         android:stretchMode="columnWidth"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:clickable="true"/>
 
 </RelativeLayout>

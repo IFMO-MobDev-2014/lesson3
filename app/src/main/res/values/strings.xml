@@ -8,5 +8,6 @@
     <string name="query_hint">Введите слово</string>
     <string name="translationError">An error occurred during translation.</string>
     <string name="welcome">Welcome back!</string>
+    <string name="fullscreen">fullscreen</string>
 
 </resources>

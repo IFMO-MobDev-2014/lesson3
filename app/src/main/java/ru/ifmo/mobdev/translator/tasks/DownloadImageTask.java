@@ -1,5 +1,7 @@
 package ru.ifmo.mobdev.translator.tasks;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;

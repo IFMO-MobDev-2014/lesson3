@@ -27,11 +27,7 @@ public class TranslateWordTask extends AsyncTask<String, Void, String> {
     private static final String key = "trnsl.1.1.20140926T123039Z.ac6cd94cc722d" +
             "474.ce67e9d60a3a9144cee56c5eea5f4c1f2d4fdfbe";
 
-<<<<<<< HEAD:app/src/main/java/ru/ifmo/mobdev/translator/Translator.java
-    public Translator(MainActivity resultScreen) {
-=======
     public TranslateWordTask(MainActivity resultScreen) {
->>>>>>> 4a7abc1bd4e5c7c0a88f0b9c55831d56610d469f:app/src/main/java/ru/ifmo/mobdev/translator/tasks/TranslateWordTask.java
         this.mainScreen = resultScreen;
     }
 
@@ -41,10 +37,6 @@ public class TranslateWordTask extends AsyncTask<String, Void, String> {
                 "&lang=ru" + "&format=plain" + "&options=1";
         HttpClient httpClient = new DefaultHttpClient();
         HttpResponse response;
-<<<<<<< HEAD:app/src/main/java/ru/ifmo/mobdev/translator/Translator.java
-        String responseString;
-=======
->>>>>>> 4a7abc1bd4e5c7c0a88f0b9c55831d56610d469f:app/src/main/java/ru/ifmo/mobdev/translator/tasks/TranslateWordTask.java
         String translation = null;
         try {
             response = httpClient.execute(new HttpGet(request));

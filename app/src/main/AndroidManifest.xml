@@ -21,6 +21,9 @@
             android:name=".activities.ShowResultsActivity"
             android:label="@string/result"
             />
+
+        <activity android:name=".activities.LoadFullscreenActivity"
+            android:label="@string/fullscreen"/>
     </application>
 
 </manifest>

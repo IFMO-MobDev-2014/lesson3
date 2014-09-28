@@ -1,5 +1,6 @@
 package ru.ifmo.mobdev.translator.models;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 /**

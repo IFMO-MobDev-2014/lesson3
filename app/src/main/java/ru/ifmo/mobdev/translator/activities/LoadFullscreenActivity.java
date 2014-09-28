@@ -1,11 +1,8 @@
-package ru.ifmo.mobdev.translator;
+package ru.ifmo.mobdev.translator.activities;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,36 +12,36 @@ import android.widget.ImageView;
 import java.io.IOException;
 import java.net.URL;
 
+import ru.ifmo.mobdev.translator.R;
+
 /**
  * Created by sugakandrey on 19.09.14.
  */
 public class LoadFullscreenActivity extends Activity {
-    private final ImageView imageView = (ImageView) findViewById(R.id.fullscreenImage);
-    private URL link;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fullscreen_activity);
-        Bundle extras = getIntent().getExtras();
-        Bitmap picture = (Bitmap) extras.get("");
-        link = (URL) extras.get("");
-        imageView.setImageBitmap(picture);
+        imageView = (ImageView) findViewById(R.id.fullscreenImage);
+        final Bundle extras = getIntent().getExtras();
+        final URL link = (URL) extras.get(ShowResultsActivity.FULLSCREEN_LINK);
         if (link != null)
-            new FullScreenLoader().execute();
+            new FullScreenLoader().execute(link);
     }
 
     public void goBack(View view) {
         finish();
     }
 
-    private class FullScreenLoader extends AsyncTask<Void, Void, Bitmap> {
+    private class FullScreenLoader extends AsyncTask<URL, Void, Bitmap> {
 
         @Override
-        protected Bitmap doInBackground(Void... voids) {
+        protected Bitmap doInBackground(URL... urls) {
             Bitmap picture = null;
             try {
-                picture = BitmapFactory.decodeStream(link.openStream());
+                picture = BitmapFactory.decodeStream(urls[0].openStream());
             } catch (IOException e) {
                 Log.e("Error while loading fullscreen image", e.getMessage());
             }
