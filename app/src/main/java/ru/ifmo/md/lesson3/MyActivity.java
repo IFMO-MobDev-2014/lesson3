@@ -11,33 +11,46 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MyActivity extends Activity {
     ImageView animView;
     Button back;
     TextView eng;
     TextView rus;
+    EditText input;
+    Translator translate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         animView = (ImageView)findViewById(R.id.imageView2);
-        Button translator = (Button)findViewById(R.id.button);
+        final Button translator = (Button)findViewById(R.id.button);
         back = (Button)findViewById(R.id.button2);
         eng = (TextView)findViewById(R.id.textView);
         rus = (TextView)findViewById(R.id.textView5);
+        input = (EditText) findViewById(R.id.editText);
         final Animation falling = AnimationUtils.loadAnimation(this, R.anim.falling);
         final Animation rising = AnimationUtils.loadAnimation(this, R.anim.rising);
         translator.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View view) {
+                eng.setText(input.getText());
+
+                String word = input.getText().toString();
+                translate = new Translator(word);
+                rus.setText(translate.doInBackground());
+
                 animView.startAnimation(falling);
                 back.startAnimation(falling);
                 eng.startAnimation(falling);
                 rus.startAnimation(falling);
+
                 animView.setVisibility(View.VISIBLE);
                 back.setVisibility(View.VISIBLE);
                 eng.setVisibility(View.VISIBLE);
@@ -51,6 +64,7 @@ public class MyActivity extends Activity {
                 back.startAnimation(rising);
                 eng.startAnimation(rising);
                 rus.startAnimation(rising);
+
                 animView.setVisibility(View.INVISIBLE);
                 back.setVisibility(View.INVISIBLE);
                 eng.setVisibility(View.INVISIBLE);
