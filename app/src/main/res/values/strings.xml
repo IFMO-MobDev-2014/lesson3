@@ -9,5 +9,6 @@
     <string name="loading">Loading</string>
     <string name="loading_trns">Looking up the translation</string>
     <string name="enter_query">Enter your query (RU or ENG)</string>
+    <string name="translation_query_example">For example, "beef"</string>
 
 </resources>

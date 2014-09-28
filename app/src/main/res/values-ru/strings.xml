@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Lesson3</string>
+    <string name="translate">Перевести</string>
+    <string name="title_activity_result">Результат</string>
+    <string name="hello_world">Привет, мир!</string>
+    <string name="action_settings">Настройки</string>
+    <string name="loading">Загрузка</string>
+    <string name="loading_trns">Ищем перевод</string>
+    <string name="enter_query">Введите ваш запрос (RUS или ENG)</string>
+    <string name="translation_query_example">Например, "дерево"</string>
+
+</resources>

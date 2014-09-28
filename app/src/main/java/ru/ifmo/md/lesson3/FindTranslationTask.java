@@ -1,6 +1,7 @@
 package ru.ifmo.md.lesson3;
 
 import android.os.AsyncTask;
+import static ru.ifmo.md.lesson3.Translator.TranslateLanguage.*;
 
 /**
  * @author volhovm
@@ -18,8 +19,8 @@ public class FindTranslationTask extends AsyncTask<String, Void, String> {
         String input = strings[0];
         Translator translator;
         if (input.matches("[А-я\\s\\d]+"))
-            translator = new Translator(Translator.TranslateDirection.RussianToEnglish);
-        else translator = new Translator(Translator.TranslateDirection.EnglishToRussian);
+            translator = new Translator(Russian, English);
+        else translator = new Translator(English, Russian);
         return translator.translate(input);
     }
 

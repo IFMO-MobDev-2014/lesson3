@@ -1,6 +1,7 @@
 package ru.ifmo.md.lesson3;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,23 +18,29 @@ import java.io.InputStream;
  */
 
 public class FullImageActivity extends Activity {
+    private ProgressDialog progressDialog;
     private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        intent = getIntent();
-        String url = intent.getStringExtra(DoubleImageAdapter.FULL_PICTURE);
         setContentView(R.layout.fullscreen_picture);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.show();
+        intent = getIntent();
         ImageView mImageView = (ImageView) findViewById(R.id.imageView);
-        new SimpleDownloadImageTask(mImageView).execute(url);
+        String url = intent.getStringExtra(DoubleImageAdapter.FULL_PICTURE);
+        new SimpleDownloadImageTask(mImageView, this).execute(url);
     }
 
     private class SimpleDownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        private FullImageActivity parentActivity;
         ImageView bmImage;
 
-        public SimpleDownloadImageTask(ImageView bmImage) {
+        public SimpleDownloadImageTask(ImageView bmImage, FullImageActivity parentActivity) {
             this.bmImage = bmImage;
+            this.parentActivity = parentActivity;
         }
 
         protected Bitmap doInBackground(String... urls) {
@@ -43,13 +50,14 @@ public class FullImageActivity extends Activity {
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 mIcon11 = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
-                Log.e("Error", e.getMessage());
+                Log.e("Error while downloading image", e.getMessage());
                 e.printStackTrace();
             }
             return mIcon11;
         }
 
         protected void onPostExecute(Bitmap result) {
+            parentActivity.progressDialog.dismiss();
             bmImage.setImageBitmap(result);
         }
     }

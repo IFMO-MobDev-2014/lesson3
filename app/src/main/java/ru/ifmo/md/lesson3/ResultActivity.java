@@ -2,6 +2,7 @@ package ru.ifmo.md.lesson3;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.GridView;
@@ -11,7 +12,6 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class ResultActivity extends Activity {
-
     TextView textView;
     GridView gridView;
     DoubleImageAdapter adapter;
@@ -39,9 +39,8 @@ public class ResultActivity extends Activity {
     protected void onFullRequest(String url) {
         Intent intent = new Intent(this, FullImageActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString(DoubleImageAdapter.FULL_PICTURE, url.toString());
+        bundle.putString(DoubleImageAdapter.FULL_PICTURE, url);
         intent.putExtras(bundle);
-//        setResult(Activity.RESULT_OK, intent);
         startActivity(intent);
     }
 }

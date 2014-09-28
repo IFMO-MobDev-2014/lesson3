@@ -17,32 +17,42 @@ import java.net.URLEncoder;
 
 @SuppressWarnings("UnusedDeclaration")
 public class Translator {
-    public static enum TranslateDirection { //TODO Запилить языки по одной штуке, а конструктор транслятора сделать от пары
-        RussianToEnglish("ru-en"),
-        EnglishToRussian("en-ru");
+    public class TranslateDirection {
+        public TranslateDirection(TranslateLanguage from, TranslateLanguage to) {
+            this.from = from;
+            this.to = to;
+        }
+
+        TranslateLanguage from, to;
+        private String lang() { return from.lang + "-" + to.lang; }
+    }
+
+    public static enum TranslateLanguage {
+        Russian("ru"),
+        English("en");
+        //and more if needed
 
         private String lang;
-
-        TranslateDirection(String lang) {
+        TranslateLanguage(String lang) {
             this.lang = lang;
         }
     }
 
     private final String urlTemplate = "https://translate.yandex.net/api/v1.5/tr/translate?key=%s&lang=%s&text=%s";
     private final String key = "trnsl.1.1.20140924T160000Z.13a5048fefdf6ede.90e14a1a1fb4eb21cb6ffad6e8cd4b1bf0051860";
-    private TranslateDirection direction = TranslateDirection.EnglishToRussian; // let it be default
+    private TranslateDirection direction;
     private String urlString;
 
     public Translator() {
     }
 
-    public Translator(TranslateDirection direction) {
-        this.direction = direction;
+    public Translator(TranslateLanguage from, TranslateLanguage to) {
+        this.direction = new TranslateDirection(from, to);
     }
 
     public String translate(String input) {
         try {
-            urlString = String.format(urlTemplate, key, direction.lang, URLEncoder.encode(input, "UTF-8"));
+            urlString = String.format(urlTemplate, key, direction.lang(), URLEncoder.encode(input, "UTF-8"));
             URL url = new URL(urlString);
             URLConnection conn = url.openConnection();
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
