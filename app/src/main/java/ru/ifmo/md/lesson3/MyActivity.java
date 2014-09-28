@@ -44,7 +44,12 @@ public class MyActivity extends Activity {
 
                 String word = input.getText().toString();
                 translate = new Translator(word);
-                rus.setText(translate.doInBackground());
+                translate.execute();
+                try {
+                    rus.setText(translate.get());
+                } catch (Exception e) {
+                    rus.setText("Oops, something goes wrong");
+                }
 
                 animView.startAnimation(falling);
                 back.startAnimation(falling);
