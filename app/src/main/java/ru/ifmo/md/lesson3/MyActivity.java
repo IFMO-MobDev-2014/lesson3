@@ -1,42 +1,44 @@
 package ru.ifmo.md.lesson3;
 
-import ru.ifmo.md.lesson3.WhirlView;
-
-
-
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-
+import android.widget.Button;
+import android.widget.EditText;
 
 public class MyActivity extends Activity {
 
-    private WhirlView whirlView;
-    public static boolean condition=true;
+    public static boolean condition = true;
+
+    public static String Strin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        whirlView = new WhirlView(this);
-        whirlView.setOnTouchListener(new View.OnTouchListener() {
+        setContentView(R.layout.layout);
+        findViewById(R.id.button).setOnTouchListener(new Button.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                condition=!condition;
+                EditText ed =(EditText) findViewById(R.id.editText);
+                Strin = ed.getText().toString();
+                Intent intent = new Intent(MyActivity.this, MyActivity_second1.class);
+                //intent.putExtra(Strin, Strin);
+                startActivity(intent);
                 return false;
             }
         });
-        setContentView(whirlView);
     }
 
-    @Override
+  /*  @Override
     public void onResume() {
         super.onResume();
-        whirlView.resume();
+        whirl.resume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        whirlView.pause();
-    }
+        whirl.pause();*/
 }

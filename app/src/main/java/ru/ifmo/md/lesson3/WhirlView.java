@@ -78,7 +78,7 @@ public class WhirlView extends SurfaceView implements Runnable {
     Bitmap bitmap = null;
 
     private void getPixels() {
-        bitmap = BitmapFactory.decodeFile((new File("/sdcard/Download/source.png")).getAbsolutePath());
+        bitmap = BitmapFactory.decodeFile((new File("/storage/sdcard0/Download/source.png")).getAbsolutePath());
         for (int i = 0; i < height; i++)
             for (int j = 0; j < width; j++) {
                 color = bitmap.getPixel(j, i);
