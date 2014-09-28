@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -65,22 +66,18 @@ public class ImageDownloader {
                         resultArray = json.getJSONObject("responseData").getJSONArray("results");
 
 
-                        for (int i = 0; i < 8; i++) {
+                        for (int i = 0; i < 8 && done < 10; i++) {
                             try {
-
                                 json = resultArray.getJSONObject(i);
                                 imageLinks[done] = json.getString("url");
                                 url = new URL(imageLinks[done]);
                                 connection = url.openConnection();
                                 connection.setDoInput(true);
-
                                 connection.connect();
-
                                 input = connection.getInputStream();
                                 bmp[done] = BitmapFactory.decodeStream(input);
-                                publishProgress(bmp[done]);
                                 done++;
-
+                                publishProgress(bmp[done - 1]);
 
                             } catch (IOException ie) {
                                 Log.e("Error", "Connection problems");
@@ -89,9 +86,15 @@ public class ImageDownloader {
                             }
 
                         }
-                    } catch (Exception e)
+                    } catch (MalformedURLException e)
                     {
-
+                        Log.e("Error", "URL EXCEPTION");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e("Error", "JSON Problems");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.e("Error", "Connection problems");
                     }
 
                 }
@@ -100,8 +103,8 @@ public class ImageDownloader {
 
         @Override
         protected void onProgressUpdate(Bitmap... values) {
-            SecondActivity.imageView[done].setImageBitmap(values[0]);
-            SecondActivity.imageView[done].invalidate();
+            int k = done - 1;
+            SecondActivity.imageView[k].setImageBitmap(values[0]);
         }
 
         protected void onPostExecute(Bitmap[] result) {
@@ -110,7 +113,6 @@ public class ImageDownloader {
             //---- Bad solution... fix it later
             for (int i = 0; i < 10; i++) {
                 SecondActivity.imageView[i].setImageBitmap(result[i]);
-                SecondActivity.imageView[i].invalidate();
             }
             //----
         }
