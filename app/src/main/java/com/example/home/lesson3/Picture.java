@@ -2,6 +2,7 @@ package com.example.home.lesson3;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
@@ -42,17 +43,17 @@ public class Picture extends Activity {
     CustomListViewAdapter adapter = null;
 
     public void addBitmap(Bitmap bmp) {
-        listView = (ListView) findViewById(R.id.listView);
-        if (adapter == null) {
+        if (listView.getAdapter() == null) {
             rowItems = new ArrayList<RowItem>();
             rowItems.add(new RowItem(bmp));
             adapter = new CustomListViewAdapter(this, R.layout.list_item, rowItems);
+            listView.setAdapter(adapter);
         } else {
-            adapter.add(new RowItem(bmp));
+            ((CustomListViewAdapter) listView.getAdapter()).add(new RowItem(bmp));
         }
-        listView.setAdapter(adapter);
     }
 
+    @Deprecated
     public void setListWiew(Bitmap[] bmps) {
         rowItems = new ArrayList<RowItem>();
         for (Bitmap bmp : bmps) {
@@ -87,6 +88,9 @@ public class Picture extends Activity {
         textView.setText(translation);
         textView = (TextView) findViewById(R.id.textView2);
         textView.setText(query);
+
+        listView = (ListView) findViewById(R.id.listView);
+
 
         new YandexTranslator(this).execute(query);
         new PicturesDownloader(this).execute(query);
