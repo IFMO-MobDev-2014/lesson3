@@ -37,7 +37,7 @@ public abstract class StdListAdapter<T> implements ListAdapter {
     }
 
     public void notifyDataSetChanged() {
-        if (!fragment.isDetached())
+        if (!fragment.isDetached() && fragment.getActivity() != null)
             fragment.getActivity().runOnUiThread(changeNotifier);
     }
 
