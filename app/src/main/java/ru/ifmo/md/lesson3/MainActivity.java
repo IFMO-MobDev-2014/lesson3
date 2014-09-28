@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
         new FindTranslationTask(this).execute(query);
     }
 
-    public void onTranslateResponce(String response) {
+    public void onTranslateResponse(String response) {
         intent.putExtra(TRANSLATOR_RESPONSE, response);
         progress.dismiss();
         startActivity(intent);

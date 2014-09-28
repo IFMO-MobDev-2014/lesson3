@@ -1,7 +1,10 @@
 package ru.ifmo.md.lesson3;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +18,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class ImageAdapter extends BaseAdapter {
-    private Context context;
+public class DoubleImageAdapter extends BaseAdapter {
+    static final String FULL_PICTURE = "fullPicture";
+    private ResultActivity context;
     private ArrayList<Drawable> pictures = new ArrayList<Drawable>();
+    private ArrayList<URL> fullURLs = new ArrayList<URL>();
 
-    public ImageAdapter(Context c) {
+    public DoubleImageAdapter(ResultActivity c) {
         context = c;
-
     }
 
     public int getCount() {
@@ -36,21 +40,27 @@ public class ImageAdapter extends BaseAdapter {
         return 0;
     }
 
-    public void add(Drawable picture) {
+    public void add(Drawable picture, URL url) {
+        fullURLs.add(url); // non thread safe
         pictures.add(picture);
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(context);
-            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+            imageView.setLayoutParams(new GridView.LayoutParams(230, 230)); // TODO Mate it relative somehow
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
         } else {
             imageView = (ImageView) convertView;
         }
-
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.onFullRequest(String.valueOf(fullURLs.get(position)));
+            }
+        });
         Drawable picture = pictures.get(position);
         imageView.setImageDrawable(picture);
         return imageView;

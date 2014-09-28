@@ -1,6 +1,5 @@
 package ru.ifmo.md.lesson3;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 
 /**
@@ -25,6 +24,6 @@ public class FindTranslationTask extends AsyncTask<String, Void, String> {
     }
 
     protected void onPostExecute(String result) {
-        activity.onTranslateResponce(result);
+        activity.onTranslateResponse(result);
     }
 }
