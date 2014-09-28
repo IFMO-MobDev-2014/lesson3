@@ -11,6 +11,10 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/**
+ * Created by Евгения on 28.09.2014.
+ */
+
 public class GsonGetter<TResult> {
 
     private Class<TResult> classObj;
