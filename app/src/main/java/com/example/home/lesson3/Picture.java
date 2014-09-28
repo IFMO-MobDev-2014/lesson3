@@ -43,9 +43,13 @@ public class Picture extends Activity {
 
     public void addBitmap(Bitmap bmp) {
         listView = (ListView) findViewById(R.id.listView);
-        if (adapter == null)
-            adapter = new CustomListViewAdapter(this, R.layout.list_item, null);
-        adapter.add(new RowItem(bmp));
+        if (adapter == null) {
+            rowItems = new ArrayList<RowItem>();
+            rowItems.add(new RowItem(bmp));
+            adapter = new CustomListViewAdapter(this, R.layout.list_item, rowItems);
+        } else {
+            adapter.add(new RowItem(bmp));
+        }
         listView.setAdapter(adapter);
     }
 
