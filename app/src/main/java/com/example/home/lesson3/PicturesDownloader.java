@@ -2,6 +2,7 @@ package com.example.home.lesson3;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Base64;
 
@@ -20,7 +21,7 @@ import java.net.URLConnection;
 /**
  * Created by Snopi on 27.09.2014.
  */
-public class PicturesDownloader extends AsyncTask<String, Void, Bitmap[]> {
+public class PicturesDownloader extends AsyncTask<String, Void, String[]> {
 
     private Picture picture;
 
@@ -48,15 +49,17 @@ public class PicturesDownloader extends AsyncTask<String, Void, Bitmap[]> {
     }
 
     @Override
-    protected void onPostExecute(Bitmap[] bitmaps) {
-        super.onPostExecute(bitmaps);
-        picture.setListWiew(bitmaps);
+    protected void onPostExecute(String[] strings) {
+        super.onPostExecute(strings);
+        for (String url : strings) {
+            new SingleImageDownloader().execute(url);
+        }
     }
 
     @Override
-    protected Bitmap[] doInBackground(String... strings) {
+    protected String[] doInBackground(String... strings) {
         int numOfPictures = 10;
-        Bitmap[] resImages = new Bitmap[numOfPictures];
+        String[] picUrls = new String[10];
         String bingUrl = "https://api.datamarket.azure.com/Bing/Search/Image?$format=json&$top=" +
                 numOfPictures + "&Query=%27" + strings[0].replaceAll(" ", "+") + "%27";
         byte[] apiKeyBytes = Base64.encode((":" + apiKey).getBytes(), Base64.DEFAULT);
@@ -67,10 +70,8 @@ public class PicturesDownloader extends AsyncTask<String, Void, Bitmap[]> {
             urlConnection.setRequestProperty("Authorization", "Basic " + apiEnc);
             JSONObject response = new JSONObject(readStream(urlConnection.getInputStream()));
             JSONArray results = response.getJSONObject("d").getJSONArray("results");
-            String picUrl;
             for (int i = 0; i < results.length(); i++) {
-                picUrl = results.getJSONObject(i).getJSONObject("Thumbnail").getString("MediaUrl");
-                resImages[i] = BitmapFactory.decodeStream((InputStream) new URL(picUrl).getContent());
+                picUrls[i] = results.getJSONObject(i).getJSONObject("Thumbnail").getString("MediaUrl");
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -79,6 +80,24 @@ public class PicturesDownloader extends AsyncTask<String, Void, Bitmap[]> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return resImages;
+        return picUrls;
+    }
+
+    private class SingleImageDownloader extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+            picture.addBitmap(bitmap);
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... strings) {
+            try {
+                return BitmapFactory.decodeStream((InputStream) new URL(strings[0]).getContent());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 }
