@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -18,7 +17,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * Thread-safe
  */
 public class ImageDownloader implements Closeable {
-    private final Map<String, Bitmap> cache = new HashMap<>();
+    private final Map<String, Bitmap> cache = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, ReadWriteLock> locks = new ConcurrentHashMap<>();
     private final ReadWriteLock closeLock = new ReentrantReadWriteLock();
     private boolean closed = false;
