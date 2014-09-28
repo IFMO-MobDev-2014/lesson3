@@ -34,7 +34,7 @@ public class Translator extends AsyncTask<String, Void, String>{
                 "&lang=ru" + "&format=plain" + "&options=1";
         HttpClient httpClient = new DefaultHttpClient();
         HttpResponse response;
-        String responseString = null;
+        String responseString;
         String translation = null;
         try {
             response = httpClient.execute(new HttpGet(request));
