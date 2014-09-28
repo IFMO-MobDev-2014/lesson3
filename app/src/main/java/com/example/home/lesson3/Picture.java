@@ -39,6 +39,14 @@ public class Picture extends Activity {
 
     ListView listView;
     List<RowItem> rowItems;
+    CustomListViewAdapter adapter = null;
+
+    public void addBitmap(Bitmap bmp) {
+        if (adapter == null)
+            adapter = new CustomListViewAdapter(this, R.layout.list_item, null);
+        adapter.add(new RowItem(bmp));
+        listView.setAdapter(adapter);
+    }
 
     public void setListWiew(Bitmap[] bmps) {
         rowItems = new ArrayList<RowItem>();
@@ -47,7 +55,7 @@ public class Picture extends Activity {
             rowItems.add(item);
         }
         listView = (ListView) findViewById(R.id.listView);
-        CustomListViewAdapter adapter = new CustomListViewAdapter(this,
+        adapter = new CustomListViewAdapter(this,
                 R.layout.list_item, rowItems);
         listView.setAdapter(adapter);
     }
