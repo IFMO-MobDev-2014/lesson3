@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -95,19 +96,25 @@ public class ResultActivity extends Activity {
         @Override
         protected String doInBackground(String... params) {
             try {
-                String word = params[0];
+                StringBuilder sb = new StringBuilder(params[0]);
+                for (int i = 1; i < params.length;++i){
+                    sb.append("+").append(params[i]);
+                }
+                String text = sb.toString();
 
-                URL requestUrl = new URL(API_URL + "key=" + API_KEY + "&text=" + word + "&lang=" + LANGUAGES);
+                URL requestUrl = new URL(API_URL + "key=" + API_KEY + "&text=" + text + "&lang=" + LANGUAGES);
 
                 HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
                 connection.connect();
+
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(connection.getInputStream()));
 
                 String returned = in.readLine();
                 JSONObject object = new JSONObject(returned);
-                JSONArray c = (JSONArray) object.get("text");
-                return c.getString(0);
+                JSONArray array = (JSONArray) object.get("text");
+
+                return array.join(" ").replaceAll("\"", "");
             } catch (Exception e) {
                 e.printStackTrace();
             }
