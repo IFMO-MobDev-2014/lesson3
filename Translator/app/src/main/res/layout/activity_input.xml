@@ -12,12 +12,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/editText"
         android:layout_gravity="center_horizontal"
-        android:text="Enter word to translate" />
+        android:hint="Enter word to translate" />
 
     <Button
         android:layout_width="189dp"
         android:layout_height="wrap_content"
         android:text="Translate"
         android:id="@+id/translateButton"
+        android:onClick="translateClicked"
         android:layout_gravity="center_horizontal" />
+
 </LinearLayout>
