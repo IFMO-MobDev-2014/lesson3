@@ -14,17 +14,14 @@ import java.util.ArrayList;
  * Created by Nikita Yaschenko on 27.09.14.
  */
 public class ImageAdapter extends ArrayAdapter{
-    private ArrayList<ImageItem> mItems;
-    private IImagesProvider provider;
+    private ArrayList<Bitmap> mItems;
 
     private static class ViewHolder {
         private ImageView imageView;
     }
 
-    public ImageAdapter(Context context, ArrayList<ImageItem> items,
-                        IImagesProvider provider) {
+    public ImageAdapter(Context context, ArrayList<Bitmap> items) {
         super(context, 0, items);
-        this.provider = provider;
         mItems = items;
     }
 
@@ -43,9 +40,8 @@ public class ImageAdapter extends ArrayAdapter{
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        ImageItem item = mItems.get(position);
-        if (item != null) {
-            Bitmap bitmap = provider.getImage(item.getUrl());
+        Bitmap bitmap = mItems.get(position);
+        if (bitmap != null) {
             viewHolder.imageView.setImageBitmap(bitmap);
         }
 

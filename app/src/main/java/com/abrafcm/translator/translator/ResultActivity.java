@@ -2,6 +2,9 @@ package com.abrafcm.translator.translator;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,12 +15,22 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -32,8 +45,7 @@ public class ResultActivity extends Activity {
 
     private GridView mGridView;
     private TextView mTranslationTextView;
-    private ArrayList<ImageItem> mItems = null;
-    private IImagesProvider mImagesProvider;
+    private ArrayList<Bitmap> mItems = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +57,19 @@ public class ResultActivity extends Activity {
 
         setupViews();
 
-        mImagesProvider = new FakeImagesProvider(this);
-        mItems = mImagesProvider.getItems(translateString);
-
         setupAdapter();
         mTranslationTextView.setText(translate(translateString));
+
+        ArrayList<String> urls = null;
+        try {
+            urls = new UrlsFetcher().execute(translateString).get();
+            mItems = new ImagesLoader().execute(urls).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        setupAdapter();
     }
 
     private String translate(String translateString){
@@ -79,7 +99,7 @@ public class ResultActivity extends Activity {
         if (mItems == null) {
             mGridView.setAdapter(null);
         } else {
-            mGridView.setAdapter(new ImageAdapter(this, mItems, mImagesProvider));
+            mGridView.setAdapter(new ImageAdapter(this, mItems));
         }
     }
 
@@ -96,6 +116,58 @@ public class ResultActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private class UrlsFetcher extends AsyncTask<String, Void, ArrayList<String>> {
+        private static final String API_KEY = "e4f23d12ecff2f809c62c1f68365f437";
+
+        @Override
+        protected ArrayList<String> doInBackground(String... params) {
+            ArrayList<String> ret = new ArrayList<String>();
+            HttpClient httpclient = new DefaultHttpClient();
+            String uri = Uri.parse("https://www.flickr.com/services/rest")
+                    .buildUpon()
+                    .appendQueryParameter("api_key", API_KEY)
+                    .appendQueryParameter("method", "flickr.photos.search")
+                    .appendQueryParameter("format", "json")
+                    .appendQueryParameter("text", params[0])
+                    .appendQueryParameter("per_page", "10")
+                    .build().toString();
+            String response = null;
+            try {
+                DefaultHttpClient httpClient = new DefaultHttpClient();
+                HttpGet httpGet = new HttpGet(uri);
+
+                HttpResponse httpResponse = httpClient.execute(httpGet);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                response = EntityUtils.toString(httpEntity);
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String jsonData = response.substring(response.indexOf('{'), response.length() - 1);
+            try {
+                JSONObject root = new JSONObject(jsonData);
+                JSONObject tmp = root.getJSONObject("photos");
+                JSONArray photos = tmp.getJSONArray("photo");
+                for (int i = 0; i < photos.length(); i++) {
+                    String id = photos.getJSONObject(i).getString("id");
+                    String server = photos.getJSONObject(i).getString("server");
+                    String secret = photos.getJSONObject(i).getString("secret");
+                    String farm = photos.getJSONObject(i).getString("farm");
+                    String url = String.format(
+                            "https://farm%s.staticflickr.com/%s/%s_%s_t.jpg",
+                            farm, server, id, secret
+                    );
+                    Log.d("TAG", url);
+                    ret.add(url);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return ret;
+        }
     }
 
     private class Translator extends AsyncTask<String, Void, Pair> {
@@ -141,6 +213,36 @@ public class ResultActivity extends Activity {
                 e.printStackTrace();
             }
             return new Pair(-1, "Check internet connection");
+        }
+    }
+
+    private class ImagesLoader extends AsyncTask<ArrayList<String>, Void, ArrayList<Bitmap>> {
+
+        @Override
+        protected ArrayList<Bitmap> doInBackground(ArrayList<String>... params) {
+            ArrayList<String> urls = params[0];
+            ArrayList<Bitmap> ret = new ArrayList<Bitmap>();
+            for (String tUrl : urls) {
+                URL url = null;
+                try {
+                    url = new URL(tUrl);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                if (url == null) {
+                    continue;
+                }
+                Bitmap bitmap = null;
+                try {
+                    bitmap = BitmapFactory.decodeStream(url.openStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (bitmap != null) {
+                    ret.add(bitmap);
+                }
+            }
+            return ret;
         }
     }
 }
