@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="/home/sultan/Documents/Year2/android/lesson3/Translator/app/build/intermediates/pre-dexed/debug/gson-2.3-a92c34d4f3cfd393645bd6682ca9ef15b0c7aedc.jar"
+        jar="/home/sultan/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3/5fc52c41ef0239d1093a1eb7c3697036183677ce/gson-2.3.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="5fc52c41ef0239d1093a1eb7c3697036183677ce"/>
+
+</pre-dex-items>
