@@ -3,10 +3,12 @@ package ru.ifmo.ctddev.soloveva.translator;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,12 +43,13 @@ public class MainActivity extends Activity {
             try {
                 BingImageSearchService service = new BingImageSearchService(ACCOUNT_KEY);
                 try {
-                    return service.search(query[0], 10, 0, 0);
+                    return service.search(query[0], 10);
                 } finally {
                     service.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e("TRNSLT", "Search failed", e);
+                Toast.makeText(MainActivity.this, R.string.error_no_internet, Toast.LENGTH_SHORT).show();
             }
             return null;
         }
@@ -54,8 +57,10 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(List<? extends ImageData> images) {
             ListView view = new ListView(MainActivity.this);
-            view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
-                    , ViewGroup.LayoutParams.MATCH_PARENT));
+            view.setLayoutParams(new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+            ));
             view.setAdapter(new ImagesAdapter(MainActivity.this, images));
             lytRoot.addView(view);
         }

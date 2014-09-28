@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Translator</string>
+    <string name="error_no_internet">No internet access.</string>
     <string name="edtInput_hint">What to translate?</string>
     <string name="btnTranslate_text">Translate</string>
 </resources>

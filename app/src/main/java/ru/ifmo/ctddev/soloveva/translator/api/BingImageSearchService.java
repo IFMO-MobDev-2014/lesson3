@@ -11,10 +11,10 @@ import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.util.EntityUtils;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -38,15 +38,11 @@ public class BingImageSearchService implements Closeable {
         this.authData = Base64.encodeToString((accountKey + ":" + accountKey).getBytes(), Base64.NO_WRAP);
     }
 
-    public List<BingImageData> search(String query, int limit, int preferredWidth, int preferredHeight) throws IOException {
+    public List<BingImageData> search(String query, int limit) throws IOException {
         HttpGet request = new HttpGet(MessageFormat.format(URI_FORMAT, Uri.encode(query), limit));
         request.setHeader("Authorization", "Basic " + authData);
         HttpResponse response = client.execute(request);
-
-        String data = EntityUtils.toString(response.getEntity());
-
-
-        JsonElement responseData = JSON_PARSER.parse(data);
+        JsonElement responseData = JSON_PARSER.parse(new InputStreamReader(response.getEntity().getContent()));
         JsonElement resultsJson = responseData.getAsJsonObject().get("d").getAsJsonObject().get("results");
         return GSON.fromJson(resultsJson, new TypeToken<List<BingImageData>>() {}.getType());
     }
