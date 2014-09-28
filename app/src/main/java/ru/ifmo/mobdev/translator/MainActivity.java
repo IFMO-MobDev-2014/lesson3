@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
         translateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new Translator(caller).execute();
+                new Translator(caller).execute(queryField.getText().toString());
             }
         });
     }
