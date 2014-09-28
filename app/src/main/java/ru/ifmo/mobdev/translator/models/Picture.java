@@ -16,7 +16,7 @@ public class Picture {
         this.name = name;
         this.author = author;
         this.url = url;
-        this.thumbnailUrl = url.replace("4.jpg", "2.jpg");
+        this.thumbnailUrl = url.replace("4.jpg", "3.jpg");
         drawable = null;
     }
 
