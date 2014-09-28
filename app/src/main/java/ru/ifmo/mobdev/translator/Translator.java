@@ -21,9 +21,10 @@ import java.io.IOException;
  */
 public class Translator extends AsyncTask<String, Void, String>{
     MainActivity mainScreen;
-    static final String address = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
-    static final String key = "trnsl.1.1.20140926T123039Z.ac6cd94cc722d" +
+    private static final String address = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
+    private static final String key = "trnsl.1.1.20140926T123039Z.ac6cd94cc722d" +
             "474.ce67e9d60a3a9144cee56c5eea5f4c1f2d4fdfbe";
+
     public Translator(MainActivity resultScreen) {
         this.mainScreen = resultScreen;
     }

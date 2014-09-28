@@ -27,7 +27,8 @@
         android:layout_centerVertical="true"
         android:hint="@string/query_hint"
         android:paddingBottom="15dp"
-        android:paddingTop="60dp" />
+        android:paddingTop="60dp"
+        android:maxLines="1"/>
 
     <Button
         android:id="@+id/translateButton"

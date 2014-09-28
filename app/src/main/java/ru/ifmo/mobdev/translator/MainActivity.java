@@ -7,18 +7,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+
+import java.util.ArrayList;
 
 /**
  * Created by sugakandrey on 19.09.14.
  */
 public class MainActivity extends Activity {
     static final String TRANSLATED_INPUT = "ru.ifmo.mobdev.translator.translation";
-    Button translateButton;
-    Intent intent;
-    EditText queryField;
-    MainActivity caller;
+    private Button translateButton;
+    private Intent intent;
+    private EditText queryField;
+    private MainActivity caller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
