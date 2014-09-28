@@ -5,29 +5,30 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SecondActivity extends Activity {
 
     public static ImageView[] imageView = new ImageView[10];
-    String translation;
+    public static String translation;
     String textToTranslate;
     public static Bitmap[] bmp = new Bitmap[10];
+    public static TextView russianText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         textToTranslate = getIntent().getStringExtra("Text to translate");
-        downloadImages(textToTranslate);
 
         setContentView(R.layout.secondscreen);
+        russianText = (TextView) findViewById(R.id.TextView2);
 
-        TextView russianText = (TextView) findViewById(R.id.TextView2);
-        // take a translation
-        translation = "Hello, world!!!";
-        russianText.setText(textToTranslate); // intent works
+        downloadTranslation(textToTranslate);
+        downloadImages(textToTranslate);
+
 
 
         //Ooh Max! It's too "Bydlo code"!
@@ -43,8 +44,8 @@ public class SecondActivity extends Activity {
         imageView[9] = (ImageView) findViewById(R.id.imageView11);
 
         Bitmap bitmap = null;
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.source);
-        imageView[0].setImageBitmap(bmp[0]);
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.loading);
+        imageView[0].setImageBitmap(bitmap);
 
         imageView[1].setImageBitmap(bitmap);
         imageView[2].setImageBitmap(bitmap);
@@ -64,6 +65,11 @@ public class SecondActivity extends Activity {
         ImageDownloader imageDownloader = new ImageDownloader();
         imageDownloader.search(query);
 
+    }
+
+    protected void downloadTranslation(String query) {
+        Translator translator = new Translator();
+        translator.execution(query);
     }
 
     /*
