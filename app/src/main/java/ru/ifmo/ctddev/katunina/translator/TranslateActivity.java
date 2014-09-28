@@ -71,7 +71,7 @@ public class TranslateActivity extends Activity {
             public void onComplete(GsonGetter<ResponseContainer> sender, ResponseContainer result) {
                 Intent intent = new Intent(TranslateActivity.this, MainActivity.class);
                 StringBuilder sb = new StringBuilder();
-                if (result.text!=null) {
+                if (result !=null && result.text!=null) {
                     for (String string : result.text) {
                         sb.append(string);
                         sb.append("\n");
