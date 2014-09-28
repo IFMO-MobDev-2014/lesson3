@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.activity_main);
         findViewsByIds();
         tvResult.setText(getIntent().getStringExtra(TranslateActivity.KEY_TO_SB));
         new SearchTask().execute(getIntent().getStringExtra(TranslateActivity.KEY_TO_WORD));

@@ -7,13 +7,12 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,38 +50,11 @@ public class ImagesAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            RelativeLayout layout = new RelativeLayout(context);
-            layout.setLayoutParams(new AbsListView.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            ));
+            convertView = LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);
             holder = new ViewHolder();
-            holder.imageView = new ImageView(context);
-            {
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-                holder.imageView.setLayoutParams(params);
-
-                holder.imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                holder.imageView.setAdjustViewBounds(true);
-            }
-            holder.progressBar = new ProgressBar(context, null, android.R.attr.progressBarStyleLarge);
-            {
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                );
-                params.addRule(RelativeLayout.CENTER_IN_PARENT);
-                holder.progressBar.setLayoutParams(params);
-            }
-            layout.addView(holder.imageView);
-            layout.addView(holder.progressBar);
-            layout.setTag(holder);
-            convertView = layout;
+            holder.imageView = (ImageView) convertView.findViewById(R.id.image_view);
+            holder.progressBar = (ProgressBar) convertView.findViewById(R.id.progress_bar);
+            convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
