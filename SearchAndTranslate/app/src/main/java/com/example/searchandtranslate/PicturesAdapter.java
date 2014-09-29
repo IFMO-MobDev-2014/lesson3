@@ -39,9 +39,8 @@ public class PicturesAdapter extends BaseAdapter {
         ImageView result;
         if (view == null) {
             result = new ImageView(context);
-            result.setLayoutParams(new GridView.LayoutParams(85, 85));
-            result.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            result.setPadding(8, 8, 8, 8);
+            result.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            result.setPadding(15, 15, 15, 15);
         } else {
             result = (ImageView) view;
         }

@@ -97,6 +97,9 @@ public class DataLoader {
             this.callback = callback;
         }
 
+        private static JSONObject searchResult = null;
+        private static String lastSearch = null;
+
         private static String streamToString(InputStream s) {
             Scanner scn = new Scanner(s);
             scn.useDelimiter("\\A");
@@ -110,33 +113,43 @@ public class DataLoader {
             Log.i("HTTP","Started loading");
 
             try {
-                URL target = new URL("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&imgsz=medium&q=" + URLEncoder.encode(query, "UTF-8"));
-                HttpURLConnection uc = (HttpURLConnection) target.openConnection();
-                uc.setConnectTimeout(1000);
-                uc.setReadTimeout(1000);
-                uc.connect();
-                JSONObject res = new JSONObject(streamToString(uc.getInputStream()));
-                uc.disconnect();
+                JSONObject res;
+                if(!query.equals(lastSearch)) {
+                    URL target = new URL("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&imgsz=medium&q=" + URLEncoder.encode(query, "UTF-8"));
+                    HttpURLConnection uc = (HttpURLConnection) target.openConnection();
+                    uc.setConnectTimeout(1000);
+                    uc.setReadTimeout(1000);
+                    uc.connect();
+
+                    res = new JSONObject(streamToString(uc.getInputStream()));
+                    uc.disconnect();
+
+                    lastSearch = query;
+                    searchResult = res;
+                } else
+                    res = searchResult;
                 JSONArray arr = res.getJSONObject("responseData").getJSONArray("results");
                 int j = 0;
                 if(arr.length() != 0) {
                     for(int i = 0; i < arr.length(); i++) {
                         String url = arr.getJSONObject(i).getString("url");
                         try {
-                            target = new URL(url);
-                            uc = (HttpURLConnection) target.openConnection();
+                            URL target = new URL(url);
+                            HttpURLConnection uc = (HttpURLConnection) target.openConnection();
                             uc.setConnectTimeout(1000);
                             uc.setReadTimeout(1000);
                             uc.connect();
                             result[j] = BitmapFactory.decodeStream(uc.getInputStream());
-                            if(result[j] != null)
-                                j++;
+                            if(result[j] != null) {
+                                break;
+                            }
+
                         } catch(IOException e) {
                             Log.e("HTTP", "IOE in pic", e);
                         }
                     }
                 }
-                target = new URL("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=" + Math.min(10 - j, 8) + "&start=8&imgsz=medium&q=" + URLEncoder.encode(query, "UTF-8"));
+                /*target = new URL("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=" + Math.min(10 - j, 8) + "&start=8&imgsz=medium&q=" + URLEncoder.encode(query, "UTF-8"));
                 uc = (HttpURLConnection) target.openConnection();
                 uc.setConnectTimeout(1000);
                 uc.setReadTimeout(1000);
@@ -160,7 +173,7 @@ public class DataLoader {
                             Log.e("HTTP", "IOE in pic 2", e);
                         }
                     }
-                }
+                }*/
             } catch(IOException e) {
                 Log.e("HTTP", "IOE in all", e);
             } catch(JSONException e) {

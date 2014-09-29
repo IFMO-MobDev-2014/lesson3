@@ -8,22 +8,23 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.List;
 
 
 public class OutputActivity extends ActionBarActivity {
 
 
     public static TextView text;
-    public static GridView grid;
+    public static ListView list;
     public static Context context;
     public String word = "asdfasd";
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(OutputActivity.this, InputActivity.class);
-        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -32,11 +33,11 @@ public class OutputActivity extends ActionBarActivity {
         setContentView(R.layout.output_layout);
         word = InputActivity.intent.getStringExtra("word");
         text = (TextView)findViewById(R.id.textView);
-        grid = (GridView)findViewById(R.id.gridView);
+        list = (ListView)findViewById(R.id.listView);
         context = this;
 
         DataLoader.asyncTranslate(word, new DataLoader.MyCallbackString());
-        OutputActivity.grid.setAdapter(new PicturesAdapter(context));
+        OutputActivity.list.setAdapter(new PicturesAdapter(context, word));
        // DataLoader.asyncLoadPictures(word, new DataLoader.MyCallbackPicture(context));
 
     }
