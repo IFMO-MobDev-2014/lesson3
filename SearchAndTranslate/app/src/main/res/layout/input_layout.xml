@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:background="@drawable/abc_textfield_search_default_holo_light"
+    android:baselineAligned="true">
+
+    <EditText
+        android:layout_width="294dp"
+        android:layout_height="25dp"
+        android:id="@+id/editText"
+        android:inputType="text"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:background="#170032a0" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="@string/abc_searchview_description_search"
+        android:id="@+id/button"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

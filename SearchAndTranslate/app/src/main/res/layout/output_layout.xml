@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:background="@drawable/abc_textfield_search_default_holo_light">
+
+    <TextView
+        android:layout_width="306dp"
+        android:layout_height="wrap_content"
+        android:text="@string/abc_searchview_description_search"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="25dp"
+        android:textAlignment="center"
+        style="@style/TextAppearance.AppCompat.SearchResult.Title"
+        android:background="#170032a0"
+        android:clickable="false"
+        android:height="25dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Base.SearchResult.Title"
+        android:textColor="#b3060658" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_gravity="center_horizontal"
+        style="@style/Widget.AppCompat.ListView.DropDown"
+        android:layout_marginTop="30dp"
+        android:headerDividersEnabled="false"
+        android:footerDividersEnabled="false"
+        android:divider="@drawable/abc_list_divider_holo_light"
+        android:drawSelectorOnTop="false"
+        android:visibility="visible" />
+
+</LinearLayout>

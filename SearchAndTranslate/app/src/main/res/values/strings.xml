@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SearchAndTranslate</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="toast_translate_error">Unable to load translation</string>
+    <string name="toast_pictures_error">Error while getting pictures</string>
+
+</resources>
