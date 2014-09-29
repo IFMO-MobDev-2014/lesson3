@@ -23,12 +23,12 @@ public class ResultActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
         Intent intent = getIntent();
-        new FindImagesTask(this, 50).execute(intent.getStringExtra(MainActivity.MAIN_QUERY));
+        new FindImagesTask(this, 10).execute(intent.getStringExtra(MainActivity.MAIN_QUERY));
         textView = (TextView) findViewById(R.id.textView);
         gridView = (GridView) findViewById(R.id.gridView);
         adapter = new DoubleImageAdapter(this);
         gridView.setAdapter(adapter);
-        adapter.setAll(50);
+        adapter.setAll(10);
         updateGridColumns();
         textView.setText(intent.getStringExtra(MainActivity.TRANSLATOR_RESPONSE));
     }
