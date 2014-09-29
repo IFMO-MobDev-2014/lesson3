@@ -61,13 +61,12 @@ public class Worker extends Activity {
                 InputStream in = new java.net.URL(url).openStream();
                 java.util.Scanner str = new java.util.Scanner(in).useDelimiter("\\A");
                 out = str.hasNext() ? str.next() : "";
-
             } catch (Exception e) {
                 return "No connection";
             }
-            return out;
+            int a = out.indexOf('[') + 2;
+            int b = out.indexOf(']') - 1;
+            return out.substring(a, b);
         }
     }
-
-
 }
