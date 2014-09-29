@@ -20,7 +20,7 @@ import java.util.Scanner;
 public class ImageLoader {
     private static final String key = "JLwThFmpOoYj9p7XTneZ41HUuO3jYoY8Wi3yNftMqfs";
     private static final String encodedKey = "Basic " + Base64.encodeToString((key + ":" + key).getBytes(), Base64.NO_WRAP);
-    private static final int COUNT_IMAGES = 5;
+    private static final int COUNT_IMAGES = 3;
 
     public static Drawable[] loadImage(String query) throws JSONException, IOException {
         URL url = new URL("https://api.datamarket.azure.com/Bing/Search/Image?$format=json&Query=%27" + query.replaceAll(" ", "%32") + "%27");
