@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.net.UnknownHostException;
+
 public class MainActivity extends Activity {
     // TODO Add history support
     ProgressDialog progress;
@@ -46,7 +48,10 @@ public class MainActivity extends Activity {
 
     public void onTranslateFail(Exception e) {
         progress.dismiss();
-        Toast toast = Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG);
+        Toast toast;
+        if (e instanceof UnknownHostException) {
+            toast = Toast.makeText(getApplicationContext(), resources.getString(R.string.bad_host_error), Toast.LENGTH_LONG);
+        } else toast = Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG);
         toast.show();
     }
 }

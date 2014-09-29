@@ -11,5 +11,6 @@
     <string name="enter_query">Enter your query (RU or ENG)</string>
     <string name="translation_query_example">For example, "beef"</string>
     <string name="fullscreen_image_at_fail">Fullscreen image has failed to load</string>
+    <string name="bad_host_error">Can\'t connect to host. Check your internet connection.</string>
 
 </resources>

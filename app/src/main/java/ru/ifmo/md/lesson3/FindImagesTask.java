@@ -1,7 +1,6 @@
 package ru.ifmo.md.lesson3;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.photos.Photo;
@@ -12,6 +11,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * @author volhovm
@@ -37,10 +37,11 @@ public class FindImagesTask extends AsyncTask<String, Void, ArrayList<URL[]>> {
         Flickr flickr = new Flickr(apiKey, apiSecret);
         SearchParameters parameters = new SearchParameters();
         parameters.setSafeSearch(Flickr.SAFETYLEVEL_SAFE);
+        parameters.setTags(new String[]{strings[0]});
         parameters.setText(strings[0]);
         try {
             PhotoList plist = flickr.getPhotosInterface().search(parameters, number, 1);
-            for (int i = 0; i < number; i++) {
+            for (int i = 0; i < plist.size(); i++) {
                 Photo photo = plist.get(i);
                 list.add(new URL[]{
                         new URL("https://farm" + photo.getFarm()
@@ -52,6 +53,10 @@ public class FindImagesTask extends AsyncTask<String, Void, ArrayList<URL[]>> {
 
                 });
             }
+            HashSet<URL[]> set = new HashSet<URL[]>(); // duplicate removed
+            set.addAll(list);
+            list.clear();
+            list.addAll(set);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (FlickrException e) {

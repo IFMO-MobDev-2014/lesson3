@@ -11,5 +11,6 @@
     <string name="enter_query">Введите ваш запрос (RUS или ENG)</string>
     <string name="translation_query_example">Например, "дерево"</string>
     <string name="fullscreen_image_at_fail">Ошибка при загрузке картинки</string>
+    <string name="bad_host_error">Хост недоступен. Проверьте соединение с интернетом.</string>
 
 </resources>
