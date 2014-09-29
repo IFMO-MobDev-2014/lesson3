@@ -5,18 +5,40 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
 
-    <android.support.v4.view.ViewPager
-            android:id="@+id/newGalleryView"
+    <LinearLayout
+            android:id="@+id/linlaHeaderProgress"
             android:layout_width="fill_parent"
             android:layout_height="600dp"
-            android:layout_below="@+id/relative_headerBar"
-            >
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@color/grayDark"
+            android:visibility="gone" >
 
-    </android.support.v4.view.ViewPager>
+        <ProgressBar
+                android:id="@+id/pbHeaderProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+        </ProgressBar>
+    </LinearLayout>
+
+    <GridView
+            android:id="@+id/imageGrid"
+            android:layout_width="fill_parent"
+            android:layout_height="600dp"
+            android:listSelector="@android:color/transparent"
+            android:gravity="center"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"
+            android:background="@color/grayDark"/>
     <TextView android:layout_height="fill_parent"
               android:layout_width="fill_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text=""
-            android:id="@+id/textView" android:background="#8cffffff"/>
+            android:id="@+id/translation"
+            android:background="@color/grayLight"
+            android:gravity="center"
+            android:scrollbars = "vertical"
+            android:textColor="#FFFFFF"
+            android:textColorHighlight="#FFFFFF"/>
 
 </LinearLayout>
