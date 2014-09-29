@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ru.ifmo.md.lesson3.ResultActivity">
+
+    <TextView
+        android:text="Waiting for result..."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:layout_marginTop="29dp" android:textSize="28dp"
+        android:layout_alignParentTop="true" android:layout_centerHorizontal="true"/>
+    <GridView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numColumns="auto_fit"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            android:stretchMode="columnWidth"
+            android:gravity="center"
+            android:id="@+id/gridView"
+            android:layout_below="@+id/textView" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:layout_marginTop="30dp"
+            android:layout_alignParentBottom="true" android:clickable="false" android:fastScrollAlwaysVisible="false"
+            android:fastScrollEnabled="false" tools:listitem="@android:layout/simple_list_item_1"
+            android:layout_marginLeft="10dp" android:layout_marginRight="10dp" android:stackFromBottom="false"
+            android:smoothScrollbar="false"/>
+</RelativeLayout>
