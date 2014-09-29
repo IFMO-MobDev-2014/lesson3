@@ -1,57 +1,46 @@
 package ru.ifmo.translator;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.util.Arrays;
-
-import javax.net.ssl.HttpsURLConnection;
-
-
 /**
- * @author Marianna Bisyrina
+ * @author Zakhar Voit (zakharvoit@gmail.com)
  */
-public class GetTranslation extends AsyncTask <String, Void, String> {
+public class GetTranslation extends AsyncTask<String, Void, String> {
+    ResponseListener listener;
+    Context context;
+    ProgressDialog dialog;
+    Drawable[] images;
 
-    public String response;
+    public GetTranslation(Context context, ResponseListener listener) {
+        this.context = context;
+        this.listener = listener;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+        dialog = new ProgressDialog(context);
+        dialog.setMessage("Wait...");
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(true);
+        dialog.show();
+    }
 
     @Override
     protected String doInBackground(String... params) {
-        try {
-            HttpsURLConnection connection = ConnectionFactory.getHTTPS(Arrays.toString(params));
-            connection.disconnect();
-            BufferedInputStream in = new BufferedInputStream(connection.getInputStream());
-            response = readLine(in);
-            JSONObject json = new JSONObject(response);
-            response = json.getString("text");
-            response = response.substring(3, response.length() - 3);
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e){
-            e.printStackTrace();
-        }
-
-        return response;
+        images = ImageLoader.loadImage(params[0]);
+        return TranslationLoader.translate(params[0]);
     }
 
-    private StringBuilder out = new StringBuilder();
-    private String readLine(InputStream in) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
 
-        out.append(br.readLine());
-        br.close();
-        return out.toString();
+        listener.onResponse(s, images);
+        dialog.dismiss();
     }
 }
-
