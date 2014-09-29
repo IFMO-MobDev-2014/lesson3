@@ -22,7 +22,6 @@ public class ResultActivity extends Activity {
         GettingUrlsTask t2 = new GettingUrlsTask(this);
         t2.word = intent.getStringExtra("word");
         t2.execute();
-        new DownloadingImagesTask(this).execute();
     }
 
     public void setTranslatedText(String res) {

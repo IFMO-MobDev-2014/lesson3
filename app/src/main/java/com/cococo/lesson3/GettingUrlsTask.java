@@ -6,7 +6,6 @@ package com.cococo.lesson3;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -35,6 +34,7 @@ public class GettingUrlsTask extends AsyncTask<String, Void, List<String>> {
     @Override
     protected void onPostExecute(List<String> s) {
         ((ResultActivity) context).setUrls(s);
+        new DownloadingImagesTask(context, s).execute();
     }
 
     @Override
@@ -63,7 +63,7 @@ public class GettingUrlsTask extends AsyncTask<String, Void, List<String>> {
                 String id = s.getString("id");
                 String secret = s.getString("secret");
                 temp.add("http://farm" + farmid + ".staticflickr.com/" + serverid + "/" + id + "_" + secret + ".jpg");
-                Log.v("TEMP", temp.get(i));
+                // Log.v("TEMP", temp.get(i));
             }
         } catch (JSONException e) {
             e.printStackTrace();
