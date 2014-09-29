@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -53,7 +54,9 @@ public class DataLoader {
 
         public void run(Bitmap param) {
             adapter.setBitmap(index, param);
-            image_view.setImageBitmap(param);
+            ListView lv = (ListView) image_view.getParent();
+            if(lv != null)
+                lv.invalidateViews(); // probably not the best way to do it
         }
     }
 
@@ -100,6 +103,7 @@ public class DataLoader {
     private static class SearchQueryRunnable implements Runnable {
 
         private final String query;
+        private final static String bingApiKey = "a2VTQnZrTWJtSERLRERJMkFMd3F0Z3gvQnd1RkRvSzlKZFdpQUR4Y3N0VT06a2VTQnZrTWJtSERLRERJMkFMd3F0Z3gvQnd1RkRvSzlKZFdpQUR4Y3N0VT0=";
 
         public SearchQueryRunnable(String query) {
             this.query = query;
@@ -114,32 +118,19 @@ public class DataLoader {
 
             int j = 0;
             try {
-                URL target = new URL("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&imgsz=medium&q=" + URLEncoder.encode(query, "UTF-8"));
+                URL target = new URL("https://api.datamarket.azure.com/Bing/Search/Image?$format=json&$top=15&ImageFilters='Size:Medium'&Query=" + URLEncoder.encode("'" + query+ "'", "UTF-8"));
                 HttpURLConnection uc = (HttpURLConnection) target.openConnection();
-                uc.setConnectTimeout(1000);
-                uc.setReadTimeout(1000);
+                uc.setConnectTimeout(5000);
+                uc.setReadTimeout(5000);
+                uc.addRequestProperty("Authorization", "Basic "+bingApiKey);
                 uc.connect();
-                JSONObject res = new JSONObject(streamToString(uc.getInputStream()));
+                String s = streamToString(uc.getInputStream());
+                JSONObject res = new JSONObject(s);
                 uc.disconnect();
-                JSONArray arr = res.getJSONObject("responseData").getJSONArray("results");
+                JSONArray arr = res.getJSONObject("d").getJSONArray("results");
                 if(arr.length() != 0) {
-                    for(int i = 0; i < arr.length(); i++) {
-                        String url = arr.getJSONObject(i).getString("url");
-                        result[j] = new URL(url);
-                        j++;
-                    }
-                }
-                target = new URL("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=2&start=8&imgsz=medium&q=" + URLEncoder.encode(query, "UTF-8"));
-                uc = (HttpURLConnection) target.openConnection();
-                uc.setConnectTimeout(1000);
-                uc.setReadTimeout(1000);
-                uc.connect();
-                res = new JSONObject(streamToString(uc.getInputStream()));
-                uc.disconnect();
-                arr = res.getJSONObject("responseData").getJSONArray("results");
-                if(arr.length() != 0) {
-                    for(int i = 0; i < arr.length(); i++) {
-                        String url = arr.getJSONObject(i).getString("url");
+                    for(int i = 0; i < arr.length() && i < 10; i++) {
+                        String url = arr.getJSONObject(i).getString("MediaUrl");
                         result[j] = new URL(url);
                         j++;
                     }
