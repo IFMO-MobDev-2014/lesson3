@@ -2,6 +2,7 @@ package ru.ifmo.md.lesson3;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -70,17 +71,22 @@ public class MainActivity extends Activity {
         progress.show();
         String query = editText.getText().toString();
         intent.putExtra(MAIN_QUERY, query);
-        new FindTranslationTask(this).execute(query);
+        final FindTranslationTask findTranslationTask = new FindTranslationTask(this);
+        findTranslationTask.execute(query);
+        progress.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                findTranslationTask.cancel(true);
+            }
+        });
     }
 
     public void onTranslateResponse(String response) {
         intent.putExtra(TRANSLATOR_RESPONSE, response);
-        progress.dismiss();
         startActivity(intent);
     }
 
     public void onTranslateFail(Exception e) {
-        progress.dismiss();
         Toast toast;
         if (e instanceof UnknownHostException) {
             toast = Toast.makeText(getApplicationContext(), resources.getString(R.string.bad_host_error), Toast.LENGTH_LONG);
