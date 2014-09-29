@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.net.URL;
 import java.util.ArrayList;
 
+//TODO: add picture caching
 public class ResultActivity extends Activity {
     TextView textView;
     GridView gridView;

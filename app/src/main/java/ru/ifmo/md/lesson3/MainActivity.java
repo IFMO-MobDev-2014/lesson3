@@ -42,4 +42,8 @@ public class MainActivity extends Activity {
         progress.dismiss();
         startActivity(intent);
     }
+
+    public void onTranslateFail() {
+        //TODO: TODO TODO
+    }
 }
