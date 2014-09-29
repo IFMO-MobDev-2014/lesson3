@@ -32,6 +32,7 @@ public class FindImagesTask extends AsyncTask<String, Void, ArrayList<URL[]>> {
     }
 
     protected ArrayList<URL[]> doInBackground(String... strings) {
+        // TODO More accurate search
         ArrayList<URL[]> list = new ArrayList<URL[]>();
         Flickr flickr = new Flickr(apiKey, apiSecret);
         SearchParameters parameters = new SearchParameters();

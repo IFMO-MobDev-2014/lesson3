@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 
 public class MainActivity extends Activity {
-    // TODO add logging
+    // TODO Add history support
     ProgressDialog progress;
     public final static String TRANSLATOR_RESPONSE = "translatorResponse";
     public final static String MAIN_QUERY = "mainQuery";
@@ -44,6 +44,6 @@ public class MainActivity extends Activity {
     }
 
     public void onTranslateFail() {
-        //TODO: TODO TODO
+        //TODO translate fain dialog
     }
 }
