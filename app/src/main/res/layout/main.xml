@@ -17,11 +17,12 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="390dp"
+        android:layout_height="380dp"
         android:id="@+id/imageView"
         android:background="@drawable/backgr"
         android:layout_above="@+id/button3"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:scaleType="fitXY" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -38,7 +39,8 @@
         android:src="@drawable/window"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/textView5"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:scaleType="fitXY" />
 
     <Button
         android:layout_width="wrap_content"
