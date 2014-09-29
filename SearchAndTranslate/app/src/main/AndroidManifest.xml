@@ -21,7 +21,8 @@
         </activity>
         <activity
             android:name=".OutputActivity"
-            android:label="SearchAndTranslate">
+            android:label="SearchAndTranslate"
+            android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
     </application>
 

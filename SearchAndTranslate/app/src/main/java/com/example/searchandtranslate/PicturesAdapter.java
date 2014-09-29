@@ -12,19 +12,23 @@ import android.widget.ImageView;
  * Created by Яна on 26.09.2014.
  */
 public class PicturesAdapter extends BaseAdapter {
-    //private Bitmap[] bitmaps;
+    private Bitmap[] bitmaps = new Bitmap[10];
+    private boolean[] loadingState = new boolean[10];
 
     private Context context;
     private String word;
 
-    public PicturesAdapter(Context context, String word) {//} Bitmap[] bitmaps) {
+    public PicturesAdapter(Context context, String word) {
         this.context = context;
         this.word = word;
-      //  this.bitmaps = bitmaps;
     }
 
     public int getCount() {
         return 10;
+    }
+
+    public void setBitmap(int index, Bitmap bitmap) {
+        bitmaps[index] = bitmap;
     }
 
     public Object getItem(int position) {
@@ -44,7 +48,14 @@ public class PicturesAdapter extends BaseAdapter {
         } else {
             result = (ImageView) view;
         }
-        DataLoader.asyncLoadPictures(word, a, new DataLoader.MyCallbackPicture(context, result));
+
+        if(bitmaps[a] != null)
+            result.setImageBitmap(bitmaps[a]);
+        else if(!loadingState[a]) {
+            loadingState[a] = true;
+            DataLoader.asyncLoadPictures(word, a, new DataLoader.MyCallbackPicture(context, this, a, result));
+        }
+
         return result;
     }
 

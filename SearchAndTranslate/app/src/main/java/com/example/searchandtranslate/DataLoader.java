@@ -6,8 +6,8 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,7 +18,11 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by knah on 24.09.2014.
@@ -26,29 +30,34 @@ import java.util.Scanner;
 
 public class DataLoader {
 
-    public static class MyCallbackString implements MyCallback<String> {
-        public MyCallbackString(){}
+    public static class MyCallbackString extends MyCallback<String> {
+        public MyCallbackString(Context context){
+            super(context);
+        }
         public void run(String param) {
             OutputActivity.text.setText(param);
         }
     }
 
-    public static class MyCallbackPicture implements  MyCallback<Bitmap> {
-        Context context;
+    public static class MyCallbackPicture extends  MyCallback<Bitmap> {
         ImageView image_view;
+        PicturesAdapter adapter;
+        int index;
 
-        public MyCallbackPicture(Context context, ImageView image_view) {
+        public MyCallbackPicture(Context context, PicturesAdapter adapter, int index, ImageView image_view) {
+            super(context);
             this.image_view = image_view;
-            this.context = context;
+            this.adapter = adapter;
+            this.index = index;
         }
 
         public void run(Bitmap param) {
+            adapter.setBitmap(index, param);
             image_view.setImageBitmap(param);
         }
     }
 
     private static class TranslateTask extends AsyncTask<String, Void, String> {
-
 
         private MyCallback<String> callback;
 
@@ -67,15 +76,13 @@ public class DataLoader {
                 uc.setConnectTimeout(1000);
                 uc.setReadTimeout(1000);
                 uc.connect();
-                JSONObject res = new JSONObject(PictureLoaderThread.streamToString(uc.getInputStream()));
+                JSONObject res = new JSONObject(streamToString(uc.getInputStream()));
                 uc.disconnect();
                 String rv = res.getJSONArray("text").getString(0);
                 success = true;
                 return rv;
-            } catch(IOException e) {
-
-            } catch(JSONException e) {
-
+            } catch(IOException ignore) {
+            } catch(JSONException ignore) {
             }
 
             return words[0];
@@ -83,73 +90,46 @@ public class DataLoader {
 
         @Override
         protected void onPostExecute(String result) {
+            if(!success)
+                Toast.makeText(callback.getContext(), R.string.toast_translate_error, Toast.LENGTH_SHORT).show();
+
             callback.run(result);
         }
     }
 
-    private static class PictureLoaderThread extends Thread {
+    private static class SearchQueryRunnable implements Runnable {
+
         private final String query;
-        private final MyCallback<Bitmap> callback;
 
-        public PictureLoaderThread(String query, MyCallback<Bitmap> callback) {
-            super();
+        public SearchQueryRunnable(String query) {
             this.query = query;
-            this.callback = callback;
-        }
-
-        private static JSONObject searchResult = null;
-        private static String lastSearch = null;
-
-        private static String streamToString(InputStream s) {
-            Scanner scn = new Scanner(s);
-            scn.useDelimiter("\\A");
-            return scn.next();
         }
 
         @Override
         public void run() {
-            Bitmap[] result = new Bitmap[10];
 
-            Log.i("HTTP","Started loading");
+            searchLocks.get(query).lock();
 
+            URL[] result = new URL[10];
+
+            int j = 0;
             try {
-                JSONObject res;
-                if(!query.equals(lastSearch)) {
-                    URL target = new URL("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&imgsz=medium&q=" + URLEncoder.encode(query, "UTF-8"));
-                    HttpURLConnection uc = (HttpURLConnection) target.openConnection();
-                    uc.setConnectTimeout(1000);
-                    uc.setReadTimeout(1000);
-                    uc.connect();
-
-                    res = new JSONObject(streamToString(uc.getInputStream()));
-                    uc.disconnect();
-
-                    lastSearch = query;
-                    searchResult = res;
-                } else
-                    res = searchResult;
+                URL target = new URL("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=8&imgsz=medium&q=" + URLEncoder.encode(query, "UTF-8"));
+                HttpURLConnection uc = (HttpURLConnection) target.openConnection();
+                uc.setConnectTimeout(1000);
+                uc.setReadTimeout(1000);
+                uc.connect();
+                JSONObject res = new JSONObject(streamToString(uc.getInputStream()));
+                uc.disconnect();
                 JSONArray arr = res.getJSONObject("responseData").getJSONArray("results");
-                int j = 0;
                 if(arr.length() != 0) {
                     for(int i = 0; i < arr.length(); i++) {
                         String url = arr.getJSONObject(i).getString("url");
-                        try {
-                            URL target = new URL(url);
-                            HttpURLConnection uc = (HttpURLConnection) target.openConnection();
-                            uc.setConnectTimeout(1000);
-                            uc.setReadTimeout(1000);
-                            uc.connect();
-                            result[j] = BitmapFactory.decodeStream(uc.getInputStream());
-                            if(result[j] != null) {
-                                break;
-                            }
-
-                        } catch(IOException e) {
-                            Log.e("HTTP", "IOE in pic", e);
-                        }
+                        result[j] = new URL(url);
+                        j++;
                     }
                 }
-                /*target = new URL("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=" + Math.min(10 - j, 8) + "&start=8&imgsz=medium&q=" + URLEncoder.encode(query, "UTF-8"));
+                target = new URL("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=2&start=8&imgsz=medium&q=" + URLEncoder.encode(query, "UTF-8"));
                 uc = (HttpURLConnection) target.openConnection();
                 uc.setConnectTimeout(1000);
                 uc.setReadTimeout(1000);
@@ -158,38 +138,74 @@ public class DataLoader {
                 uc.disconnect();
                 arr = res.getJSONObject("responseData").getJSONArray("results");
                 if(arr.length() != 0) {
-                    for(int i = 0; i < arr.length() && j < 10; i++) {
+                    for(int i = 0; i < arr.length(); i++) {
                         String url = arr.getJSONObject(i).getString("url");
-                        try {
-                            target = new URL(url);
-                            uc = (HttpURLConnection) target.openConnection();
-                            uc.setConnectTimeout(1000);
-                            uc.setReadTimeout(1000);
-                            uc.connect();
-                            result[j] = BitmapFactory.decodeStream(uc.getInputStream());
-                            if(result[j] != null)
-                                j++;
-                        } catch(IOException e) {
-                            Log.e("HTTP", "IOE in pic 2", e);
-                        }
+                        result[j] = new URL(url);
+                        j++;
                     }
-                }*/
-            } catch(IOException e) {
-                Log.e("HTTP", "IOE in all", e);
-            } catch(JSONException e) {
-                Log.e("HTTP", "JSE in all", e);
+                }
+            } catch(IOException ignore) {
+            } catch(JSONException ignore) {
             }
 
-            Log.i("HTTP", "Done loading");
+            searchResults.put(query, result);
 
-            final Bitmap[] finalResult = result;
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    callback.run(finalResult[0]);
-                }
-            });
+            searchLocks.get(query).unlock();
+            searchLocks.remove(query);
+
         }
+    }
+
+    private static class PictureDownloadRunnable implements Runnable {
+
+        private final String word;
+        private final int index;
+        private final MyCallback<Bitmap> callback;
+
+        public PictureDownloadRunnable(String word, int index, MyCallback<Bitmap> callback) {
+            this.word = word;
+            this.index = index;
+            this.callback = callback;
+        }
+
+        @Override
+        public void run() {
+            try {
+                ReentrantLock lock = searchLocks.get(word);
+                if (lock != null) {
+                    lock.lock();
+                    lock.unlock();
+                }
+
+                URL url = searchResults.get(word)[index];
+
+                if (url == null)
+                    return; // we are a bad person
+
+                HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+                uc.setConnectTimeout(1000);
+                uc.setReadTimeout(1000);
+                uc.connect();
+                final Bitmap rs = BitmapFactory.decodeStream(uc.getInputStream());
+                uc.disconnect();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(rs == null)
+                            Toast.makeText(callback.getContext(), R.string.toast_pictures_error, Toast.LENGTH_SHORT);
+                        else
+                            callback.run(rs);
+                    }
+                });
+            } catch (IOException ignore) {
+            }
+        }
+    }
+
+    private static String streamToString(InputStream s) {
+        Scanner scn = new Scanner(s);
+        scn.useDelimiter("\\A");
+        return scn.next();
     }
 
     public static void asyncTranslate(String word, MyCallback<String> callback) {
@@ -197,21 +213,19 @@ public class DataLoader {
     }
 
     public static void asyncLoadPictures(String word, int i, MyCallback<Bitmap> callback) {
-        if(handler == null)
-            handler = new Handler(Looper.getMainLooper());
-
-        if(loaderThread != null) { // todo: do it better
-            loaderThread.interrupt();
-            try {
-                loaderThread.join();
-            } catch (InterruptedException ie) {}
+        if(searchResults.containsKey(word) || searchLocks.containsKey(word)) {
+            pool.submit(new PictureDownloadRunnable(word, i, callback));
+        } else {
+            searchLocks.put(word, new ReentrantLock(true));
+            searchLocks.get(word).lock();
+            pool.submit(new SearchQueryRunnable(word));
+            searchLocks.get(word).unlock();
+            pool.submit(new PictureDownloadRunnable(word, i, callback));
         }
-
-        loaderThread = new PictureLoaderThread(word, callback);
-        loaderThread.start();
-
     }
 
-    private static PictureLoaderThread loaderThread;
-    private static Handler handler;
+    private static HashMap<String, ReentrantLock> searchLocks = new HashMap<String, ReentrantLock>();
+    private static HashMap<String, URL[]> searchResults = new HashMap<String, URL[]>();
+    private static ExecutorService pool = Executors.newFixedThreadPool(5);
+    private static Handler handler = new Handler(Looper.getMainLooper());
 }

@@ -36,10 +36,8 @@ public class OutputActivity extends ActionBarActivity {
         list = (ListView)findViewById(R.id.listView);
         context = this;
 
-        DataLoader.asyncTranslate(word, new DataLoader.MyCallbackString());
+        DataLoader.asyncTranslate(word, new DataLoader.MyCallbackString(getApplicationContext()));
         OutputActivity.list.setAdapter(new PicturesAdapter(context, word));
-       // DataLoader.asyncLoadPictures(word, new DataLoader.MyCallbackPicture(context));
-
     }
 
 }
