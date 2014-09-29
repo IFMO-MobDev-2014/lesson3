@@ -22,9 +22,9 @@ public class MyActivity extends Activity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 EditText ed =(EditText) findViewById(R.id.editText);
-                Strin = ed.getText().toString();
+                Strin = ed.getText().toString();  //это ввод
                 Intent intent = new Intent(MyActivity.this, MyActivity_second1.class);
-                //intent.putExtra(Strin, Strin);
+                intent.putExtra("String", Strin);
                 startActivity(intent);
                 return false;
             }
