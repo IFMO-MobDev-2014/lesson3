@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Lesson3: Translate App</string>
+    <string name="translate">Translate!</string>
+    <string name="title_activity_result">Search results</string>
+    <string name="hint_text">Enter your word here</string>
+
+</resources>
