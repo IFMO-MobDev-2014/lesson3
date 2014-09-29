@@ -1,15 +1,17 @@
 package ru.ifmo.md.lesson3;
 
+import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 public class InternetChecker {
 
-    static boolean isOnline() {
+    public static boolean isOnline(Activity a) {
 	    ConnectivityManager cm =
-			    (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			    (ConnectivityManager) a.getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
-	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-		    return true;
-	    }
-	    return false;
+        return (netInfo != null && netInfo.isConnectedOrConnecting());
     }
 
 }

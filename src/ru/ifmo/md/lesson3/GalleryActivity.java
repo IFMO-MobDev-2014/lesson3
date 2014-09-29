@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GalleryActivity extends Activity {
     public static final int N = 10;
@@ -19,13 +22,24 @@ public class GalleryActivity extends Activity {
 
         Intent intent = getIntent();
         String query = intent.getStringExtra(MainActivity.EXTRA_QUERY);
-        TranslateTask tt = new TranslateTask(query, (TextView)findViewById(R.id.translation));
-        tt.execute();
-        ImageAdapter ia = new ImageAdapter(this);
-        ((GridView)findViewById(R.id.imageGrid)).setAdapter(ia);
-        FetchTask ft = new FetchTask(query, ia);
-        ft.execute();
-        ia.notifyDataSetChanged();
+        TextView translationView = (TextView) findViewById(R.id.translation);
+        translationView.setText(query + "\n");
+//        translationView.setMovementMethod(new ScrollingMovementMethod());
+        translationView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        if (InternetChecker.isOnline(this)) {
+            TranslateTask tt = new TranslateTask(query, (TextView) findViewById(R.id.translation));
+            tt.execute();
+            ImageAdapter ia = new ImageAdapter(this);
+            ((GridView) findViewById(R.id.imageGrid)).setAdapter(ia);
+            FetchTask ft = new FetchTask(query, ia);
+            ft.execute();
+            ia.notifyDataSetChanged();
+        }
+        else {
+            Toast t = Toast.makeText(this, getString(R.string.noInternet), Toast.LENGTH_LONG);
+            t.show();
+        }
     }
 
     class FetchTask extends AsyncTask<Void, Void, Void> {
@@ -42,6 +56,7 @@ public class GalleryActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            imageGrid.setVisibility(View.GONE);
             linlaHeaderProgress.setVisibility(View.VISIBLE);
         }
 
@@ -75,13 +90,17 @@ public class GalleryActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            output.setText(query + "\n");
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            Translator translator = new Translator();
-            result = translator.translate(query);
+            try {
+                result = Translator.translate(query);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                result = null;
+            }
             return null;
         }
 
@@ -89,7 +108,7 @@ public class GalleryActivity extends Activity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             if (this.result != null)
-                output.setText(query + " -> " + this.result + "\n " + getString(R.string.ad));
+                output.setText(Html.fromHtml(query + " -> " + this.result + "<br> " + getString(R.string.ad)));
         }
     }
 }

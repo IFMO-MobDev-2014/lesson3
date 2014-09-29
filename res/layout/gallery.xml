@@ -29,14 +29,16 @@
             android:gravity="center"
             android:numColumns="2"
             android:stretchMode="columnWidth"
-            android:background="@color/grayDark"
-            android:visibility="gone"/>
+            android:background="@color/grayDark"/>
     <TextView android:layout_height="fill_parent"
               android:layout_width="fill_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text=""
             android:id="@+id/translation"
             android:background="@color/grayLight"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:scrollbars = "vertical"
+            android:textColor="#FFFFFF"
+            android:textColorHighlight="#FFFFFF"/>
 
 </LinearLayout>
