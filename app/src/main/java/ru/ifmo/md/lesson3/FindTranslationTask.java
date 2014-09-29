@@ -32,6 +32,7 @@ public class FindTranslationTask extends AsyncTask<String, Void, String> {
     }
 
     protected void onPostExecute(String result) {
+        activity.progress.dismiss();
         if (exception == null) {
             activity.onTranslateResponse(result);
         } else {
