@@ -26,7 +26,12 @@ public class MyActivity extends Activity {
                 String query = editText.getText().toString(); // TODO: not sure toString method
                 translation.setText(TranslationLoader.translate(query));
 //                 TODO: Uncomment this line when testing this class
+<<<<<<< HEAD
 //                image.setImageDrawable(imageLoader.loadImage(query));
+=======
+                image.setImageDrawable(imageLoader.loadImage(query)[1]);
+                //image.setImageDrawable(getResources().getDrawable(R.drawable.cat));
+>>>>>>> remotes/origin/images
             }
         });
     }
