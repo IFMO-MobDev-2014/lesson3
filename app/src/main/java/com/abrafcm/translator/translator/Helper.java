@@ -5,4 +5,5 @@ package com.abrafcm.translator.translator;
  */
 public class Helper {
     public static final String EXTRA_TRANSLATE = "EXTRA_TRANSLATE";
+    public static final String ERROR_TRANSLATION = "Translation error";
 }

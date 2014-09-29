@@ -1,6 +1,7 @@
 package com.abrafcm.translator.translator;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,10 +9,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
+import android.util.LruCache;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +39,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Nikita Yaschenko aka Nafanya on 27.09.14.
@@ -45,7 +50,8 @@ public class ResultActivity extends Activity {
 
     private GridView mGridView;
     private TextView mTranslationTextView;
-    private ArrayList<Bitmap> mItems = null;
+    private ArrayList<String> mItems = null;
+    private LruCache<String, Bitmap> mCache = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,38 +62,32 @@ public class ResultActivity extends Activity {
         String translateString = intent.getStringExtra(Helper.EXTRA_TRANSLATE);
 
         setupViews();
-
         setupAdapter();
-        mTranslationTextView.setText(translate(translateString));
+        setupCache();
 
+        translate(translateString);
+        loadImages(translateString);
+
+        /*
         ArrayList<String> urls = null;
         try {
-            urls = new UrlsFetcher().execute(translateString).get();
-            mItems = new ImagesLoader().execute(urls).get();
+            urls = new FetchUrlsTask().execute(translateString).get();
+            mItems = new LoadImageTask().execute(urls).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
         setupAdapter();
+        */
     }
 
-    private String translate(String translateString){
-        String resString = "";
-        Translator translator = new Translator();
-        Pair<Integer, String> res;
-        try {
-            res = translator.execute(translateString).get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            res = new Pair<Integer, String>(-1, "Error");
-        }
-        if (res.first > 0){
-            resString = res.second;
-        } else {
-            Toast.makeText(this, res.second, Toast.LENGTH_SHORT);
-        }
-        return resString;
+    private void translate(String string) {
+        new TranslateTask(this, mTranslationTextView).execute(string);
+    }
+
+    private void loadImages(String string) {
+        new FetchUrlsTask().execute(string);
     }
 
     private void setupViews() {
@@ -101,6 +101,18 @@ public class ResultActivity extends Activity {
         } else {
             mGridView.setAdapter(new ImageAdapter(this, mItems));
         }
+    }
+
+    private void setupCache() {
+        final int maxMemory = (int) Runtime.getRuntime().maxMemory() / 1024;
+        final int cacheSize = maxMemory / 8;
+
+        mCache = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap) {
+                return (bitmap.getRowBytes() * bitmap.getHeight()) / 1024;
+            }
+        };
     }
 
     @Override
@@ -118,13 +130,36 @@ public class ResultActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class UrlsFetcher extends AsyncTask<String, Void, ArrayList<String>> {
+    private void addBitmapToCache(String url, Bitmap bitmap) {
+        if (getCachedBitmap(url) == null) {
+            mCache.put(url, bitmap);
+            //Log.i(TAG, "Bitmap size in kb: " +
+            //        (bitmap.getRowBytes() * bitmap.getHeight()) / 1024);
+        }
+    }
+
+    private Bitmap getCachedBitmap(String url) {
+        if (url != null) {
+            return mCache.get(url);
+        }
+        return null;
+    }
+
+    private void setImage(ImageView imageView, String url) {
+        Bitmap bitmap = getCachedBitmap(url);
+        if (bitmap == null) {
+            new LoadImageTask(getApplicationContext(), imageView).execute(url);
+        } else {
+            imageView.setImageBitmap(bitmap);
+        }
+    }
+
+    private class FetchUrlsTask extends AsyncTask<String, Void, ArrayList<String>> {
         private static final String API_KEY = "e4f23d12ecff2f809c62c1f68365f437";
 
         @Override
         protected ArrayList<String> doInBackground(String... params) {
             ArrayList<String> ret = new ArrayList<String>();
-            HttpClient httpclient = new DefaultHttpClient();
             String uri = Uri.parse("https://www.flickr.com/services/rest")
                     .buildUpon()
                     .appendQueryParameter("api_key", API_KEY)
@@ -168,15 +203,29 @@ public class ResultActivity extends Activity {
             }
             return ret;
         }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> urls) {
+            mItems = urls;
+            setupAdapter();
+        }
     }
 
-    private class Translator extends AsyncTask<String, Void, Pair> {
+    private class TranslateTask extends AsyncTask<String, Void, String> {
         private static final String API_URL = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
         private static final String API_KEY = "trnsl.1.1.20140927T210341Z.e8c195ae06daeb13.b1522070ee0c890f7acfc10239c5fe0cb78399e1";
         private static final String LANGUAGES = "en-ru";
 
+        private final TextView textView;
+        private final Context context;
+
+        public TranslateTask(Context context, TextView textView) {
+            this.textView = textView;
+            this.context = context;
+        }
+
         @Override
-        protected Pair doInBackground(String... params) {
+        protected String doInBackground(String... params) {
             try {
                 StringBuilder sb = new StringBuilder(params[0]);
                 for (int i = 1; i < params.length;++i){
@@ -194,55 +243,89 @@ public class ResultActivity extends Activity {
                     BufferedReader in = new BufferedReader(
                             new InputStreamReader(connection.getInputStream()));
 
-
                     String returned = in.readLine();
                     Log.d("response code", returned);
                     JSONObject object = new JSONObject(returned);
                     JSONArray array = (JSONArray) object.get("text");
 
-                    return new Pair(200, array.join(" ").replaceAll("\"", ""));
-                } else if (responseCode == 413){
-                    // Exceeded the maximum allowable size of text
-                    return new Pair(-1, "The maximum allowable size of text is exceeded");
-                } else if (responseCode == 422){
-                    // The text can not be translated
-                    return new Pair(-1, "The text can not be translated");
+                    return array.join(" ").replaceAll("\"", "");
                 }
-                return new Pair(-1, "Other exception");
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return new Pair(-1, "Check internet connection");
+            return null;
         }
-    }
-
-    private class ImagesLoader extends AsyncTask<ArrayList<String>, Void, ArrayList<Bitmap>> {
 
         @Override
-        protected ArrayList<Bitmap> doInBackground(ArrayList<String>... params) {
-            ArrayList<String> urls = params[0];
-            ArrayList<Bitmap> ret = new ArrayList<Bitmap>();
-            for (String tUrl : urls) {
-                URL url = null;
-                try {
-                    url = new URL(tUrl);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-                if (url == null) {
-                    continue;
-                }
-                Bitmap bitmap = null;
-                try {
-                    bitmap = BitmapFactory.decodeStream(url.openStream());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (bitmap != null) {
-                    ret.add(bitmap);
-                }
+        protected void onPostExecute(String result) {
+            if (result == null) {
+                Toast.makeText(context, Helper.ERROR_TRANSLATION, Toast.LENGTH_SHORT);
+            } else {
+                textView.setText(result);
             }
-            return ret;
         }
     }
+
+    private class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
+        private final Context context;
+        private final ImageView imageView;
+        private String imageUrl;
+
+        public LoadImageTask(Context context, ImageView imageView) {
+            this.context = context;
+            this.imageView = imageView;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            imageUrl = params[0];
+            URL url = null;
+            try {
+                url = new URL(imageUrl);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            Bitmap bitmap = null;
+            try {
+                bitmap = BitmapFactory.decodeStream(url.openStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            if (bitmap != null) {
+                addBitmapToCache(imageUrl, bitmap);
+            }
+            imageView.setImageBitmap(bitmap);
+        }
+    }
+
+    private class ImageAdapter extends ArrayAdapter {
+        private ArrayList<String> mItems;
+
+        public ImageAdapter(Context context, ArrayList<String> items) {
+            super(context, 0, items);
+            mItems = items;
+        }
+
+        @Override
+        public View getView(int position, View view, ViewGroup parent) {
+            if (view == null) {
+                view = LayoutInflater.from(getContext())
+                        .inflate(R.layout.item_image, parent, false);
+
+            }
+
+            String url = mItems.get(position);
+            ImageView imageView = (ImageView) view.findViewById(R.id.item_imageView);
+            setImage(imageView, url);
+            //new LoadImageTask(getContext(), imageView).execute(url);
+
+            return view;
+        }
+    }
+
 }

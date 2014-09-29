@@ -13,14 +13,15 @@ import java.util.ArrayList;
 /**
  * Created by Nikita Yaschenko on 27.09.14.
  */
+/*
 public class ImageAdapter extends ArrayAdapter{
-    private ArrayList<Bitmap> mItems;
+    private ArrayList<String> mItems;
 
     private static class ViewHolder {
         private ImageView imageView;
     }
 
-    public ImageAdapter(Context context, ArrayList<Bitmap> items) {
+    public ImageAdapter(Context context, ArrayList<String> items) {
         super(context, 0, items);
         mItems = items;
     }
@@ -48,3 +49,4 @@ public class ImageAdapter extends ArrayAdapter{
         return view;
     }
 }
+*/
