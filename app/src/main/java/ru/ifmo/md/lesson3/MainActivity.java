@@ -60,7 +60,7 @@ public class  MainActivity extends Activity {
             if(translation == null) {
                 new AlertDialog.Builder(MainActivity.this)
                     .setTitle("Ошибка")
-                    .setMessage("Возникли проблемы с Интернет-соединением")
+                    .setMessage("Возникли проблемы с переводом")
                     .setNegativeButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {

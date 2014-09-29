@@ -1,6 +1,8 @@
 package ru.ifmo.md.lesson3;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -106,6 +108,17 @@ public class DisplayActivity extends Activity {
                     getImageTask = new GetImageTask();
                     getImageTask.execute(imageUrl);
                 }
+            } else {
+                new AlertDialog.Builder(DisplayActivity.this)
+                    .setTitle("Ошибка")
+                    .setMessage("Возникли проблемы с поиском изображений")
+                    .setNegativeButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        }).show();
+                return;
             }
         }
     }
@@ -134,6 +147,18 @@ public class DisplayActivity extends Activity {
         }
 
         protected void onPostExecute(Drawable d) {
+            if (d == null) {
+                new AlertDialog.Builder(DisplayActivity.this)
+                    .setTitle("Ошибка")
+                    .setMessage("Возникли проблемы с загрузкой изображений")
+                    .setNegativeButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        }).show();
+                return;
+            }
             ImageView imgView = new ImageView(getApplicationContext());
             imgView.setScaleType(ImageView.ScaleType.CENTER);
             imgView.setImageDrawable(d);
