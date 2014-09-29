@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.InputStream;
-import java.net.URLEncoder;
 
 /**
  * Created by Dmitry on 29.09.2014.
@@ -44,7 +43,7 @@ public class Worker extends Activity {
         String word;
 
         Translater(String word) {
-            this.word = URLEncoder.encode(word);
+            this.word = word;
         }
 
         @Override
