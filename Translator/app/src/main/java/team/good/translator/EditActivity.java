@@ -2,14 +2,34 @@ package team.good.translator;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-
 
 public class EditActivity extends Activity {
+
+    public static Bitmap[] strToBitmaps(String str) {
+        Bitmap[] bmps = new Bitmap[10];
+        AsyncTask<String, Void, String[]> task1 = new SearchImagesTask().execute(str);
+        String[] urls = new String[10];
+        try {
+            urls = task1.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < 10; i++) {
+            AsyncTask<String, Void, Bitmap> task2 = new DownloadImageTask().execute(urls[i]);
+            try {
+                bmps[i] = task2.get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return bmps;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

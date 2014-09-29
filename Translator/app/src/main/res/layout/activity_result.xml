@@ -16,19 +16,13 @@
         android:layout_centerHorizontal="true"
         android:textSize="@dimen/text_size" />
 
-    <Gallery
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/gallery"
-        android:layout_below="@+id/wordTr"
-        android:layout_centerHorizontal="true" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/back_button"
         android:id="@+id/backBut"
-        android:layout_below="@+id/gallery"
         android:layout_centerHorizontal="true"
-        android:onClick="getBack" />
+        android:onClick="getBack"
+        android:layout_below="@+id/wordTr" />
+
 </RelativeLayout>
