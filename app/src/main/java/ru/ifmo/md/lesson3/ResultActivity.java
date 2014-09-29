@@ -27,7 +27,7 @@ public class ResultActivity extends Activity {
         gridView.setAdapter(adapter);
         Intent intent = getIntent();
         textView.setText(intent.getStringExtra(MainActivity.TRANSLATOR_RESPONSE));
-        new FindImagesTask(this, 10).execute(intent.getStringExtra(MainActivity.MAIN_QUERY));
+        new FindImagesTask(this, 50).execute(intent.getStringExtra(MainActivity.MAIN_QUERY));
     }
 
     protected void onImagesUPLsRecieved(ArrayList<URL[]> imageURLs) {

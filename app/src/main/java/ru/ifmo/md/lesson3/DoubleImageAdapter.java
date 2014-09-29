@@ -1,20 +1,17 @@
 package ru.ifmo.md.lesson3;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -23,9 +20,11 @@ public class DoubleImageAdapter extends BaseAdapter {
     private ResultActivity context;
     private ArrayList<Drawable> pictures = new ArrayList<Drawable>();
     private ArrayList<URL> fullURLs = new ArrayList<URL>();
+    private int cellHeight;
 
     public DoubleImageAdapter(ResultActivity c) {
         context = c;
+        cellHeight = getCellHeight();
     }
 
     public int getCount() {
@@ -45,14 +44,24 @@ public class DoubleImageAdapter extends BaseAdapter {
         pictures.add(picture);
     }
 
+    private int getCellHeight() {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        if (width < 800) return (width - 40) / 2; // vary this, try at your own!
+        else return 250; // tablets get more images
+    }
+
     // TODO Set "loading" picture until loaded
     public View getView(final int position, View convertView, ViewGroup parent) {
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(context);
-            imageView.setLayoutParams(new GridView.LayoutParams(230, 230)); // TODO Mate it relative somehow
+            imageView.setLayoutParams(new AbsListView.LayoutParams(cellHeight, cellHeight)); // TODO Mate it relative somehow
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
+//            imageView.setPadding(8, 8, 8, 8); // useless
         } else {
             imageView = (ImageView) convertView;
         }

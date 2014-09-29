@@ -1,14 +1,16 @@
 package ru.ifmo.md.lesson3;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.InputStream;
 
@@ -18,30 +20,22 @@ import java.io.InputStream;
  */
 
 public class FullImageActivity extends Activity {
-    private ProgressDialog progressDialog;
     private Intent intent;
 
     // TODO Add scrollable left-right
-    // TODO Add error handler dialog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fullscreen_picture);
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading");
-        progressDialog.show();
+        setContentView(R.layout.fullscreen_loading);
         intent = getIntent();
-        ImageView mImageView = (ImageView) findViewById(R.id.imageView);
         String url = intent.getStringExtra(DoubleImageAdapter.FULL_PICTURE);
-        new SimpleDownloadImageTask(mImageView, this).execute(url);
+        new SimpleDownloadImageTask(this).execute(url);
     }
 
     private class SimpleDownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         private FullImageActivity parentActivity;
-        ImageView bmImage;
 
-        public SimpleDownloadImageTask(ImageView bmImage, FullImageActivity parentActivity) {
-            this.bmImage = bmImage;
+        public SimpleDownloadImageTask(FullImageActivity parentActivity) {
             this.parentActivity = parentActivity;
         }
 
@@ -59,8 +53,23 @@ public class FullImageActivity extends Activity {
         }
 
         protected void onPostExecute(Bitmap result) {
-            parentActivity.progressDialog.dismiss();
-            bmImage.setImageBitmap(result);
+            if (result != null) {
+                parentActivity.onImageLoaded(result);
+            } else {
+                parentActivity.onImageFailed();
+            }
         }
+    }
+
+    private void onImageFailed() {
+        TextView textView = (TextView) findViewById(R.id.errorTextView);
+        findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+        textView.setText(getResources().getString(R.string.fullscreen_image_at_fail));
+    }
+
+    private void onImageLoaded(Bitmap bitmap) {
+        setContentView(R.layout.fullscreen_picture);
+        ImageView mImageView = (ImageView) findViewById(R.id.imageView);
+        mImageView.setImageBitmap(bitmap);
     }
 }

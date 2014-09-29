@@ -10,5 +10,6 @@
     <string name="loading_trns">Looking up the translation</string>
     <string name="enter_query">Enter your query (RU or ENG)</string>
     <string name="translation_query_example">For example, "beef"</string>
+    <string name="fullscreen_image_at_fail">Fullscreen image has failed to load</string>
 
 </resources>
