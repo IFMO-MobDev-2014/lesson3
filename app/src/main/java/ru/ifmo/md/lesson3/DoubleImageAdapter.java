@@ -45,6 +45,7 @@ public class DoubleImageAdapter extends BaseAdapter {
         pictures.add(picture);
     }
 
+    // TODO Set "loading" picture until loaded
     public View getView(final int position, View convertView, ViewGroup parent) {
         ImageView imageView;
         if (convertView == null) {

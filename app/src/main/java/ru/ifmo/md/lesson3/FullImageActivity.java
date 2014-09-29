@@ -21,6 +21,8 @@ public class FullImageActivity extends Activity {
     private ProgressDialog progressDialog;
     private Intent intent;
 
+    // TODO Add scrollable left-right
+    // TODO Add error handler dialog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
