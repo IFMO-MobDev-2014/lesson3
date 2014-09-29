@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -71,6 +72,11 @@ public class TranslateActivity extends Activity {
             public void onComplete(GsonGetter<ResponseContainer> sender, ResponseContainer result) {
                 Intent intent = new Intent(TranslateActivity.this, MainActivity.class);
                 StringBuilder sb = new StringBuilder();
+                if (result == null){
+                    Toast toast = Toast.makeText(TranslateActivity.this, "No Internet connection", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else
                 if (result.text!=null) {
                     for (String string : result.text) {
                         sb.append(string);
