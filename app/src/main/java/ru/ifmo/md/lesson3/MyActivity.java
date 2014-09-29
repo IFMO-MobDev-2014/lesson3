@@ -1,7 +1,7 @@
 package ru.ifmo.md.lesson3;
 
 /**
- * Created by 107476 on 25.09.2014.
+ * Created by shambala on 25.09.2014.
  */
 
 import android.app.Activity;
@@ -25,6 +25,7 @@ public class MyActivity extends Activity {
     EditText input;
     Translator translate;
     RelativeLayout background;
+    String word;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class MyActivity extends Activity {
             public void onClick(View view) {
                 eng.setText(input.getText());
 
-                String word = input.getText().toString();
+                word = input.getText().toString();
                 translate = new Translator(word);
                 translate.execute();
                 try {
@@ -113,6 +114,7 @@ public class MyActivity extends Activity {
 
     public void onClick(View view) {
         Intent intent = new Intent(this, MySecondActivity.class);
+        intent.putExtra("word", word);
         startActivity(intent);
     }
 

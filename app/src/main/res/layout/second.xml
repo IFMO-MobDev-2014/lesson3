@@ -18,65 +18,84 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView"
-                android:src="@drawable/hitler" />
+                android:adjustViewBounds="true"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"/>
 
             <ImageView
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView2"
-                android:src="@drawable/hitler"
-                android:adjustViewBounds="true" />
+                android:adjustViewBounds="true"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"/>
 
             <ImageView
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView3"
-                android:src="@drawable/hitler" />
+                android:adjustViewBounds="true"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"/>
 
             <ImageView
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView4"
-                android:src="@drawable/hitler" />
+                android:adjustViewBounds="true"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"/>
 
             <ImageView
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView5"
-                android:src="@drawable/hitler" />
+                android:adjustViewBounds="true"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"/>
 
             <ImageView
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView6"
-                android:src="@drawable/hitler" />
+                android:adjustViewBounds="true"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"/>
 
             <ImageView
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView7"
-                android:src="@drawable/hitler" />
+                android:adjustViewBounds="true"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"/>
 
             <ImageView
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView8"
-                android:src="@drawable/hitler" />
+                android:adjustViewBounds="true"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"/>
 
             <ImageView
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView9"
-                android:src="@drawable/hitler" />
+                android:adjustViewBounds="true"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"/>
 
             <ImageView
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView10"
-                android:src="@drawable/hitler" />
+                android:adjustViewBounds="true"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"/>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
