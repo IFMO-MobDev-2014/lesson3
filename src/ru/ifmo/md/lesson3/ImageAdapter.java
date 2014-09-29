@@ -8,22 +8,29 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
-    private Bitmap[] images = null;
+    private ArrayList<Bitmap> images = new ArrayList<Bitmap>();
 
     public ImageAdapter(Context c) {
         mContext = c;
     }
 
     public void setImages(Bitmap[] imgs) {
-        images = imgs;
+        Collections.addAll(images, imgs);
+    }
+
+    public void addImage(Bitmap img) {
+        images.add(img);
     }
 
     public int getCount() {
         if (images == null)
             return 0;
-        return images.length;
+        return images.size();
     }
 
     public Object getItem(int position) {
@@ -46,7 +53,7 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageBitmap(images[position]);
+        imageView.setImageBitmap(images.get(position));
         return imageView;
     }
 }
