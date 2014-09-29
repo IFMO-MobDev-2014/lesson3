@@ -32,8 +32,14 @@ public class GetTranslation extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        images = ImageLoader.loadImage(params[0]);
-        return TranslationLoader.translate(params[0]);
+        try {
+            images = ImageLoader.loadImage(params[0]);
+            return TranslationLoader.translate(params[0]);
+        } catch (Exception e) {
+            images = new Drawable[]{context.getResources().getDrawable(R.drawable.error)};
+
+            return "An error occurred, check the network connection.";
+        }
     }
 
     @Override

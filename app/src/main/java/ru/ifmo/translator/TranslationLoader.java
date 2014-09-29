@@ -8,32 +8,21 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 
 import javax.net.ssl.HttpsURLConnection;
 
 /**
- * @author Zakhar Voit (zakharvoit@gmail.com)
+ * @author Marianna Bisyarina
  */
 public class TranslationLoader {
-    static String translate(String query) {
-        String result = "Translation error";
-        try {
-            HttpsURLConnection connection = ConnectionFactory.getHTTPS(query);
-            connection.disconnect();
-            BufferedInputStream in = new BufferedInputStream(connection.getInputStream());
-            result = readLine(in);
-            JSONObject json = new JSONObject(result);
-            result = json.getString("text");
-            result = result.substring(2, result.length() - 2);
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    static String translate(String query) throws IOException, JSONException {
+        HttpsURLConnection connection = ConnectionFactory.getHTTPS(query);
+        connection.disconnect();
+        BufferedInputStream in = new BufferedInputStream(connection.getInputStream());
+        String result = readLine(in);
+        JSONObject json = new JSONObject(result);
+        result = json.getString("text");
+        result = result.substring(2, result.length() - 2);
 
         return result;
     }
