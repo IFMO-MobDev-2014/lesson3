@@ -75,14 +75,11 @@ public abstract class StdListAdapter<T> implements ListAdapter {
         observers.add(observer);
     }
 
+    protected abstract View createLastItem(ViewGroup parent);
+
     @Override
     public void unregisterDataSetObserver(DataSetObserver observer) {
         observers.remove(observer);
-    }
-
-    protected View createLastItem(ViewGroup parent) {
-        return fragment.getActivity().getLayoutInflater().inflate(
-                R.layout.ind_progress_bar, parent, false);
     }
 
     @Override

@@ -14,11 +14,17 @@ public class ImagesAdapter extends StdListAdapter<Bitmap> {
         super(fragment);
     }
 
-    private View createMoreButton() {
-        ImageView view = new ImageView(getLayoutInflater().getContext());
+    private View createMoreButton(ViewGroup parent) {
+        View result = getLayoutInflater().inflate(R.layout.image_view, parent, false);
+        ImageView view = (ImageView) result.findViewById(R.id.image_view);
         view.setImageResource(R.drawable.ic_action_new);
-        view.setOnClickListener(getFragment());
-        return view;
+        result.setOnClickListener(getFragment());
+        return result;
+    }
+
+    @Override
+    protected View createLastItem(ViewGroup parent) {
+        return getLayoutInflater().inflate(R.layout.ind_progress_bar_framed, parent, false);
     }
 
     @Override
@@ -26,11 +32,11 @@ public class ImagesAdapter extends StdListAdapter<Bitmap> {
         Bitmap content = (Bitmap) getItem(position);
         if (convertView == null) {
             if (content == null)
-                return doneLoading ? createMoreButton() : createLastItem(parent);
-            convertView = new ImageView(getLayoutInflater().getContext());
+                return doneLoading ? createMoreButton(parent) : createLastItem(parent);
+            convertView = getLayoutInflater().inflate(R.layout.image_view, parent, false);
         }
         if (content != null)
-            ((ImageView) convertView).setImageBitmap(content);
+            ((ImageView) convertView.findViewById(R.id.image_view)).setImageBitmap(content);
         return convertView;
     }
 

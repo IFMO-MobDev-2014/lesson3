@@ -38,7 +38,9 @@
                     android:id="@+id/images"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:numColumns="@integer/num_columns" />
+                    android:layout_marginLeft="@dimen/grid_view_margin"
+                    android:layout_marginRight="@dimen/grid_view_margin"
+                    android:numColumns="auto_fit" />
             </FrameLayout>
         </LinearLayout>
     </TabHost>

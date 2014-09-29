@@ -13,6 +13,11 @@ public class TranslationsAdapter extends StdListAdapter<WordTranslation> {
         super(fragment);
     }
 
+    @Override
+    protected View createLastItem(ViewGroup parent) {
+        return getLayoutInflater().inflate(R.layout.ind_progress_bar, parent, false);
+    }
+
     public View getView(int position, View convertView, ViewGroup parent) {
         WordTranslation translation = (WordTranslation) getItem(position);
         if (convertView == null) {
