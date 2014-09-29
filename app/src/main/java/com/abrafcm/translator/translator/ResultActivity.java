@@ -11,8 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -24,7 +22,6 @@ import android.widget.Toast;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
@@ -46,7 +43,6 @@ import java.util.ArrayList;
  */
 
 public class ResultActivity extends Activity {
-    private static final String TAG = "ResultActivity";
 
     private GridView mGridView;
     private TextView mTranslationTextView;
@@ -115,21 +111,6 @@ public class ResultActivity extends Activity {
         };
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.result, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void addBitmapToCache(String url, Bitmap bitmap) {
         if (getCachedBitmap(url) == null) {
             mCache.put(url, bitmap);
@@ -148,7 +129,7 @@ public class ResultActivity extends Activity {
     private void setImage(ImageView imageView, String url) {
         Bitmap bitmap = getCachedBitmap(url);
         if (bitmap == null) {
-            new LoadImageTask(getApplicationContext(), imageView).execute(url);
+            new LoadImageTask(imageView).execute(url);
         } else {
             imageView.setImageBitmap(bitmap);
         }
@@ -192,7 +173,7 @@ public class ResultActivity extends Activity {
                     String secret = photos.getJSONObject(i).getString("secret");
                     String farm = photos.getJSONObject(i).getString("farm");
                     String url = String.format(
-                            "https://farm%s.staticflickr.com/%s/%s_%s_t.jpg",
+                            "https://farm%s.staticflickr.com/%s/%s_%s_n.jpg",
                             farm, server, id, secret
                     );
                     Log.d("TAG", url);
@@ -271,12 +252,10 @@ public class ResultActivity extends Activity {
     }
 
     private class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
-        private final Context context;
         private final ImageView imageView;
         private String imageUrl;
 
-        public LoadImageTask(Context context, ImageView imageView) {
-            this.context = context;
+        public LoadImageTask(ImageView imageView) {
             this.imageView = imageView;
         }
 
@@ -326,7 +305,6 @@ public class ResultActivity extends Activity {
             String url = mItems.get(position);
             ImageView imageView = (ImageView) view.findViewById(R.id.item_imageView);
             setImage(imageView, url);
-            //new LoadImageTask(getContext(), imageView).execute(url);
 
             return view;
         }

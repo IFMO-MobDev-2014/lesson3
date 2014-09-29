@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 
 public class TranslateActivity extends Activity {
-    private static final String TAG = "TranslateActivity";
 
     private Button mTranslateButton;
     private EditText mTranslateEdit;
@@ -32,10 +31,7 @@ public class TranslateActivity extends Activity {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-            return true;
-        }
-        return false;
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     private void setupViews() {
@@ -77,18 +73,4 @@ public class TranslateActivity extends Activity {
         startActivity(intent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.translate, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }
