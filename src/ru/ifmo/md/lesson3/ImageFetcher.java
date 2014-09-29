@@ -34,17 +34,16 @@ public class ImageFetcher {
     private final Resources res;
     protected Bitmap[] result ;
     int nextIndex = 0;
-    int openAsync=0;
+    int openAsync = 0;
 
     public ImageFetcher(int N, Resources res) {
         this.pictureCount = N;
         this.res = res;
     }
 
-
     //"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key="+key+"&text=test&per_page="+pictureCount+"&format=json&nojsoncallback=1"
 
-    public Bitmap[] fetch(String query) {
+    public Bitmap[] setImages(String query, ImageAdapter imageAdapter) {
         result = new Bitmap[pictureCount];
 
 

@@ -63,8 +63,7 @@ public class GalleryActivity extends Activity {
         @Override
         protected Void doInBackground(Void... params) {
             ImageFetcher fetcher = new ImageFetcher(N, getResources());
-            Bitmap[] images = fetcher.fetch(query);
-            imageAdapter.setImages(images);
+            fetcher.setImages(query, imageAdapter);
             return null;
         }
 
