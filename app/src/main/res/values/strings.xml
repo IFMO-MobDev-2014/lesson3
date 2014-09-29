@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Lesson3</string>
+    <string name="button">Go for Pictures</string>
+    <string name="message">Hey, I am second activity</string>
+    <string name="eng">Example</string>
+    <string name="rus">Пример</string>
+    <string name="input">Input word here</string>
 </resources>
