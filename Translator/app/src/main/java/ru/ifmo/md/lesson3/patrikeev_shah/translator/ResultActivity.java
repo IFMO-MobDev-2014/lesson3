@@ -62,9 +62,7 @@ public class ResultActivity extends Activity {
     private void getImages() {
         loaderUrls = new UrlsImagesReceiver();
         loaderUrls.execute(initialWord);
-
         loaderImages = new ImagesReceiver(imageAdapter);
-
         try {
             loaderImages.execute(loaderUrls.get());
         } catch (InterruptedException | ExecutionException e) {

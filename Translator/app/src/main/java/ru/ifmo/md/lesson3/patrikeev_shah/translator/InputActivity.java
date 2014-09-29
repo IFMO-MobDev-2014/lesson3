@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+
 import java.util.concurrent.ExecutionException;
 
 public class InputActivity extends Activity {
