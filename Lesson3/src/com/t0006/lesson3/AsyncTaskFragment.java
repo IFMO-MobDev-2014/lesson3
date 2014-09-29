@@ -18,6 +18,7 @@ public class AsyncTaskFragment extends Fragment implements View.OnClickListener 
     /*package local*/ TranslationsAdapter translationsAdapter = new TranslationsAdapter(this);
     /*package local*/ ImagesAdapter imagesAdapter = new ImagesAdapter(this);
     /*package local*/ String cWord;
+    private int imageCount;
 
     private Collection<Integer> preservedMessages = new LinkedList<>();
 
@@ -29,13 +30,14 @@ public class AsyncTaskFragment extends Fragment implements View.OnClickListener 
 
     public void onClick(View view) {
         imagesAdapter.moreContent();
-        imageLoaderTask = new ImageLoaderTask(this, imagesAdapter);
+        imageLoaderTask = new ImageLoaderTask(this, imagesAdapter, imageCount);
         imageLoaderTask.execute(cWord);
     }
 
     public void setWord(String newWord) {
         if (newWord.equals(cWord))
             return;
+        imageCount = 0;
         cWord = newWord;
         if (translationLoaderTask != null)
             translationLoaderTask.cancel(true);
@@ -62,6 +64,10 @@ public class AsyncTaskFragment extends Fragment implements View.OnClickListener 
         for (int res : preservedMessages)
             showMessage(res);
         preservedMessages.clear();
+    }
+
+    public void onFinishedImageLoading() {
+        imageCount = imageLoaderTask.getImageCount();
     }
 
     class MessageDisplayer implements Runnable {

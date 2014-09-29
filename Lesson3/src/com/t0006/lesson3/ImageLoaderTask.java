@@ -21,25 +21,20 @@ import java.net.URLConnection;
  */
 public class ImageLoaderTask extends AsyncTask<String, Bitmap, Void> {
     private final static String apiKey = "BpCqo8d2szIezEAR1SA5uI95zFSvZdbHdVhxPySlzOs";
-    private static int count = 0;
-    private static String lastWord = null;
     private final String LOG_TAG = ImageLoaderTask.class.getSimpleName();
     private AsyncTaskFragment fragment;
     private ImagesAdapter adapter;
+    private int count;
 
-    public ImageLoaderTask(AsyncTaskFragment fragment, ImagesAdapter adapter) {
+    public ImageLoaderTask(AsyncTaskFragment fragment, ImagesAdapter adapter, int count) {
         this.fragment = fragment;
         this.adapter = adapter;
+        this.count = count;
     }
 
     @Override
     protected Void doInBackground(String... params) {
         String word = params[0];
-
-        if (!word.equals(lastWord)) {
-            count = 0;
-            lastWord = word;
-        }
 
         final String mainURLString = "https://api.datamarket.azure.com/Bing/Search/Image?$format=json&Query=%27" + word + "%27&ImageFilters=%27Size%3AMedium%27";
         byte[] apiKeyBytes = Base64.encode((":" + apiKey).getBytes(), Base64.DEFAULT);
@@ -97,6 +92,10 @@ public class ImageLoaderTask extends AsyncTask<String, Bitmap, Void> {
         return null;
     }
 
+    public int getImageCount() {
+        return count;
+    }
+
     @Override
     protected void onProgressUpdate(Bitmap... values) {
         for (Bitmap bitmap : values)
@@ -106,5 +105,6 @@ public class ImageLoaderTask extends AsyncTask<String, Bitmap, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         adapter.onFinishedLoading();
+        fragment.onFinishedImageLoading();
     }
 }
