@@ -8,7 +8,7 @@
     <LinearLayout
             android:id="@+id/linlaHeaderProgress"
             android:layout_width="fill_parent"
-            android:layout_height="600dp"
+            android:layout_height="480dp"
             android:gravity="center"
             android:orientation="vertical"
             android:background="@color/grayDark"
@@ -24,7 +24,7 @@
     <GridView
             android:id="@+id/imageGrid"
             android:layout_width="fill_parent"
-            android:layout_height="600dp"
+            android:layout_height="480dp"
             android:listSelector="@android:color/transparent"
             android:gravity="center"
             android:numColumns="2"

@@ -2,12 +2,10 @@ package ru.ifmo.md.lesson3;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.view.View;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,23 +13,28 @@ import android.widget.Toast;
 
 public class GalleryActivity extends Activity {
     public static final int N = 10;
+    private int width, height;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gallery);
 
+        width = MainActivity.getScreenSize(this).x;
+        height = MainActivity.getScreenSize(this).y;
+
         Intent intent = getIntent();
         String query = intent.getStringExtra(MainActivity.EXTRA_QUERY);
         TextView translationView = (TextView) findViewById(R.id.translation);
         translationView.setText(query + "\n");
-//        translationView.setMovementMethod(new ScrollingMovementMethod());
         translationView.setMovementMethod(LinkMovementMethod.getInstance());
+        GridView imageGrid = ((GridView) findViewById(R.id.imageGrid));
+        imageGrid.setLayoutParams(new LinearLayout.LayoutParams(width, 3 * height / 4));
 
         if (InternetChecker.isOnline(this)) {
             TranslateTask tt = new TranslateTask(query, (TextView) findViewById(R.id.translation));
             tt.execute();
             ImageAdapter ia = new ImageAdapter(this);
-            ((GridView) findViewById(R.id.imageGrid)).setAdapter(ia);
+            imageGrid.setAdapter(ia);
             FetchTask ft = new FetchTask(query, ia);
             ft.execute();
             ia.notifyDataSetChanged();
@@ -45,8 +48,6 @@ public class GalleryActivity extends Activity {
     class FetchTask extends AsyncTask<Void, Void, Void> {
         String query;
         ImageAdapter imageAdapter;
-        LinearLayout linlaHeaderProgress = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
-        GridView imageGrid = (GridView) findViewById(R.id.imageGrid);
 
         public FetchTask(String q, ImageAdapter ia) {
             query = q;
@@ -56,8 +57,6 @@ public class GalleryActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            imageGrid.setVisibility(View.GONE);
-            linlaHeaderProgress.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -70,9 +69,6 @@ public class GalleryActivity extends Activity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            linlaHeaderProgress.setVisibility(View.GONE);
-            imageGrid.setVisibility(View.VISIBLE);
-
         }
     }
 

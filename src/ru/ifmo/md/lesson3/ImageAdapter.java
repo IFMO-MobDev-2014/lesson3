@@ -1,5 +1,6 @@
 package ru.ifmo.md.lesson3;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
@@ -14,13 +15,12 @@ import java.util.Collections;
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private ArrayList<Bitmap> images = new ArrayList<Bitmap>();
+    private final int width, height;
 
-    public ImageAdapter(Context c) {
-        mContext = c;
-    }
-
-    public void setImages(Bitmap[] imgs) {
-        Collections.addAll(images, imgs);
+    public ImageAdapter(Activity act) {
+        mContext = act;
+        width = MainActivity.getScreenSize(act).x;
+        height = MainActivity.getScreenSize(act).y;
     }
 
     public void addImage(Bitmap img) {
@@ -46,7 +46,7 @@ public class ImageAdapter extends BaseAdapter {
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(350, 350));
+            imageView.setLayoutParams(new GridView.LayoutParams(width / 2, height / 6));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
         } else {
