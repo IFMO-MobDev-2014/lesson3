@@ -1,12 +1,14 @@
 package ru.ifmo.mobdev.translator.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+
 import ru.ifmo.mobdev.translator.R;
 import ru.ifmo.mobdev.translator.tasks.TranslateWordTask;
 
@@ -19,6 +21,7 @@ public class MainActivity extends Activity {
     private Intent intent;
     private EditText queryField;
     private MainActivity caller;
+    private ProgressDialog progressDialog;
 
     private String lastTranslatedInput;
 
@@ -29,11 +32,14 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         caller = this;
         intent = new Intent(this, ShowResultsActivity.class);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading translation");
         queryField = (EditText) findViewById(R.id.query_field);
         final Button translateButton = (Button) findViewById(R.id.translateButton);
         translateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressDialog.show();
                 lastTranslatedInput = queryField.getText().toString();
                 new TranslateWordTask(caller).execute(lastTranslatedInput);
             }
@@ -43,6 +49,7 @@ public class MainActivity extends Activity {
     public void onTranslation(String s){
         intent.putExtra(INPUT, lastTranslatedInput);
         intent.putExtra(TRANSLATED_INPUT, s);
+        progressDialog.dismiss();
         startActivity(intent);
     }
 }

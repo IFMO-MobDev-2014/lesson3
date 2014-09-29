@@ -2,6 +2,7 @@ package ru.ifmo.mobdev.translator.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.fivehundredpx.api.PxApi;
 
@@ -41,6 +42,8 @@ public class FindImagesTask extends AsyncTask<String, Void, ArrayList<Picture>> 
             }
         } catch (Exception e) {
             Log.e("FindImagesTask", "Search failed.", e);
+            Toast.makeText(activity, "HELLO",
+                    Toast.LENGTH_LONG).show();
         }
         return result;
     }

@@ -2,6 +2,7 @@ package ru.ifmo.mobdev.translator.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -54,6 +55,8 @@ public class TranslateWordTask extends AsyncTask<String, Void, String> {
         } catch (ClientProtocolException el) {
             Log.e("ERROR", "ClientProtocolException in TranslateWordTask");
         } catch (IOException e) {
+            Toast.makeText(mainScreen, "Error translating word, check your Internet connection", Toast.LENGTH_LONG)
+                    .show();
             Log.e("ERROR", "IOException in TranslateWordTask");
         }
         return translation;

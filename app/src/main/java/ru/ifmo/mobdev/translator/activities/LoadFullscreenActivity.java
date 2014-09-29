@@ -1,6 +1,7 @@
 package ru.ifmo.mobdev.translator.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -19,11 +20,15 @@ import ru.ifmo.mobdev.translator.R;
  */
 public class LoadFullscreenActivity extends Activity {
     private ImageView imageView;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fullscreen_activity);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Image loading");
+        progressDialog.show();
         imageView = (ImageView) findViewById(R.id.fullscreenImage);
         final Bundle extras = getIntent().getExtras();
         final URL link = (URL) extras.get(ShowResultsActivity.FULLSCREEN_LINK);
@@ -50,6 +55,7 @@ public class LoadFullscreenActivity extends Activity {
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
+            progressDialog.dismiss();
             imageView.setImageBitmap(bitmap);
         }
     }
