@@ -14,7 +14,7 @@
         android:background="@drawable/dot"
         android:layout_column="65"
         android:layout_gravity="right|top"
-        android:layout_alignTop="@+id/imageView"
+        android:layout_below="@+id/editText"
         android:layout_centerHorizontal="true" />
 
     <ImageView
@@ -25,7 +25,8 @@
         android:layout_above="@+id/button3"
         android:layout_alignParentStart="true"
         android:scaleType="fitXY"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:visibility="visible" />
 
     <EditText
         android:layout_width="wrap_content"
