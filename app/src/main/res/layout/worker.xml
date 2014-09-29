@@ -12,6 +12,20 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <ScrollView
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/errorWithPics">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/imagesLayout">
+        </LinearLayout>
+    </ScrollView>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,4 +35,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="40dp" />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/errorWithPics"
+        android:layout_below="@+id/back" />
 </RelativeLayout>
