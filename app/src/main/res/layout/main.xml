@@ -14,8 +14,8 @@
         android:background="@drawable/dot"
         android:layout_column="65"
         android:layout_gravity="right|top"
-        android:layout_below="@+id/editText"
-        android:layout_centerHorizontal="true"/>
+        android:layout_alignTop="@+id/imageView"
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -31,9 +31,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editText"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:hint="@string/input" />
+        android:hint="@string/input"
+        android:layout_below="@+id/button2"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center_vertical|center_horizontal"
+        android:textSize="30dp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -42,8 +45,10 @@
         android:src="@drawable/window2"
         android:visibility="invisible"
         android:scaleType="fitXY"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/button3" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
