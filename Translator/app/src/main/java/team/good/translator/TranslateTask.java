@@ -22,7 +22,7 @@ import java.net.URLEncoder;
 
 
 
-public class TranslateTask extends AsyncTask<String, Void, Integer> {
+public class TranslateTask extends AsyncTask<String, Void, String> {
     static private String lang = "en-ru";
     static private String key = "trnsl.1.1.20140927T195326Z.be027d8996c15274.7aba0f207271092f651358b169d637d7c850b92c";
     private String text;
@@ -31,8 +31,7 @@ public class TranslateTask extends AsyncTask<String, Void, Integer> {
 
 
     @Override
-    protected Integer doInBackground(String... str) {
-        //Log.i("XXXXM", "STARTED");
+    protected String doInBackground(String... str) {
         try {
             text = URLEncoder.encode(str[0], "utf-8");
         } catch (Exception e) {
@@ -54,20 +53,16 @@ public class TranslateTask extends AsyncTask<String, Void, Integer> {
                 String line = reader.readLine();
                 JSONObject jsonObject = new JSONObject(line);
                 translation = jsonObject.getJSONArray("text").getString(0);
-                //Log.i("TRANSLATION", translation);
             }
-            return statusCode;
+            status = statusCode;
+            return getTranslation();
         }
         catch (Exception e) {
-            //Log.i("ERROR", "" + e);
-            return 0;
+            status = 0;
+            return getTranslation();
         }
     }
 
-    @Override
-    protected void onPostExecute(Integer code) {
-        status = code;
-    }
 
     public int getStatusCode() {
         return status;

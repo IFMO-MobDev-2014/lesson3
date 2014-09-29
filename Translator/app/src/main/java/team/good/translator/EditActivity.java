@@ -31,6 +31,18 @@ public class EditActivity extends Activity {
         return bmps;
     }
 
+    public static String translate(String text) {
+        AsyncTask<String, Void, String> task = new TranslateTask().execute(text);
+        String tr;
+        try {
+            tr = task.get();
+            return tr;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "translate function was fucked up";
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
