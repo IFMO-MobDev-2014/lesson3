@@ -91,7 +91,8 @@ public class ImageDownloader {
                         Log.e("Error", "URL EXCEPTION");
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Log.e("Error", "JSON Problems");
+                        Log.e("Error", "JSON Problems" + k);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                         Log.e("Error", "Connection problems");
