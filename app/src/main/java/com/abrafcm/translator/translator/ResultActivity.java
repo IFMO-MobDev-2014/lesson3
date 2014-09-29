@@ -259,7 +259,11 @@ public class ResultActivity extends Activity {
         @Override
         protected void onPostExecute(String result) {
             if (result == null) {
-                Toast.makeText(context, Helper.ERROR_TRANSLATION, Toast.LENGTH_SHORT);
+                Toast.makeText(
+                        context,
+                        Helper.ERROR_TRANSLATION,
+                        Toast.LENGTH_SHORT
+                ).show();
             } else {
                 textView.setText(result);
             }

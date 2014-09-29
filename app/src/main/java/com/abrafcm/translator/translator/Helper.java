@@ -6,4 +6,6 @@ package com.abrafcm.translator.translator;
 public class Helper {
     public static final String EXTRA_TRANSLATE = "EXTRA_TRANSLATE";
     public static final String ERROR_TRANSLATION = "Translation error";
+    public static final String ERROR_NO_INTERNET = "Check internet connection";
+    public static final String ERROR_EMPTY_STRING = "Enter at least one character";
 }
