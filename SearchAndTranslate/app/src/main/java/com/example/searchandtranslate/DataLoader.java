@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.ImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,15 +33,17 @@ public class DataLoader {
         }
     }
 
-    public static class MyCallbackPicture implements  MyCallback<Bitmap[]> {
+    public static class MyCallbackPicture implements  MyCallback<Bitmap> {
         Context context;
+        ImageView image_view;
 
-        public MyCallbackPicture(Context context) {
+        public MyCallbackPicture(Context context, ImageView image_view) {
+            this.image_view = image_view;
             this.context = context;
         }
 
-        public void run(Bitmap[] param) {
-            OutputActivity.grid.setAdapter(new PicturesAdapter(context, param));
+        public void run(Bitmap param) {
+            image_view.setImageBitmap(param);
         }
     }
 
@@ -86,9 +89,9 @@ public class DataLoader {
 
     private static class PictureLoaderThread extends Thread {
         private final String query;
-        private final MyCallback<Bitmap[]> callback;
+        private final MyCallback<Bitmap> callback;
 
-        public PictureLoaderThread(String query, MyCallback<Bitmap[]> callback) {
+        public PictureLoaderThread(String query, MyCallback<Bitmap> callback) {
             super();
             this.query = query;
             this.callback = callback;
@@ -170,7 +173,7 @@ public class DataLoader {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    callback.run(finalResult);
+                    callback.run(finalResult[0]);
                 }
             });
         }
@@ -180,7 +183,7 @@ public class DataLoader {
         new TranslateTask(callback).execute(word);
     }
 
-    public static void asyncLoadPictures(String word, MyCallback<Bitmap[]> callback) {
+    public static void asyncLoadPictures(String word, int i, MyCallback<Bitmap> callback) {
         if(handler == null)
             handler = new Handler(Looper.getMainLooper());
 

@@ -34,8 +34,10 @@ public class OutputActivity extends ActionBarActivity {
         text = (TextView)findViewById(R.id.textView);
         grid = (GridView)findViewById(R.id.gridView);
         context = this;
+
         DataLoader.asyncTranslate(word, new DataLoader.MyCallbackString());
-        DataLoader.asyncLoadPictures(word, new DataLoader.MyCallbackPicture(context));
+        OutputActivity.grid.setAdapter(new PicturesAdapter(context));
+       // DataLoader.asyncLoadPictures(word, new DataLoader.MyCallbackPicture(context));
 
     }
 
