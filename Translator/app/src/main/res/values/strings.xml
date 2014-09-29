@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Translator</string>
+    <string name="result_screen_name">Translation results</string>
+
+</resources>
