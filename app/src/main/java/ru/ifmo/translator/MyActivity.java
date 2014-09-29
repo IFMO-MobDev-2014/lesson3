@@ -23,15 +23,9 @@ public class MyActivity extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String query = editText.getText().toString(); // TODO: not sure toString method
+                String query = editText.getText().toString();
                 translation.setText(TranslationLoader.translate(query));
-//                 TODO: Uncomment this line when testing this class
-<<<<<<< HEAD
-//                image.setImageDrawable(imageLoader.loadImage(query));
-=======
                 image.setImageDrawable(imageLoader.loadImage(query)[1]);
-                //image.setImageDrawable(getResources().getDrawable(R.drawable.cat));
->>>>>>> remotes/origin/images
             }
         });
     }
