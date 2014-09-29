@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Translator491</string>
+    <string name="search">Search</string>
+    <string name="image_hint">Enter search terms</string>
+    <string name="title_activity_image_display">View Image</string>
+    <string name="showImage">I want pictures</string>
+    <string name="text_to_translate">Enter the text to translate</string>
+    <string name="button_translate">Translate</string>
+    <string name="button_swap">Swap languages</string>
+    <string name="translation">The translation will appear here</string>
+    <string name="english">English</string>
+    <string name="russian">Russian</string>
+    <string name="next">to</string>
+
+</resources>

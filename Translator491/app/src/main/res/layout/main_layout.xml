@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/inputQuery"
+        android:layout_width="fill_parent"
+        android:layout_height="72dp"
+        android:hint="@string/text_to_translate"
+        android:singleLine="false" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/from"
+            android:layout_width="4dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.28"
+            android:gravity="left"
+            android:text="english"
+
+        android:textAppearance="?android:attr/textAppearanceMediumInverse"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="1dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.10"
+            android:gravity="center"
+            android:text="@string/next"
+            android:textAppearance="?android:attr/textAppearanceMediumInverse"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/to"
+            android:layout_width="4dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.28"
+            android:gravity="right"
+            android:text="russian"
+        android:textAppearance="?android:attr/textAppearanceMediumInverse"
+            android:enabled="false" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_translate"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="left"
+            android:text="@string/button_translate"
+            android:textAppearance="?android:attr/textAppearanceMediumInverse"
+            android:onClick="translate" />
+
+        <Button
+            android:id="@+id/button_swap"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="left"
+            android:text="@string/button_swap"
+            android:textAppearance="?android:attr/textAppearanceMediumInverse"
+            android:onClick="swapLanguage" />
+    </LinearLayout>
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0"
+        android:background="#ffffffff"
+        android:gravity="top"
+        android:hint="@string/translation"
+        android:singleLine="false"
+        android:textSize="30dp" />
+
+
+    <Button
+        android:id="@+id/buttonShowImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="@string/showImage"
+        android:enabled="true">
+
+    </Button>
+</LinearLayout>
