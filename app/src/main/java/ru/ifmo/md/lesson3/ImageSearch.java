@@ -1,10 +1,8 @@
 package ru.ifmo.md.lesson3;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Log;
 
-import org.apache.http.HttpRequest;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -13,22 +11,20 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-
 /**
  * Created by ComradeK on 28/09/2014.
  */
-public class ImageSearch {
+public class ImageSearch implements Runnable {
 
     public static final int IMGCOUNT = 10;
+    String input;
 
-    public String[] search(String input) {
+    public ImageSearch(String string)
+    {
+        input = string;
+    }
+
+    public void search(String input) {
         try {
             String pictures[] = new String[10];
             HttpClient client = new DefaultHttpClient();
@@ -37,13 +33,15 @@ public class ImageSearch {
                     .authority("api.flickr.com")
                     .appendPath("services")
                     .appendPath("rest")
+                    .appendPath("")
                     .appendQueryParameter("api_key", "f101f9679bf4a613577977629b5a710f")
-                    .appendQueryParameter("format", "json")
                     .appendQueryParameter("method", "flickr.photos.search")
+                    .appendQueryParameter("format", "json")
                     .appendQueryParameter("text", input);
             HttpGet POST = new HttpGet(uriBuilder.build().toString());
             ResponseHandler<String> handler = new BasicResponseHandler();
             String response = client.execute(POST, handler);
+            Log.i("1", response);
             JSONObject jsonResponse = new JSONObject(response.substring(response.indexOf("(") + 1,
                     response.lastIndexOf(")")));
             JSONArray results = jsonResponse.getJSONObject("photos").getJSONArray("photo");
@@ -57,11 +55,17 @@ public class ImageSearch {
                 String id = result.getString("id");
                 String secret = result.getString("secret");
                 pictures[i] = "https://farm" + farm + ".staticflickr.com/" +
-                                server + "/" + id + "_" + secret + "_q.jpg";
+                        server + "/" + id + "_" + secret + "_q.jpg";
+                Log.i("1", pictures[i]);
             }
-            return pictures;
+            MainActivity.urls = pictures;
         } catch (Exception e) {
-            return new String[0];
+            Log.i("shitty", "shit");
+            e.printStackTrace();
         }
+}
+
+    public void run() {
+        search(input);
     }
 }

@@ -35,30 +35,8 @@ public class MyActivity_second1 extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String str =getIntent().getStringExtra("String");
-        setContentView(R.layout.layout_1);
-        findViewById(R.id.button_back1).setOnTouchListener(new Button.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                EditText ed =(EditText) findViewById(R.id.editText);
-                Intent intent = new Intent(MyActivity_second1.this, MyActivity.class);
-                startActivity(intent);
-                return false;
-            }
-        });
-        final ImageView imageView = (ImageView) findViewById(R.id.icon);
-        TextView textView=(TextView) findViewById(R.id.labelk);
+
+
         //тут надо получить перевод str и положить его в str
-        textView.setText(str);
-        imageView.setOnTouchListener(new View.OnTouchListener() {
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                i++;
-                if (i >= 10) i = i % 10;
-                imageView.setImageResource(c[i]);
-                return false;
-            }
-
-        });
-        imageView.setImageResource(R.drawable.ic_launcher_1);
     }}
