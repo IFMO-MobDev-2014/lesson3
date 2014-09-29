@@ -25,4 +25,12 @@
         android:onClick="getBack"
         android:layout_below="@+id/wordTr" />
 
+    <Gallery
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/gallery"
+        android:layout_below="@+id/backBut"
+        android:layout_centerInParent="true" />
+
 </RelativeLayout>
