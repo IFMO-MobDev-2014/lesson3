@@ -41,10 +41,10 @@ class getImage extends AsyncTask<String, Void, Drawable[]> {
     protected Drawable[] doInBackground(String... params) {
         System.out.println(encodedKey);
         try {
-            URL url = new URL("https://api.datamarket.azure.com/Bing/Search/Image?$format=json&Query=%27" + params[0] + "%27");
+            URL url = new URL("https://api.datamarket.azure.com/Bing/Search/Image?$format=json&Query=%27" + params[0].replaceAll(" ", "%32") + "%27");
             HttpURLConnection connect = (HttpURLConnection) url.openConnection();
             connect.setRequestProperty("Authorization", encodedKey);
-            connect.setRequestProperty("Query", "horse");
+            connect.setRequestProperty("Query", params[0]);
 
             InputStream is = connect.getInputStream();
             Scanner in = new Scanner(is);
@@ -56,7 +56,7 @@ class getImage extends AsyncTask<String, Void, Drawable[]> {
             json = new JSONObject(json.get("d").toString());
             JSONArray arr = new JSONArray(json.get("results").toString());
             Drawable[] res = new Drawable[COUNT_IMAGES];
-            for (int i = 0; i < COUNT_IMAGES; i++) {
+            for (int i = 0; i < Math.min(COUNT_IMAGES, arr.length()); i++) {
                 JSONObject cur = new JSONObject(arr.get(i).toString());
                 res[i] = download(cur.get("MediaUrl").toString());
             }
@@ -65,7 +65,7 @@ class getImage extends AsyncTask<String, Void, Drawable[]> {
         } catch (Exception e) {
             Log.i("", "FAIL");
             e.printStackTrace();
-            return null;
+            return new Drawable[COUNT_IMAGES];
         }
     }
 }
