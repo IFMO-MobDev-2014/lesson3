@@ -19,7 +19,6 @@ public class MyActivity extends Activity {
         setContentView(R.layout.firstscreen);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.my, menu);
@@ -36,15 +35,9 @@ public class MyActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-
     public void onClick(View view) {
         EditText textInEnglish = (EditText) findViewById(R.id.editText);
         textToTranslate = textInEnglish.getText().toString();
-        if (textToTranslate.length() == 0) {
-            //exception
-        } else {
-            //execution
-        }
         Intent intent = new Intent(MyActivity.this, SecondActivity.class);
         intent.putExtra("Text to translate", textToTranslate);
         startActivity(intent);
