@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import ru.ifmo.mobdev.translator.R;
@@ -21,7 +24,6 @@ public class MainActivity extends Activity {
     static final String TRANSLATED_INPUT = "ru.ifmo.mobdev.translator.translation";
     private Intent intent;
     private EditText queryField;
-    private MainActivity caller;
     private ProgressDialog progressDialog;
     private String lastTranslatedInput;
 
@@ -30,7 +32,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        caller = this;
         intent = new Intent(this, ShowResultsActivity.class);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading translation");
@@ -41,7 +42,20 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 progressDialog.show();
                 lastTranslatedInput = queryField.getText().toString();
-                new TranslateWordTask(caller).execute(lastTranslatedInput);
+                new TranslateWordTask(MainActivity.this).execute(lastTranslatedInput);
+            }
+        });
+
+        queryField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent event) {
+                if (i == EditorInfo.IME_NULL
+                        && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    lastTranslatedInput = queryField.getText().toString();
+                    progressDialog.show();
+                    new TranslateWordTask(MainActivity.this).execute(lastTranslatedInput);
+                }
+                return true;
             }
         });
     }
@@ -62,7 +76,7 @@ public class MainActivity extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(MainActivity.this, "Unexpected error occured. " +
+                Toast.makeText(MainActivity.this, "Unexpected error occurred. " +
                         "Please, check your Internet connection.", Toast.LENGTH_LONG)
                         .show();
             }

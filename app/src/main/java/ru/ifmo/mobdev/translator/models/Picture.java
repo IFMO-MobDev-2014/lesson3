@@ -20,6 +20,14 @@ public class Picture {
         drawable = null;
     }
 
+    public Picture() {
+        name = null;
+        author = null;
+        url = null;
+        thumbnailUrl = null;
+        drawable = null;
+    }
+
     public String getName() {
         return name;
     }

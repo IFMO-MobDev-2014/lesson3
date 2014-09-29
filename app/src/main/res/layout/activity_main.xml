@@ -28,7 +28,7 @@
         android:hint="@string/query_hint"
         android:paddingBottom="15dp"
         android:paddingTop="60dp"
-        android:maxLines="1"/>
+        android:singleLine="true"/>
 
     <Button
         android:id="@+id/translateButton"

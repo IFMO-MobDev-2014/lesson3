@@ -8,10 +8,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.net.URL;
 
 import ru.ifmo.mobdev.translator.R;
@@ -26,9 +26,10 @@ public class LoadFullscreenActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.fullscreen_activity);
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading image");
+        progressDialog.setMessage("Loading fullscreen image");
         progressDialog.show();
         imageView = (ImageView) findViewById(R.id.fullscreenImage);
         final Bundle extras = getIntent().getExtras();
@@ -66,10 +67,11 @@ public class LoadFullscreenActivity extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                progressDialog.dismiss();
                 Toast.makeText(LoadFullscreenActivity.this, "Error loading fullscreen image. " +
                         "Check your Internet connection.", Toast.LENGTH_LONG).show();
-                LoadFullscreenActivity.this.finish();
             }
         });
+        finish();
     }
 }

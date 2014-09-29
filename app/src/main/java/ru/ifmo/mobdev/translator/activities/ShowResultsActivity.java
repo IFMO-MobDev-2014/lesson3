@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -27,10 +28,13 @@ public class ShowResultsActivity extends Activity {
     ArrayList<Picture> loadedPictures = new ArrayList<Picture>();
     public static final String FULLSCREEN_LINK = "ru.ifmo.mobdev.translator.fullscreenLink";
     private Intent fullscreen;
+    private int loadedImageCounter;
+    private int placeHoldersCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.show_results_activity);
         fullscreen = new Intent(this, LoadFullscreenActivity.class);
         final Intent caller = getIntent();
@@ -51,7 +55,7 @@ public class ShowResultsActivity extends Activity {
                 URL link = null;
                 try {
                     link = new URL(loadedPictures.get(i).getUrl());
-                } catch (MalformedURLException e) {
+                } catch (MalformedURLException ignore) {
                 }
                 fullscreen.putExtra(FULLSCREEN_LINK, link);
                 startActivity(fullscreen);
@@ -63,6 +67,11 @@ public class ShowResultsActivity extends Activity {
         loadedPictures = pictures;
         for (Picture picture : pictures) {
             DownloadImageTask downloadImageTask = new DownloadImageTask(this);
+            GridView view = (GridView) findViewById(R.id.picsGv);
+            ImageGridAdapter adapter = (ImageGridAdapter) view.getAdapter();
+            Picture stub = new Picture();
+            adapter.addPicture(stub, placeHoldersCount);
+            placeHoldersCount++;
             downloadImageTask.execute(picture);
         }
     }
@@ -70,7 +79,8 @@ public class ShowResultsActivity extends Activity {
     public void onImageLoaded(Picture picture) {
         GridView view = (GridView) findViewById(R.id.picsGv);
         ImageGridAdapter adapter = (ImageGridAdapter) view.getAdapter();
-        adapter.addPicture(picture);
+        adapter.addPicture(picture, loadedImageCounter);
+        loadedImageCounter++;
     }
 
     public void onImageLoadingError() {
