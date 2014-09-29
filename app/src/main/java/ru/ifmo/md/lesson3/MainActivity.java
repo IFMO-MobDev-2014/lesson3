@@ -5,7 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ public class MainActivity extends Activity {
     public final static String MAIN_QUERY = "mainQuery";
     Intent intent;
     EditText editText;
+    Button button;
     Resources resources;
 
 
@@ -27,7 +31,23 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main);
         resources = getResources();
         editText = (EditText) findViewById(R.id.editText);
+        button = (Button) findViewById(R.id.button);
         intent = new Intent(this, ResultActivity.class);
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                button.setEnabled(!charSequence.toString().trim().isEmpty());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
     }
 
     public void onButtonTranslatePushed(View view) {
