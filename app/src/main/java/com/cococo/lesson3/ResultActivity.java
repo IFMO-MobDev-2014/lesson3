@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class ResultActivity extends Activity {
+    List<String> urls = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +19,9 @@ public class ResultActivity extends Activity {
 
         Intent intent = getIntent();
         new TranslateTask(this, intent.getStringExtra("word")).execute();
+        GettingUrlsTask t2 = new GettingUrlsTask(this);
+        t2.word = intent.getStringExtra("word");
+        t2.execute();
         new DownloadingImagesTask(this).execute();
     }
 
@@ -27,5 +33,9 @@ public class ResultActivity extends Activity {
     public void setFoundedImages(Drawable[] imagePack) {
         final ListView view = (ListView) findViewById(R.id.listView);
         view.setAdapter(new ImageAdapter(this, imagePack));
+    }
+
+    public void setUrls(List<String> s) {
+        urls = s;
     }
 }
