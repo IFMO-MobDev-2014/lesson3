@@ -38,7 +38,7 @@ public class TranslationActivity extends Activity {
 
     String phrase;
     String result;
-    Translation myTranslation = new Translation();
+    Translation myTranslation;
 
     public boolean hasInternetConnection() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -71,9 +71,6 @@ public class TranslationActivity extends Activity {
     }
 
     public void sendWords(View view) {
-        //Intent intent = new Intent(this, PicturesActivity.class);
-        //EditText editText = (EditText) findViewById(R.id.words);
-        //String message = ((EditText) findViewById(R.id.words)).getText().toString();
         phrase = ((EditText) findViewById(R.id.words)).getText().toString();
         if ("".equals(phrase)) {
             Toast myToast = Toast.makeText(getApplicationContext(), "Ошибка: введите слово для перевода", Toast.LENGTH_SHORT);
@@ -81,6 +78,7 @@ public class TranslationActivity extends Activity {
             myToast.show();
         } else {
             if (hasInternetConnection()) {
+                myTranslation = new Translation();
                 myTranslation.execute(phrase);
             } else {
                 Toast myToast = Toast.makeText(getApplicationContext(), "Ошибка: Невозможно выполнить сетевой запрос. Проверьте наличие Интернет соединения", Toast.LENGTH_SHORT);
@@ -88,8 +86,6 @@ public class TranslationActivity extends Activity {
                 myToast.show();
             }
         }
-//        intent.putExtra(EXTRA_MESSAGE, phrase);
-//        startActivity(intent);
     }
 
 
@@ -156,12 +152,6 @@ public class TranslationActivity extends Activity {
                 httpConnection.disconnect();
             }
         }
-//        public String resultJSON(String str) throws JSONException {
-//            JSONObject object = (JSONObject) new JSONTokener(str).nextValue();
-//            String result = object.getString("text");
-//            result = result.subSequence(2, result.length() - 2).toString();
-//            return result;
-//        }
     }
 
 }

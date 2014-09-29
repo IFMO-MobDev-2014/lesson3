@@ -2,6 +2,7 @@ package year2013.ifmo.lesson3;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -69,7 +70,7 @@ public class PicturesActivity extends Activity {
                     // do a google image search, get the ~10 paginated results
                     int start = 0;
                     final ArrayList<String> urls = new ArrayList<String>();
-                    while (start < 40) {
+                    while (start < 10) {
                         DefaultHttpClient client = new DefaultHttpClient();
                         HttpGet get = new HttpGet(String.format("https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=%s&start=%d&imgsz=medium", Uri.encode(message), start));
                         HttpResponse resp = client.execute(get);
