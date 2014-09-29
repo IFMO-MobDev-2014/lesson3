@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
     // TODO Add history support
@@ -43,7 +44,9 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
-    public void onTranslateFail() {
-        //TODO translate fain dialog
+    public void onTranslateFail(Exception e) {
+        progress.dismiss();
+        Toast toast = Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG);
+        toast.show();
     }
 }
