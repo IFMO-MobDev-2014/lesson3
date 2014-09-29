@@ -18,7 +18,9 @@
         </activity>
         <activity
                 android:name="ru.ifmo.md.lesson3.GalleryActivity"
-                android:label="@string/gallery_name">
+                android:label="@string/gallery_name"
+                android:screenOrientation="portrait"
+                android:configChanges="keyboardHidden|orientation">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="ru.ifmo.md.lesson3.MainActivity" />
