@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.SystemClock;
+import android.util.Log;
 import android.widget.ListView;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -64,9 +65,10 @@ public class ImageFetcher {
             for (String line = null; (line = reader.readLine()) != null;) {
                 builder.append(line).append("\n");
             }
-            JSONTokener tokener = new JSONTokener(builder.toString());
-            JSONObject preFinalResult = new JSONObject(tokener).getJSONObject("photos");
-            JSONArray finalResult = preFinalResult.getJSONArray("photo");
+            String json_result = builder.toString();
+            JSONObject jsonResponse = new JSONObject(json_result.substring(json_result.indexOf("(") + 1,
+                    json_result.lastIndexOf(")")));
+            JSONArray finalResult = jsonResponse.getJSONObject("photos").getJSONArray("photo");
             for (int i=0;i<finalResult.length();i++)
             {
                 JSONObject pictureWithId= finalResult.getJSONObject(i);
@@ -129,7 +131,7 @@ public class ImageFetcher {
 
         @Override
         protected Bitmap doInBackground(String... id) {
-            String url="";
+            String url=null;
             try {
                 HttpClient client = new DefaultHttpClient();
                 HttpPost post = new HttpPost(pictureUrl);
@@ -145,19 +147,21 @@ public class ImageFetcher {
                 for (String line = null; (line = reader.readLine()) != null;) {
                     builder.append(line).append("\n");
                 }
-                JSONTokener tokener = new JSONTokener(builder.toString());
-                JSONArray finalResult = new JSONObject(tokener).getJSONArray("size");
+                String json_result = builder.toString();
+                JSONObject jsonResponse = new JSONObject(json_result.substring(json_result.indexOf("(") + 1,
+                        json_result.lastIndexOf(")")));
+                JSONArray finalResult = jsonResponse.getJSONObject("sizes").getJSONArray("size");
                 for (int i=0;i<finalResult.length();i++)
                 {
-
                     JSONObject sizePicture= finalResult.getJSONObject(i);
-                    if("Small" == sizePicture.getString("label"))
+                    if(sizePicture.getString("label").equals("Small"))
                     {
                         url =  sizePicture.getString("source");
+
                         break;
                     }
                 }
-                if(url=="")
+                if(url==null)
                 {
                     throw new IOException("fail haven't size");
                 }
