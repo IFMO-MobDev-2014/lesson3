@@ -13,9 +13,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.IOException;
 import java.util.ArrayList;
 
-//import com.javacodegeeks.android.json.model.Result;
-//import com.javacodegeeks.android.json.model.SearchResponse;
-
 /**
  * Created by sultan on 28.09.14.
  */

@@ -2,11 +2,9 @@ package ru.ifmo.md.lesson3.patrikeev_shah.translator;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -17,11 +15,19 @@ import java.util.ArrayList;
 public class ImageAdapter extends BaseAdapter{
 
     private final Context mContext;
-    private final ArrayList<Bitmap> mBitmaps;
+    private ArrayList<Bitmap> mBitmaps;
 
-    public ImageAdapter(Context mContext, ArrayList<Bitmap> mBitmaps) {
+    public ImageAdapter(Context mContext) {
         this.mContext = mContext;
-        this.mBitmaps = mBitmaps;
+        this.mBitmaps = new ArrayList<>();
+    }
+
+    public void add(Bitmap bmp) {
+        mBitmaps.add(Bitmap.createScaledBitmap(bmp, 450, 450, false));
+    }
+
+    public void clear() {
+        mBitmaps.clear();
     }
 
     @Override

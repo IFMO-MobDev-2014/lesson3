@@ -24,15 +24,16 @@ public class ResultActivity extends Activity {
     private ImagesReceiver loaderImages = null;
     private UrlsImagesReceiver loaderUrls = null;
     private GridView gridView = null;
-    private ArrayList<Bitmap> bitmaps = null;
     private Button backButton;
     private String initialWord;
     private String translatedWord;
     private TextView translationTextView;
+    private ImageAdapter imageAdapter;
 
      public ResultActivity() {
         callerIntent = getIntent();
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,39 +49,27 @@ public class ResultActivity extends Activity {
 
         gridView = (GridView)findViewById(R.id.grid_view);
 
-        bitmaps = getImages();
-        ImageAdapter imageAdapter = new ImageAdapter(this, bitmaps);
-
+        imageAdapter = new ImageAdapter(this);
         gridView.setAdapter(imageAdapter);
+
+        getImages();
     }
 
     public void backButtonClicked(View view) {
         finish();
     }
 
-    private ArrayList<Bitmap> getImages() {
-        if (loaderUrls == null || loaderUrls.getStatus().equals(AsyncTask.Status.FINISHED)) {
-            loaderUrls = new UrlsImagesReceiver();
-            loaderUrls.execute(initialWord);
-        }
+    private void getImages() {
+        loaderUrls = new UrlsImagesReceiver();
+        loaderUrls.execute(initialWord);
 
-        if (loaderImages == null ||
-                loaderImages.getStatus().equals(AsyncTask.Status.FINISHED)) {
-            loaderImages = new ImagesReceiver();
-            try {
-                loaderImages.execute(loaderUrls.get());
-            } catch (InterruptedException | ExecutionException e) {
-                return null;
-            }
-        }
+        loaderImages = new ImagesReceiver(imageAdapter);
 
         try {
-            return loaderImages.get();
+            loaderImages.execute(loaderUrls.get());
         } catch (InterruptedException | ExecutionException e) {
-            return null;
         }
     }
-
 
 }
 
