@@ -18,7 +18,7 @@ import java.util.Scanner;
 public class ImageLoader {
     private static final String key = "JLwThFmpOoYj9p7XTneZ41HUuO3jYoY8Wi3yNftMqfs";
     private static final String encodedKey = "Basic " + Base64.encodeToString((key + ":" + key).getBytes(), Base64.NO_WRAP);
-    private static final int COUNT_IMAGES = 3;
+    private static final int COUNT_IMAGES = 5;
 
     public static Drawable[] loadImage(String query) {
         try {
@@ -41,10 +41,10 @@ public class ImageLoader {
                 JSONObject cur = new JSONObject(arr.get(i).toString());
                 res[i] = download(cur.get("MediaUrl").toString());
             }
-            Log.i("", "OK");
+            Log.d("", "OK");
             return res;
         } catch (Exception e) {
-            Log.i("", "FAIL");
+            Log.d("", "FAIL");
             e.printStackTrace();
             return new Drawable[COUNT_IMAGES];
         }
