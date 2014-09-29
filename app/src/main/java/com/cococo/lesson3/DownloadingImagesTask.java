@@ -1,13 +1,8 @@
 package com.cococo.lesson3;
 
-/**
- * Created by Freemahn on 28.09.2014.
- */
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,10 +28,8 @@ public class DownloadingImagesTask extends AsyncTask<String, Void, Drawable[]> {
     @Override
     protected Drawable[] doInBackground(String... urls) {
         Drawable[] d = new Drawable[10];
-        Log.e("DOIN", "STARTED");
         for (int i = 0; i < urlsMore.size(); i++) {
             d[i] = getImageFromURL(urlsMore.get(i));
-            Log.e("DOIN", d[i].toString());
         }
         return d;
 
@@ -45,16 +38,13 @@ public class DownloadingImagesTask extends AsyncTask<String, Void, Drawable[]> {
 
     public Drawable getImageFromURL(String imageURL) {
         Drawable drawable = null;
-        Log.e("GETDRAWABLE", "1");
         try {
             drawable = Drawable.createFromStream((InputStream) new URL(imageURL).getContent(), "Picture");
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            Log.e("ERROR", e.toString());
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e("ERROR", e.toString());
         }
         return drawable;
     }

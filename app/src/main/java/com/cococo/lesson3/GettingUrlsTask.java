@@ -1,9 +1,5 @@
 package com.cococo.lesson3;
 
-/**
- * Created by Freemahn on 28.09.2014.
- */
-
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -20,9 +16,10 @@ public class GettingUrlsTask extends AsyncTask<String, Void, List<String>> {
     Context context;
     String word;
 
-    public GettingUrlsTask(Context context) {
+    public GettingUrlsTask(Context context, String word) {
         super();
         this.context = context;
+        this.word = word;
     }
 
     @Override
@@ -49,7 +46,7 @@ public class GettingUrlsTask extends AsyncTask<String, Void, List<String>> {
         params.add(new BasicNameValuePair("per_page", "10"));
         params.add(new BasicNameValuePair("media", "photos"));
         JSONObject b = parser.makeHttpRequest(url, params);
-        JSONArray a = null;
+        JSONArray a;
         List<String> temp = null;
 
         try {
@@ -63,7 +60,6 @@ public class GettingUrlsTask extends AsyncTask<String, Void, List<String>> {
                 String id = s.getString("id");
                 String secret = s.getString("secret");
                 temp.add("http://farm" + farmid + ".staticflickr.com/" + serverid + "/" + id + "_" + secret + ".jpg");
-                // Log.v("TEMP", temp.get(i));
             }
         } catch (JSONException e) {
             e.printStackTrace();

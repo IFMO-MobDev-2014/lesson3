@@ -1,7 +1,6 @@
 package com.cococo.lesson3;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -10,18 +9,16 @@ import android.widget.TextView;
 import java.util.List;
 
 public class ResultActivity extends Activity {
-    List<String> urls = null;
+    List<String> urls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        Intent intent = getIntent();
-        new TranslateTask(this, intent.getStringExtra("word")).execute();
-        GettingUrlsTask t2 = new GettingUrlsTask(this);
-        t2.word = intent.getStringExtra("word");
-        t2.execute();
+        String trWord = getIntent().getStringExtra("word");
+        new TranslateTask(this, trWord).execute();
+        new GettingUrlsTask(this, trWord).execute();
     }
 
     public void setTranslatedText(String res) {

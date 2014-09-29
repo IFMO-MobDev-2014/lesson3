@@ -43,9 +43,8 @@ public class TranslateTask extends AsyncTask<String, Void, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject jsonData) {
         if (jsonData != null) {
-            String translatedText = "";
             try {
-                translatedText = jsonData.getString("text");
+                String translatedText = jsonData.getString("text");
                 ((ResultActivity) context).setTranslatedText(translatedText.substring(2,translatedText.length()-2));
             } catch (JSONException e) {
                 e.printStackTrace();
