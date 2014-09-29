@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Visual dicktionary</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="edit_information">type words here...</string>
+    <string name="tr_but_name">translate</string>
+    <string name="title_activity_result">Results for searching</string>
+    <string name="back_button">one more word</string>
+
+</resources>
