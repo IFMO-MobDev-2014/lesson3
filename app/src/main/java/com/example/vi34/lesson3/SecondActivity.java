@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,7 +13,6 @@ public class SecondActivity extends Activity {
     public static ImageView[] imageView = new ImageView[10];
     public static String translation;
     String textToTranslate;
-    public static Bitmap[] bmp = new Bitmap[10];
     public static TextView russianText;
 
     @Override
@@ -30,8 +28,6 @@ public class SecondActivity extends Activity {
         downloadImages(textToTranslate);
 
 
-
-        //Ooh Max! It's too "Bydlo code"!
         imageView[0] = (ImageView) findViewById(R.id.imageView2);
         imageView[1] = (ImageView) findViewById(R.id.imageView3);
         imageView[2] = (ImageView) findViewById(R.id.imageView4);
@@ -61,7 +57,6 @@ public class SecondActivity extends Activity {
 
     protected void downloadImages(String query)
     {
-        // To do: need to add Adapter
         ImageDownloader imageDownloader = new ImageDownloader();
         imageDownloader.search(query);
 
@@ -71,13 +66,6 @@ public class SecondActivity extends Activity {
         Translator translator = new Translator();
         translator.execution(query);
     }
-
-    /*
-    public void redrawImages(){
-        imageView[0].invalidate();
-        imageView[1].invalidate();
-    }
-*/
 
     public void onBackPressed() {
         Intent intent = new Intent(SecondActivity.this, MyActivity.class);

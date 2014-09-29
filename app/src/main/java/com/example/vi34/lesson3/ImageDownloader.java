@@ -48,57 +48,51 @@ public class ImageDownloader {
             } catch (Exception e) {
                 Log.e("ASYNC", "encode query problems");
             }
-                for (int k = 0; done < 10; k++) {
-
-                    try {
-
-
-                        url = new URL("https://ajax.googleapis.com/ajax/services/search/images?" +
-                                "v=1.0&q=" + query[0] + "&imgsz=medium&rsz=8&userip=INSERT-USER-IP" + "&start=" + (k * 8));
-                        connection = url.openConnection();
-                        connection.addRequestProperty("Referer", "ITMO homework app");
-                        StringBuilder builder = new StringBuilder();
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                        while ((line = reader.readLine()) != null) {
-                            builder.append(line);
-                        }
-                        json = new JSONObject(builder.toString());
-                        resultArray = json.getJSONObject("responseData").getJSONArray("results");
-
-
-                        for (int i = 0; i < 8 && done < 10; i++) {
-                            try {
-                                json = resultArray.getJSONObject(i);
-                                imageLinks[done] = json.getString("url");
-                                url = new URL(imageLinks[done]);
-                                connection = url.openConnection();
-                                connection.setDoInput(true);
-                                connection.connect();
-                                input = connection.getInputStream();
-                                bmp[done] = BitmapFactory.decodeStream(input);
-                                done++;
-                                publishProgress(bmp[done - 1]);
-
-                            } catch (IOException ie) {
-                                Log.e("Error", "Connection problems");
-
-                            } catch (JSONException e) {
-                            }
-
-                        }
-                    } catch (MalformedURLException e)
-                    {
-                        Log.e("Error", "URL EXCEPTION");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.e("Error", "JSON Problems" + k);
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Log.e("Error", "Connection problems");
+            for (int k = 0; done < 10; k++) {
+                try {
+                    url = new URL("https://ajax.googleapis.com/ajax/services/search/images?" +
+                            "v=1.0&q=" + query[0] + "&imgsz=medium&rsz=8&userip=INSERT-USER-IP" + "&start=" + (k * 8));
+                    connection = url.openConnection();
+                    connection.addRequestProperty("Referer", "ITMO homework app");
+                    StringBuilder builder = new StringBuilder();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    while ((line = reader.readLine()) != null) {
+                        builder.append(line);
                     }
+                    json = new JSONObject(builder.toString());
+                    resultArray = json.getJSONObject("responseData").getJSONArray("results");
 
+
+                    for (int i = 0; i < 8 && done < 10; i++) {
+                        try {
+                            json = resultArray.getJSONObject(i);
+                            imageLinks[done] = json.getString("url");
+                            url = new URL(imageLinks[done]);
+                            connection = url.openConnection();
+                            connection.setDoInput(true);
+                            connection.connect();
+                            input = connection.getInputStream();
+                            bmp[done] = BitmapFactory.decodeStream(input);
+                            done++;
+                            publishProgress(bmp[done - 1]);
+
+                        } catch (IOException ie) {
+                            Log.e("Error", "Connection problems");
+
+                        } catch (JSONException e) {
+                        }
+                    }
+                } catch (MalformedURLException e) {
+                    Log.e("Error", "URL EXCEPTION");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("Error", "JSON Problems" + k);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e("Error", "Connection problems");
                 }
+
+            }
             return bmp;
         }
 
@@ -110,12 +104,9 @@ public class ImageDownloader {
 
         protected void onPostExecute(Bitmap[] result) {
             Log.i("ASYNC", "Done");
-            SecondActivity.bmp = result;
-            //---- Bad solution... fix it later
             for (int i = 0; i < 10; i++) {
                 SecondActivity.imageView[i].setImageBitmap(result[i]);
             }
-            //----
         }
     }
 }
