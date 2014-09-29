@@ -19,13 +19,12 @@ public class MyActivity extends Activity {
         final TextView translation = (TextView) findViewById(R.id.translationResult);
         final ImageView image = (ImageView) findViewById(R.id.image);
         final EditText editText = (EditText) findViewById(R.id.wordInput);
-        final TranslationLoader translationLoader = new TranslationLoader();
         final ImageLoader imageLoader = new ImageLoader();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String query = editText.getText().toString(); // TODO: not sure toString method
-                translation.setText(translationLoader.translate(query));
+                translation.setText(TranslationLoader.translate(query));
 //                 TODO: Uncomment this line when testing this class
 //                image.setImageDrawable(imageLoader.loadImage(query));
                 image.setImageDrawable(getResources().getDrawable(R.drawable.cat));

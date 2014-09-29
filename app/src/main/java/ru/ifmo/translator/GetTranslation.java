@@ -17,7 +17,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 
 /**
- * @author Zakhar Voit (zakharvoit@gmail.com)
+ * @author Marianna Bisyrina
  */
 public class GetTranslation extends AsyncTask <String, Void, String> {
 

@@ -7,7 +7,7 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
- * Created by mariashka on 9/27/14.
+ * @author Marianna Bisyrina
  */
 public class ConnectionFactory {
     static final String host = "https://translate.yandex.net/api/v1.5/tr.json/translate?";
