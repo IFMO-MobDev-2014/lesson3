@@ -10,6 +10,8 @@ import static ru.ifmo.md.lesson3.Translator.TranslateLanguage.*;
 
 public class FindTranslationTask extends AsyncTask<String, Void, String> {
     MainActivity activity;
+    Exception exception;
+
     public FindTranslationTask(MainActivity mainActivity) {
         activity = mainActivity;
     }
@@ -21,10 +23,19 @@ public class FindTranslationTask extends AsyncTask<String, Void, String> {
         if (input.matches("[А-я\\s\\d]+"))
             translator = new Translator(Russian, English);
         else translator = new Translator(English, Russian);
-        return translator.translate(input);
+        try {
+            return translator.translate(input);
+        } catch (Exception e) {
+            exception = e;
+            return null;
+        }
     }
 
     protected void onPostExecute(String result) {
-        activity.onTranslateResponse(result);
+        if (exception == null) {
+            activity.onTranslateResponse(result);
+        } else {
+            activity.onTranslateFail(exception);
+        }
     }
 }
