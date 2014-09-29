@@ -30,6 +30,7 @@ public class DownloadImageTask extends AsyncTask<Picture, Void, Picture> {
             picture.setDrawable(Drawable.createFromStream(is, path[path.length - 2]));
             return picture;
         } catch (Exception e) {
+            activity.onImageLoadingError();
             Log.e("DownloadImageTask", "Download failed.", e);
             return null;
         }

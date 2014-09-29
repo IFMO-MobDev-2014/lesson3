@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -70,5 +71,16 @@ public class ShowResultsActivity extends Activity {
         GridView view = (GridView) findViewById(R.id.picsGv);
         ImageGridAdapter adapter = (ImageGridAdapter) view.getAdapter();
         adapter.addPicture(picture);
+    }
+
+    public void onImageLoadingError() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(ShowResultsActivity.this, "Error loading pictures. " +
+                        "Please check your internet connection.", Toast.LENGTH_LONG).show();
+                ShowResultsActivity.this.finish();
+            }
+        });
     }
 }

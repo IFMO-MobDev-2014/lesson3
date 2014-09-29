@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import ru.ifmo.mobdev.translator.R;
 import ru.ifmo.mobdev.translator.tasks.TranslateWordTask;
@@ -22,7 +23,6 @@ public class MainActivity extends Activity {
     private EditText queryField;
     private MainActivity caller;
     private ProgressDialog progressDialog;
-
     private String lastTranslatedInput;
 
     @Override
@@ -46,10 +46,26 @@ public class MainActivity extends Activity {
         });
     }
 
-    public void onTranslation(String s){
+    public void onTranslation(String s) {
         intent.putExtra(INPUT, lastTranslatedInput);
         intent.putExtra(TRANSLATED_INPUT, s);
-        progressDialog.dismiss();
         startActivity(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        progressDialog.dismiss();
+    }
+
+    public void onTranslationError() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, "Unexpected error occured. " +
+                        "Please, check your Internet connection.", Toast.LENGTH_LONG)
+                        .show();
+            }
+        });
     }
 }

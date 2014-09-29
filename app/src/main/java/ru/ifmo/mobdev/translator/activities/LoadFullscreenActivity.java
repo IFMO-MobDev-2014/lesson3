@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,7 +28,7 @@ public class LoadFullscreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fullscreen_activity);
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Image loading");
+        progressDialog.setMessage("Loading image");
         progressDialog.show();
         imageView = (ImageView) findViewById(R.id.fullscreenImage);
         final Bundle extras = getIntent().getExtras();
@@ -47,7 +48,8 @@ public class LoadFullscreenActivity extends Activity {
             Bitmap picture = null;
             try {
                 picture = BitmapFactory.decodeStream(urls[0].openStream());
-            } catch (IOException e) {
+            } catch (Exception e) {
+                onFullScreenLoadingError();
                 Log.e("Error while loading fullscreen image", e.getMessage());
             }
             return picture;
@@ -58,5 +60,16 @@ public class LoadFullscreenActivity extends Activity {
             progressDialog.dismiss();
             imageView.setImageBitmap(bitmap);
         }
+    }
+
+    private void onFullScreenLoadingError() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(LoadFullscreenActivity.this, "Error loading fullscreen image. " +
+                        "Check your Internet connection.", Toast.LENGTH_LONG).show();
+                LoadFullscreenActivity.this.finish();
+            }
+        });
     }
 }
