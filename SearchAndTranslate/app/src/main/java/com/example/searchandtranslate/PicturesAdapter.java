@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 /**
@@ -43,7 +42,7 @@ public class PicturesAdapter extends BaseAdapter {
         ImageView result;
         if (view == null) {
             result = new ImageView(context);
-            result.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            result.setScaleType(ImageView.ScaleType.CENTER);
             result.setPadding(15, 15, 15, 15);
         } else {
             result = (ImageView) view;
@@ -58,6 +57,5 @@ public class PicturesAdapter extends BaseAdapter {
 
         return result;
     }
-
 
 }

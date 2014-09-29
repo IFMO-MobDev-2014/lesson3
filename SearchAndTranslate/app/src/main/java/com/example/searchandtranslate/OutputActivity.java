@@ -1,21 +1,14 @@
 package com.example.searchandtranslate;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.List;
 
 
 public class OutputActivity extends ActionBarActivity {
-
 
     public static TextView text;
     public static ListView list;
@@ -34,10 +27,10 @@ public class OutputActivity extends ActionBarActivity {
         word = InputActivity.intent.getStringExtra("word");
         text = (TextView)findViewById(R.id.textView);
         list = (ListView)findViewById(R.id.listView);
+        list.setDivider(getResources().getDrawable(android.R.color.transparent));
         context = this;
 
         DataLoader.asyncTranslate(word, new DataLoader.MyCallbackString(getApplicationContext()));
         OutputActivity.list.setAdapter(new PicturesAdapter(context, word));
     }
-
 }

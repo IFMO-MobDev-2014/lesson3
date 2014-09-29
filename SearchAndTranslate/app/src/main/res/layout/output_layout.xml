@@ -27,6 +27,11 @@
         android:id="@+id/listView"
         android:layout_gravity="center_horizontal"
         style="@style/Widget.AppCompat.ListView.DropDown"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="30dp"
+        android:headerDividersEnabled="false"
+        android:footerDividersEnabled="false"
+        android:divider="@drawable/abc_list_divider_holo_light"
+        android:drawSelectorOnTop="false"
+        android:visibility="visible" />
 
 </LinearLayout>
