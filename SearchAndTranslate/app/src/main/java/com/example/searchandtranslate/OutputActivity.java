@@ -13,7 +13,7 @@ public class OutputActivity extends ActionBarActivity {
     public static TextView text;
     public static ListView list;
     public static Context context;
-    public String word = "asdfasd";
+    public String word = "";
 
     @Override
     public void onBackPressed() {

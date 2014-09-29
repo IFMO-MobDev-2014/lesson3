@@ -76,8 +76,8 @@ public class DataLoader {
             try {
                 URL target = new URL("https://translate.yandex.net/api/v1.5/tr.json/translate?lang=en-ru&key=" + apiKey + "&text=" + URLEncoder.encode(words[0], "UTF-8"));
                 HttpURLConnection uc = (HttpURLConnection) target.openConnection();
-                uc.setConnectTimeout(1000);
-                uc.setReadTimeout(1000);
+                uc.setConnectTimeout(5000);
+                uc.setReadTimeout(5000);
                 uc.connect();
                 JSONObject res = new JSONObject(streamToString(uc.getInputStream()));
                 uc.disconnect();
@@ -174,8 +174,8 @@ public class DataLoader {
                     return; // we are a bad person
 
                 HttpURLConnection uc = (HttpURLConnection) url.openConnection();
-                uc.setConnectTimeout(1000);
-                uc.setReadTimeout(1000);
+                uc.setConnectTimeout(5000);
+                uc.setReadTimeout(5000);
                 uc.connect();
                 final Bitmap rs = BitmapFactory.decodeStream(uc.getInputStream());
                 uc.disconnect();
