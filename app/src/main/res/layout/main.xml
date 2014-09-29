@@ -69,9 +69,10 @@
         android:id="@+id/textView"
         android:layout_below="@+id/button"
         android:layout_centerHorizontal="true"
-        android:textSize="30sp"
+        android:textSize="40sp"
         android:visibility="invisible"
-        android:textColor="#ff000000" />
+        android:textColor="#ff000000"
+        android:typeface="serif" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -82,10 +83,11 @@
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="39dp"
-        android:textSize="30sp"
+        android:textSize="40sp"
         android:textStyle="bold"
         android:visibility="invisible"
-        android:textColor="#ff000000" />
+        android:textColor="#ff000000"
+        android:typeface="serif" />
 
     <Button
         android:layout_width="60dp"
