@@ -15,6 +15,7 @@ import java.net.URL;
 public class ShowImageTask extends AsyncTask<URL, Void, Drawable> {
     private DoubleImageAdapter adapter;
     private URL url;
+    boolean canceled = false;
 
     public ShowImageTask(DoubleImageAdapter a) {
         adapter = a;
@@ -33,8 +34,17 @@ public class ShowImageTask extends AsyncTask<URL, Void, Drawable> {
         return null;
     }
 
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        canceled = true;
+    }
+
+    @Override
     protected void onPostExecute(Drawable picture) {
-        adapter.add(picture, url);
-        adapter.notifyDataSetChanged();
+        if (!canceled) {
+            adapter.add(picture, url);
+            adapter.notifyDataSetChanged();
+        }
     }
 }

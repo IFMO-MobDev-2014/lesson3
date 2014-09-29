@@ -69,7 +69,6 @@ public class DoubleImageAdapter extends BaseAdapter {
             imageView = new ImageView(context);
             imageView.setLayoutParams(new GridView.LayoutParams(cellHeight, cellHeight));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//            imageView.setPadding(8, 8, 8, 8); // useless
         } else {
             imageView = (ImageView) convertView;
         }
