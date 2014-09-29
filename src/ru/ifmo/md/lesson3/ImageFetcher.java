@@ -4,9 +4,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.SystemClock;
-import android.util.Log;
-import android.widget.ListView;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -18,12 +15,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +28,8 @@ public class ImageFetcher {
     private static final String key = "e668a28be78987a1e7c65b60e8d08c3f";
     private static final String pictureUrl = "https://api.flickr.com/services/rest/";
     private final Resources res;
-    protected Bitmap[] result ;
-    int nextIndex = 0;
-    int openAsync = 0;
+
+    ImageAdapter imageAdapter;
 
     public ImageFetcher(int N, Resources res) {
         this.pictureCount = N;
@@ -44,9 +38,8 @@ public class ImageFetcher {
 
     //"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key="+key+"&text=test&per_page="+pictureCount+"&format=json&nojsoncallback=1"
 
-    public Bitmap[] setImages(String query, ImageAdapter imageAdapter) {
-        result = new Bitmap[pictureCount];
-
+    public void setImages(String query, ImageAdapter imageAdapterTmp) {
+        imageAdapter = imageAdapterTmp;
 
         try {
             HttpClient client = new DefaultHttpClient();
@@ -75,7 +68,6 @@ public class ImageFetcher {
                 String pictureId =  pictureWithId.getString("id");
 
                 new downloadPicture().execute(pictureId);
-                openAsync++;
 
             }
 
@@ -83,46 +75,32 @@ public class ImageFetcher {
 
 
         } catch (UnsupportedEncodingException e) {
-
-
-
             for (int i = 0; i < pictureCount; i++) {
-                result[i] = BitmapFactory.decodeResource(res, R.drawable.sad);
+                imageAdapter.addImage(BitmapFactory.decodeResource(res, R.drawable.sad));
             }
             e.printStackTrace();
+            imageAdapter.notifyDataSetChanged();
         } catch (ClientProtocolException e) {
 
-
-
             for (int i = 0; i < pictureCount; i++) {
-                result[i] = BitmapFactory.decodeResource(res, R.drawable.sad);
+                imageAdapter.addImage(BitmapFactory.decodeResource(res, R.drawable.sad));
             }
             e.printStackTrace();
+            imageAdapter.notifyDataSetChanged();
         } catch (IOException e) {
-
-
-
             for (int i = 0; i < pictureCount; i++) {
-                result[i] = BitmapFactory.decodeResource(res, R.drawable.sad);
+                imageAdapter.addImage(BitmapFactory.decodeResource(res, R.drawable.sad));
             }
             e.printStackTrace();
+            imageAdapter.notifyDataSetChanged();
         } catch (JSONException e) {
-
-
-
             for (int i = 0; i < pictureCount; i++) {
-                result[i] = BitmapFactory.decodeResource(res, R.drawable.sad);
+                imageAdapter.addImage(BitmapFactory.decodeResource(res, R.drawable.sad));
             }
             e.printStackTrace();
+            imageAdapter.notifyDataSetChanged();
         }
 
-        while (openAsync>0)
-        {
-            SystemClock.sleep(800);
-        }
-
-
-        return result;
     }
 
     class downloadPicture extends AsyncTask<String, Void, Bitmap> {
@@ -201,8 +179,8 @@ public class ImageFetcher {
         @Override
         protected void onPostExecute(Bitmap resulted) {
             super.onPostExecute(resulted);
-            result[nextIndex++] = resulted;
-            openAsync--;
+            imageAdapter.addImage(resulted);
+            imageAdapter.notifyDataSetChanged();
         }
     }
 
