@@ -20,10 +20,17 @@ public class DoubleImageAdapter extends BaseAdapter {
     private ArrayList<Drawable> pictures = new ArrayList<Drawable>();
     private ArrayList<URL> fullURLs = new ArrayList<URL>();
     int cellHeight;
+    int realPictures = 0;
 
     public DoubleImageAdapter(ResultActivity c) {
         context = c;
         updateCellHeight();
+    }
+
+    public void setAll(int n){
+        for (int i = 0; i < n; i++) {
+            pictures.add(context.getResources().getDrawable(R.drawable.loading_little));
+        }
     }
 
     public int getCount() {
@@ -39,8 +46,9 @@ public class DoubleImageAdapter extends BaseAdapter {
     }
 
     public void add(Drawable picture, URL url) {
-        fullURLs.add(url); // non thread safe
-        pictures.add(picture);
+        fullURLs.add(realPictures, url); // non thread safe
+        pictures.add(realPictures, picture);
+        realPictures++;
     }
 
     int updateCellHeight() {
@@ -54,12 +62,11 @@ public class DoubleImageAdapter extends BaseAdapter {
         return k;
     }
 
-    // TODO Set "loading" picture until loaded
     public View getView(final int position, View convertView, ViewGroup parent) {
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(context);
-            imageView.setLayoutParams(new GridView.LayoutParams(cellHeight, cellHeight)); // TODO Mate it relative somehow
+            imageView.setLayoutParams(new GridView.LayoutParams(cellHeight, cellHeight));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 //            imageView.setPadding(8, 8, 8, 8); // useless
         } else {
@@ -71,10 +78,9 @@ public class DoubleImageAdapter extends BaseAdapter {
                 context.onFullRequest(String.valueOf(fullURLs.get(position)));
             }
         });
+
         Drawable picture = pictures.get(position);
         imageView.setImageDrawable(picture);
         return imageView;
     }
-
-
 }

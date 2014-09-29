@@ -22,18 +22,20 @@ public class ResultActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+        Intent intent = getIntent();
+        new FindImagesTask(this, 50).execute(intent.getStringExtra(MainActivity.MAIN_QUERY));
         textView = (TextView) findViewById(R.id.textView);
         gridView = (GridView) findViewById(R.id.gridView);
         adapter = new DoubleImageAdapter(this);
         gridView.setAdapter(adapter);
+        adapter.setAll(20);
         updateGridColumns();
-        Intent intent = getIntent();
         textView.setText(intent.getStringExtra(MainActivity.TRANSLATOR_RESPONSE));
-        new FindImagesTask(this, 50).execute(intent.getStringExtra(MainActivity.MAIN_QUERY));
     }
 
     protected void onImagesUPLsRecieved(ArrayList<URL[]> imageURLs) {
         showImageTasks = new ShowImageTask[imageURLs.size()];
+        adapter.setAll(imageURLs.size());
         for (int i = 0; i < imageURLs.size(); i++) {
             URL[] a = imageURLs.get(i);
             Log.i("Loading picture:", a[0].toString());
@@ -72,11 +74,21 @@ public class ResultActivity extends Activity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
-        for (ShowImageTask task : showImageTasks) {
-            if (!task.isCancelled()) task.cancel(true);
-        }
+//        for (ShowImageTask task : showImageTasks) {
+//            if (!task.isCancelled()) task.cancel(true);
+//        }
     }
 }
 
