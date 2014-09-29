@@ -27,7 +27,6 @@ public class MyActivity extends Activity {
                 translation.setText(TranslationLoader.translate(query));
 //                 TODO: Uncomment this line when testing this class
 //                image.setImageDrawable(imageLoader.loadImage(query));
-                image.setImageDrawable(getResources().getDrawable(R.drawable.cat));
             }
         });
     }
