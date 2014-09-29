@@ -1,8 +1,12 @@
 package com.example.vi34.lesson3;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,12 +39,29 @@ public class MyActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public boolean problemWithInternetConnection() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isAvailable() && networkInfo.isConnected()) {
+            Log.i("Connection ", "OK");
+            return false;
+        } else {
+            Log.i("No ", "connection");
+            return true;
+        }
+    }
+
     public void onClick(View view) {
-        EditText textInEnglish = (EditText) findViewById(R.id.editText);
-        textToTranslate = textInEnglish.getText().toString();
-        Intent intent = new Intent(MyActivity.this, SecondActivity.class);
-        intent.putExtra("Text to translate", textToTranslate);
-        startActivity(intent);
+        if (problemWithInternetConnection()) {
+            Intent intent = new Intent(MyActivity.this, ProblemWithConnectionActivity.class);
+            startActivity(intent);
+        } else {
+            EditText textInEnglish = (EditText) findViewById(R.id.editText);
+            textToTranslate = textInEnglish.getText().toString();
+            Intent intent = new Intent(MyActivity.this, SecondActivity.class);
+            intent.putExtra("Text to translate", textToTranslate);
+            startActivity(intent);
+        }
     }
 
 
