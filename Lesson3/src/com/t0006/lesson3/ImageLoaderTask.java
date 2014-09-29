@@ -41,7 +41,7 @@ public class ImageLoaderTask extends AsyncTask<String, Bitmap, Void> {
             lastWord = word;
         }
 
-        String mainURLString = "https://api.datamarket.azure.com/Bing/Search/Image?$format=json&Query=%27" + word + "%27&ImageFilters=%27Size%3AMedium%27";
+        final String mainURLString = "https://api.datamarket.azure.com/Bing/Search/Image?$format=json&Query=%27" + word + "%27&ImageFilters=%27Size%3AMedium%27";
         byte[] apiKeyBytes = Base64.encode((":" + apiKey).getBytes(), Base64.DEFAULT);
         String apiEncryptedKey = new String(apiKeyBytes);
 
@@ -89,6 +89,8 @@ public class ImageLoaderTask extends AsyncTask<String, Bitmap, Void> {
                 needCount -= ok;
             } catch (IOException e) {
                 Log.e(LOG_TAG, "connection problem");
+                fragment.showMessage(R.string.error_internet_connection);
+                return null;
             }
         }
 
