@@ -6,13 +6,12 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.support.v4.view.ViewPager;
 
 public class GalleryActivity extends Activity {
     public static final int N = 10;
-    public static final int imgPerPage = 6;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,21 +21,22 @@ public class GalleryActivity extends Activity {
         String query = intent.getStringExtra(MainActivity.EXTRA_QUERY);
         TranslateTask tt = new TranslateTask(query, (TextView)findViewById(R.id.translation));
         tt.execute();
-        FetchTask ft = new FetchTask(query, (ViewPager)findViewById(R.id.myGalleryView), this);
+        ImageAdapter ia = new ImageAdapter(this);
+        ((GridView)findViewById(R.id.imageGrid)).setAdapter(ia);
+        FetchTask ft = new FetchTask(query, ia);
         ft.execute();
+        ia.notifyDataSetChanged();
     }
 
     class FetchTask extends AsyncTask<Void, Void, Void> {
-        String result;
         String query;
-        ViewPager output;
-        Activity activity;
+        ImageAdapter imageAdapter;
         LinearLayout linlaHeaderProgress = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
+        GridView imageGrid = (GridView) findViewById(R.id.imageGrid);
 
-        public FetchTask(String q, ViewPager out, Activity a) {
+        public FetchTask(String q, ImageAdapter ia) {
             query = q;
-            output = out;
-            activity = a;
+            imageAdapter = ia;
         }
 
         @Override
@@ -49,7 +49,7 @@ public class GalleryActivity extends Activity {
         protected Void doInBackground(Void... params) {
             ImageFetcher fetcher = new ImageFetcher(N, getResources());
             Bitmap[] images = fetcher.fetch(query);
-
+            imageAdapter.setImages(images);
             return null;
         }
 
@@ -57,6 +57,8 @@ public class GalleryActivity extends Activity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             linlaHeaderProgress.setVisibility(View.GONE);
+            imageGrid.setVisibility(View.VISIBLE);
+
         }
     }
 
@@ -73,7 +75,7 @@ public class GalleryActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            output.setText(query + "\n" + R.string.ad);
+            output.setText(query + "\n");
         }
 
         @Override
@@ -86,7 +88,8 @@ public class GalleryActivity extends Activity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            output.setText(query + " -> " + result + "\n " + R.string.ad);
+            if (this.result != null)
+                output.setText(query + " -> " + this.result + "\n " + getString(R.string.ad));
         }
     }
 }

@@ -15,9 +15,8 @@ public class ImageFetcher {
 
     public Bitmap[] fetch(String query) {
         Bitmap[] imgs = new Bitmap[N];
-        imgs[0] = BitmapFactory.decodeResource(res, R.drawable.lena);
-        for (int i = 1; i < N; i++) {
-            imgs[i] = imgs[0];
+        for (int i = 0; i < N; i++) {
+            imgs[i] = BitmapFactory.decodeResource(res, R.drawable.sad);
         }
         return imgs;
     }

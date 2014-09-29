@@ -8,32 +8,35 @@
     <LinearLayout
             android:id="@+id/linlaHeaderProgress"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="600dp"
             android:gravity="center"
             android:orientation="vertical"
+            android:background="@color/grayDark"
             android:visibility="gone" >
 
         <ProgressBar
                 android:id="@+id/pbHeaderProgress"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
         </ProgressBar>
     </LinearLayout>
 
-    <android.support.v4.view.ViewPager
-            android:id="@+id/myGalleryView"
+    <GridView
+            android:id="@+id/imageGrid"
             android:layout_width="fill_parent"
             android:layout_height="600dp"
-            android:layout_below="@+id/relative_headerBar"
-            >
-
-    </android.support.v4.view.ViewPager>
+            android:listSelector="@android:color/transparent"
+            android:gravity="center"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"
+            android:background="@color/grayDark"
+            android:visibility="gone"/>
     <TextView android:layout_height="fill_parent"
               android:layout_width="fill_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text=""
             android:id="@+id/translation"
-            android:background="#8cffffff"
+            android:background="@color/grayLight"
             android:gravity="center"/>
 
 </LinearLayout>

@@ -3,5 +3,7 @@
     <string name="app_name">Lesson3</string>
     <string name="gallery_name">Результаты поиска</string>
     <string name="search">Поиск</string>
-    <string name="ad">"Переведено сервисом «Яндекс.Перевод» http://translate.yandex.ru/"</string>
+    <string name="ad">"Переведено сервисом «Яндекс.Перевод»\nhttp://translate.yandex.ru/"</string>
+    <color name="grayLight">#9F9B9A</color>
+    <color name="grayDark">#3B3736</color>
 </resources>
