@@ -3,18 +3,14 @@ package ru.ifmo.md.lesson3;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.googlecode.flickrjandroid.Flickr;
-import com.googlecode.flickrjandroid.FlickrException;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
 import com.googlecode.flickrjandroid.photos.PhotosInterface;
 import com.googlecode.flickrjandroid.photos.SearchParameters;
 
-import org.json.JSONException;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -38,17 +34,13 @@ public class FindAndDownloadImagesTask extends AsyncTask<String, Void, ArrayList
             photoList = photosInterface.search(searchParameters, 10, 1);
 
             for(int i = 0; i < photoList.size(); i++) {
-                Photo photo = (Photo)photoList.get(i);
+                Photo photo = photoList.get(i);
                 URL photoURL = new URL("https://farm" + photo.getFarm() + ".static.flickr.com/" + photo.getServer() + "/" + photo.getId() + "_" + photo.getSecret() + "." + photo.getOriginalFormat());
                 InputStream input = photoURL.openStream();
                 images.add(BitmapFactory.decodeStream(input));
             }
-        } catch (IOException e) {
-            Log.i("URL", "size: " + e.getMessage());
-        } catch (FlickrException e) {
-            Log.i("URL", "size: " + "Flickr");
-        } catch (JSONException e) {
-            Log.i("URL", "size: " + "JSON");
+        } catch (Exception e) {
+            return null;
         }
 
         return images;

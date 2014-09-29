@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+
 
 /**
  * Created by shambala on 27.09.2014.
@@ -17,6 +19,7 @@ public class MySecondActivity extends Activity {
     String word;
     ArrayList<Bitmap> bmp;
     FindAndDownloadImagesTask finder;
+    Toast error;
 
 
     @Override
@@ -27,6 +30,7 @@ public class MySecondActivity extends Activity {
         word = in.getStringExtra("word");
         finder = new FindAndDownloadImagesTask();
         imageView = new ImageView[10];
+
 
         imageView[0] = (ImageView) findViewById(R.id.imageView);
         imageView[1] = (ImageView) findViewById(R.id.imageView2);
@@ -39,13 +43,21 @@ public class MySecondActivity extends Activity {
         imageView[8] = (ImageView) findViewById(R.id.imageView9);
         imageView[9] = (ImageView) findViewById(R.id.imageView10);
 
+        error = Toast.makeText(getApplicationContext(),
+                "Oops, something goes wrong",
+                Toast.LENGTH_SHORT);
+
         finder.execute(word);
-        bmp = finder.get();
-        if (bmp.size()!=0) {
+        try {
+            bmp = finder.get();
+        } catch (Exception e) {
+            error.show();
+        }
+        if (bmp != null && bmp.size()!=0) {
             for (int i = 0; i < bmp.size(); i++) {
                 imageView[i].setImageBitmap(bmp.get(i));
             }
-        }
+        } else error.show();
 
     }
 

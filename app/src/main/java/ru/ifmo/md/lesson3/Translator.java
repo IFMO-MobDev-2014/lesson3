@@ -27,7 +27,7 @@ public class Translator extends AsyncTask<Void, Void, String> {
             text = str.hasNext() ? str.next() : "";
 
         } catch (Exception e) {
-            return "can't connect to internet";
+            return "ERROR can't connect to internet";
         }
         int i1 = text.indexOf('[') + 2;
         int i2 = text.indexOf(']') - 1;

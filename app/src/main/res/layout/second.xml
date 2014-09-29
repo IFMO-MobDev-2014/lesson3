@@ -6,7 +6,7 @@
     android:screenOrientation="portrait">
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView2"
         android:layout_centerVertical="true"
@@ -14,88 +14,78 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/imageView"
-                android:adjustViewBounds="true"
                 android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"/>
+                android:layout_gravity="center_horizontal"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/imageView2"
-                android:adjustViewBounds="true"
                 android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"/>
+                android:layout_gravity="center_horizontal" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/imageView3"
-                android:adjustViewBounds="true"
                 android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"/>
+                android:layout_gravity="center_horizontal" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageView4"
-                android:adjustViewBounds="true"
                 android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"/>
+                android:layout_gravity="center_horizontal" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/imageView5"
-                android:adjustViewBounds="true"
                 android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"/>
+                android:layout_gravity="center_horizontal" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/imageView6"
-                android:adjustViewBounds="true"
                 android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"/>
+                android:layout_gravity="center_horizontal" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/imageView7"
-                android:adjustViewBounds="true"
                 android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"/>
+                android:layout_gravity="center_horizontal" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/imageView8"
-                android:adjustViewBounds="true"
                 android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"/>
+                android:layout_gravity="center_horizontal" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/imageView9"
-                android:adjustViewBounds="true"
                 android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"/>
+                android:layout_gravity="center_horizontal" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/imageView10"
-                android:adjustViewBounds="true"
                 android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"/>
+                android:layout_gravity="center_horizontal" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
