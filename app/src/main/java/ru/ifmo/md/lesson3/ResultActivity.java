@@ -26,6 +26,7 @@ public class ResultActivity extends Activity {
         gridView = (GridView) findViewById(R.id.gridView);
         adapter = new DoubleImageAdapter(this);
         gridView.setAdapter(adapter);
+        updateGridColumns();
         Intent intent = getIntent();
         textView.setText(intent.getStringExtra(MainActivity.TRANSLATOR_RESPONSE));
         new FindImagesTask(this, 50).execute(intent.getStringExtra(MainActivity.MAIN_QUERY));

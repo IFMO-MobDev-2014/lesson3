@@ -7,7 +7,6 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -51,11 +50,8 @@ public class DoubleImageAdapter extends BaseAdapter {
         display.getSize(size);
         int width = size.x;
         int k = (width - 60) / 200;
-//        int k = 3;
         cellHeight = (width - 60) / k; // vary this, try at your own!
         return k;
-//        cellHeight = 40;
-//        else return 210; // tablets get more images
     }
 
     // TODO Set "loading" picture until loaded
