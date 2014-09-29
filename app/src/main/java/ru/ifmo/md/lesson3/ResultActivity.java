@@ -28,14 +28,13 @@ public class ResultActivity extends Activity {
         gridView = (GridView) findViewById(R.id.gridView);
         adapter = new DoubleImageAdapter(this);
         gridView.setAdapter(adapter);
-        adapter.setAll(20);
+        adapter.setAll(50);
         updateGridColumns();
         textView.setText(intent.getStringExtra(MainActivity.TRANSLATOR_RESPONSE));
     }
 
     protected void onImagesUPLsRecieved(ArrayList<URL[]> imageURLs) {
         showImageTasks = new ShowImageTask[imageURLs.size()];
-        adapter.setAll(imageURLs.size());
         for (int i = 0; i < imageURLs.size(); i++) {
             URL[] a = imageURLs.get(i);
             Log.i("Loading picture:", a[0].toString());

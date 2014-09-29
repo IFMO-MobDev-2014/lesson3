@@ -30,6 +30,7 @@ public class DoubleImageAdapter extends BaseAdapter {
     public void setAll(int n){
         for (int i = 0; i < n; i++) {
             pictures.add(context.getResources().getDrawable(R.drawable.loading_little));
+            fullURLs.add(null);
         }
     }
 
@@ -46,8 +47,8 @@ public class DoubleImageAdapter extends BaseAdapter {
     }
 
     public void add(Drawable picture, URL url) {
-        fullURLs.add(realPictures, url); // non thread safe
-        pictures.add(realPictures, picture);
+        fullURLs.set(realPictures, url); // non thread safe
+        pictures.set(realPictures, picture);
         realPictures++;
     }
 
@@ -72,12 +73,15 @@ public class DoubleImageAdapter extends BaseAdapter {
         } else {
             imageView = (ImageView) convertView;
         }
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                context.onFullRequest(String.valueOf(fullURLs.get(position)));
-            }
-        });
+
+        if (fullURLs.get(position) != null) {
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    context.onFullRequest(String.valueOf(fullURLs.get(position)));
+                }
+            });
+        }
 
         Drawable picture = pictures.get(position);
         imageView.setImageDrawable(picture);
