@@ -33,7 +33,8 @@ public class TranslateWordTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... strings) {
-        String request = address + "key=" + key + "&text=" + strings[0] +
+        String words = strings[0].replaceAll(" ", "%20");
+        String request = address + "key=" + key + "&text=" + words +
                 "&lang=ru" + "&format=plain" + "&options=1";
         HttpClient httpClient = new DefaultHttpClient();
         HttpResponse response;

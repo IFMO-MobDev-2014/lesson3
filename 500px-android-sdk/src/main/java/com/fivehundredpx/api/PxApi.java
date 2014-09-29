@@ -54,7 +54,7 @@ public class PxApi {
 			return handleSigned(request);
 		} else {
 			final String finalUrl = String.format("%s%s&consumer_key=%s", HOST,
-					url, this.consumerKey);
+					url, this.consumerKey).replaceAll(" ", "%20");
 			return handle(new HttpGet(finalUrl));
 		}
 	}
