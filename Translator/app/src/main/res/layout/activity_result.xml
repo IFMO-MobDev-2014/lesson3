@@ -11,37 +11,24 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
+        android:id="@+id/wordTr"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textSize="@dimen/text_size"
-        android:layout_alignParentLeft="true" />
+        android:textSize="@dimen/text_size" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/textView"
-        android:id="@+id/imagSpace">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:layout_gravity="center_vertical" />
-    </LinearLayout>
+    <Gallery
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/gallery"
+        android:layout_below="@+id/wordTr"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/back_button"
-        android:id="@+id/backButton"
-        android:layout_alignParentTop="false"
+        android:id="@+id/backBut"
+        android:layout_below="@+id/gallery"
         android:layout_centerHorizontal="true"
-        android:gravity="bottom"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/imagSpace"
-        android:onClick="setListFooter" />
-
+        android:onClick="getBack" />
 </RelativeLayout>
