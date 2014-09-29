@@ -20,11 +20,11 @@ public class DoubleImageAdapter extends BaseAdapter {
     private ResultActivity context;
     private ArrayList<Drawable> pictures = new ArrayList<Drawable>();
     private ArrayList<URL> fullURLs = new ArrayList<URL>();
-    private int cellHeight;
+    int cellHeight;
 
     public DoubleImageAdapter(ResultActivity c) {
         context = c;
-        cellHeight = getCellHeight();
+        updateCellHeight();
     }
 
     public int getCount() {
@@ -44,14 +44,18 @@ public class DoubleImageAdapter extends BaseAdapter {
         pictures.add(picture);
     }
 
-    private int getCellHeight() {
+    int updateCellHeight() {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         int width = size.x;
-        if (width < 800) return (width - 40) / 2; // vary this, try at your own!
-        else return 250; // tablets get more images
+        int k = (width - 60) / 200;
+//        int k = 3;
+        cellHeight = (width - 60) / k; // vary this, try at your own!
+        return k;
+//        cellHeight = 40;
+//        else return 210; // tablets get more images
     }
 
     // TODO Set "loading" picture until loaded
@@ -59,7 +63,7 @@ public class DoubleImageAdapter extends BaseAdapter {
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(context);
-            imageView.setLayoutParams(new AbsListView.LayoutParams(cellHeight, cellHeight)); // TODO Mate it relative somehow
+            imageView.setLayoutParams(new GridView.LayoutParams(cellHeight, cellHeight)); // TODO Mate it relative somehow
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 //            imageView.setPadding(8, 8, 8, 8); // useless
         } else {
@@ -75,5 +79,6 @@ public class DoubleImageAdapter extends BaseAdapter {
         imageView.setImageDrawable(picture);
         return imageView;
     }
+
 
 }

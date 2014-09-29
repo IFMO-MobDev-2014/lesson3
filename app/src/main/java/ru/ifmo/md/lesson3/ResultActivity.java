@@ -2,6 +2,7 @@ package ru.ifmo.md.lesson3;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,11 +12,11 @@ import android.widget.TextView;
 import java.net.URL;
 import java.util.ArrayList;
 
-//TODO: add picture caching
 public class ResultActivity extends Activity {
     TextView textView;
     GridView gridView;
     DoubleImageAdapter adapter;
+    ShowImageTask[] showImageTasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +32,12 @@ public class ResultActivity extends Activity {
     }
 
     protected void onImagesUPLsRecieved(ArrayList<URL[]> imageURLs) {
-        for (URL[] a : imageURLs) {
+        showImageTasks = new ShowImageTask[imageURLs.size()];
+        for (int i = 0; i < imageURLs.size(); i++) {
+            URL[] a = imageURLs.get(i);
             Log.i("Loading picture:", a[0].toString());
-            new ShowImageTask(adapter).execute(a[0], a[1]);
+            showImageTasks[i] = new ShowImageTask(adapter);
+            showImageTasks[i].execute(a[0], a[1]);
         }
     }
 
@@ -43,6 +47,35 @@ public class ResultActivity extends Activity {
         bundle.putString(DoubleImageAdapter.FULL_PICTURE, url);
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+
+    private void updateGridColumns(){
+        int k = adapter.updateCellHeight();
+        gridView.setAdapter(adapter);
+        gridView.setColumnWidth(adapter.cellHeight);
+        gridView.setNumColumns(k);
+        gridView.invalidateViews();
+        gridView.invalidate();
+        gridView.refreshDrawableState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            updateGridColumns();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            updateGridColumns();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        for (ShowImageTask task : showImageTasks) {
+            if (!task.isCancelled()) task.cancel(true);
+        }
     }
 }
 
