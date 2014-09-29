@@ -147,7 +147,7 @@ public class DisplayActivity extends Activity {
         }
 
         protected void onPostExecute(Drawable d) {
-            if (d == null) {
+            if (!destroyed && d == null) {
                 new AlertDialog.Builder(DisplayActivity.this)
                     .setTitle("Ошибка")
                     .setMessage("Возникли проблемы с загрузкой изображений")
