@@ -39,13 +39,16 @@ public class MySecondActivity extends Activity {
         imageView[8] = (ImageView) findViewById(R.id.imageView9);
         imageView[9] = (ImageView) findViewById(R.id.imageView10);
 
-        finder.execute(word);
-        bmp = finder.get();
-        if (bmp.size()!=0) {
-            for (int i = 0; i < bmp.size(); i++) {
-                imageView[i].setImageBitmap(bmp.get(i));
+        try {
+            finder.execute(word);
+            bmp = finder.get();
+            if (bmp.size() != 0) {
+                for (int i = 0; i < bmp.size(); i++) {
+                    imageView[i].setImageBitmap(bmp.get(i));
+                }
             }
         }
+        catch (Exception e){}
 
     }
 
