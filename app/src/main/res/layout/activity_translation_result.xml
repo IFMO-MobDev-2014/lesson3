@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ru.ifmo.translator.TranslationResultActivity">
+    tools:context="ru.ifmo.translator.TranslationResultActivity"
+    android:background="@drawable/background">
 
     <TextView
         android:id="@+id/translationResult"
