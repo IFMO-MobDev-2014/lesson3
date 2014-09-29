@@ -3,6 +3,7 @@ package com.example.searchandtranslate;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -40,6 +41,46 @@ public class DataLoader {
 
         public void run(Bitmap[] param) {
             OutputActivity.grid.setAdapter(new PicturesAdapter(context, param));
+        }
+    }
+
+    private static class TranslateTask extends AsyncTask<String, Void, String> {
+
+
+        private MyCallback<String> callback;
+
+        public TranslateTask(MyCallback<String> callback) {
+            this.callback = callback;
+        }
+
+        private final static String apiKey = "trnsl.1.1.20140929T080024Z.97e719a764c788cc.55b5fe56ffdce794f905bdaa1a08175cc9e45d77";
+
+        boolean success = false;
+        @Override
+        protected String doInBackground(String... words) {
+            try {
+                URL target = new URL("https://translate.yandex.net/api/v1.5/tr.json/translate?lang=en-ru&key=" + apiKey + "&text=" + URLEncoder.encode(words[0], "UTF-8"));
+                HttpURLConnection uc = (HttpURLConnection) target.openConnection();
+                uc.setConnectTimeout(1000);
+                uc.setReadTimeout(1000);
+                uc.connect();
+                JSONObject res = new JSONObject(PictureLoaderThread.streamToString(uc.getInputStream()));
+                uc.disconnect();
+                String rv = res.getJSONArray("text").getString(0);
+                success = true;
+                return rv;
+            } catch(IOException e) {
+
+            } catch(JSONException e) {
+
+            }
+
+            return words[0];
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            callback.run(result);
         }
     }
 
@@ -133,10 +174,10 @@ public class DataLoader {
                 }
             });
         }
-    };
+    }
 
     public static void asyncTranslate(String word, MyCallback<String> callback) {
-        callback.run(word); // TODO: write proper code
+        new TranslateTask(callback).execute(word);
     }
 
     public static void asyncLoadPictures(String word, MyCallback<Bitmap[]> callback) {
