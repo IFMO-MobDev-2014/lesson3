@@ -13,9 +13,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
 
 public class MyActivity extends Activity {
     ImageView animView;
@@ -24,6 +24,7 @@ public class MyActivity extends Activity {
     TextView rus;
     EditText input;
     Translator translate;
+    RelativeLayout background;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,7 @@ public class MyActivity extends Activity {
         setContentView(R.layout.main);
         animView = (ImageView)findViewById(R.id.imageView2);
         final Button translator = (Button)findViewById(R.id.button);
+        background= (RelativeLayout)findViewById(R.id.relativeLayout);
         back = (Button)findViewById(R.id.button2);
         eng = (TextView)findViewById(R.id.textView);
         rus = (TextView)findViewById(R.id.textView5);
