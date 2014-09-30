@@ -30,6 +30,7 @@ public class SecondActivity extends Activity {
         string = getIntent().getStringExtra("text");
         setContentView(R.layout.layout2);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setProgress(0);
         imageView = (ImageView) findViewById(R.id.imageView);
         imageView.setClickable(false);
         textView = (TextView) findViewById(R.id.textView);
@@ -51,10 +52,10 @@ public class SecondActivity extends Activity {
     }
 
     public void nextImage(View view) {
-        if (images.size() == 0)
-            return;
-        imageView.setImageBitmap(images.get(i));
-        i = (i + 1) % images.size();
+        if (images.size() != 0) {
+            imageView.setImageBitmap(images.get(i));
+            i = (i + 1) % images.size();
+        }
     }
 
     public void back(View view) {
