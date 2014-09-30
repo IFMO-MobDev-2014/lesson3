@@ -16,7 +16,7 @@
         android:text="Translate"
         android:clickable="true"
         android:enabled="true"
-        android:onClick="tra" />
+        android:onClick="onPress" />
 
     <EditText
         android:layout_width="match_parent"

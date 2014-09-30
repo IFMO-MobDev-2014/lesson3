@@ -1,7 +1,6 @@
 package ru.ifmo.md.lesson3;
 
 import android.net.Uri;
-import android.util.Log;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -41,7 +40,6 @@ public class ImageSearch implements Runnable {
             HttpGet POST = new HttpGet(uriBuilder.build().toString());
             ResponseHandler<String> handler = new BasicResponseHandler();
             String response = client.execute(POST, handler);
-            Log.i("1", response);
             JSONObject jsonResponse = new JSONObject(response.substring(response.indexOf("(") + 1,
                     response.lastIndexOf(")")));
             JSONArray results = jsonResponse.getJSONObject("photos").getJSONArray("photo");
@@ -56,11 +54,9 @@ public class ImageSearch implements Runnable {
                 String secret = result.getString("secret");
                 pictures[i] = "https://farm" + farm + ".staticflickr.com/" +
                         server + "/" + id + "_" + secret + "_q.jpg";
-                Log.i("1", pictures[i]);
             }
-            MainActivity.urls = pictures;
+            SecondActivity.urls = pictures;
         } catch (Exception e) {
-            Log.i("shitty", "shit");
             e.printStackTrace();
         }
 }

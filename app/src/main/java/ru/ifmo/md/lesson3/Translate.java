@@ -1,8 +1,8 @@
 package ru.ifmo.md.lesson3;
 
+import android.app.Activity;
 import android.util.Log;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -28,27 +28,25 @@ public class Translate implements Runnable{
         try {
             url = new URL(urlString);
         } catch (MalformedURLException e) {
-            Log.i("shit ", "1");
         }
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream in = urlConnection.getInputStream();
             Scanner sc = new Scanner(in);
-            //
             String ret = sc.nextLine();
             Log.i("!", ret.substring(ret.lastIndexOf('[') + 2, ret.lastIndexOf(']') - 1));
-            MainActivity.strin = ret.substring(ret.lastIndexOf('[') + 2, ret.lastIndexOf(']') - 1);
-
+            return  ret.substring(ret.lastIndexOf('[') + 2, ret.lastIndexOf(']') - 1);
         } catch (Exception e) {
-            Log.i("shit ", "2");
+            e.printStackTrace();
         } finally {
             urlConnection.disconnect();
         }
         return "";
     }
     public void run() {
-        translate(input);
+       SecondActivity.ret = translate(input);
+
     }
 
 }
