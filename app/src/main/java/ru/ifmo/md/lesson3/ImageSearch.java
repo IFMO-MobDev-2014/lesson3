@@ -18,8 +18,7 @@ public class ImageSearch implements Runnable {
     public static final int IMGCOUNT = 10;
     String input;
 
-    public ImageSearch(String string)
-    {
+    public ImageSearch(String string) {
         input = string;
     }
 
@@ -59,7 +58,7 @@ public class ImageSearch implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-}
+    }
 
     public void run() {
         search(input);

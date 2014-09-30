@@ -46,7 +46,6 @@ public class Translate implements Runnable{
     }
     public void run() {
        SecondActivity.ret = translate(input);
-
     }
 
 }

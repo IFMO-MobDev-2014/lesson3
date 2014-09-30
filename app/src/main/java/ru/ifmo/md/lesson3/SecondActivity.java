@@ -1,6 +1,5 @@
 package ru.ifmo.md.lesson3;
 
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -27,10 +26,12 @@ public class SecondActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        i = 0;
         string = getIntent().getStringExtra("text");
         setContentView(R.layout.layout2);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         imageView = (ImageView) findViewById(R.id.imageView);
+        imageView.setClickable(false);
         textView = (TextView) findViewById(R.id.textView);
         try {
             Thread thread = new Thread(new Translate(string));
@@ -40,6 +41,7 @@ public class SecondActivity extends Activity {
             thread.join();
             textView.setText(ret);
             thread2.join();
+            imageView.setClickable(true);
             images = new ArrayList<Bitmap>();
             new LoadImageTask().execute(SecondActivity.urls);
             imageView.setImageResource(R.drawable.img);
@@ -49,8 +51,10 @@ public class SecondActivity extends Activity {
     }
 
     public void nextImage(View view) {
-        i = (i + 1) % images.size();
+        if (images.size() == 0)
+            return;
         imageView.setImageBitmap(images.get(i));
+        i = (i + 1) % images.size();
     }
 
     public void back(View view) {
