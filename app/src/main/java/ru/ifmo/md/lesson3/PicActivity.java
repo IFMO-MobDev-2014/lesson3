@@ -56,7 +56,6 @@ public class PicActivity extends Activity {
                 JSONObject resp = null;
                 String translatedWord = null;
                 try {
-                    Log.i("RESPONSE: ", response.toString());
                     resp = new JSONObject(new String(response));
                     JSONArray arrayWord = resp.getJSONArray("text");
                     translatedWord = (String) arrayWord.get(0);
