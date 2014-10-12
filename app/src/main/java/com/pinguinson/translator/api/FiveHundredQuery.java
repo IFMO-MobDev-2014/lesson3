@@ -17,13 +17,13 @@ import java.io.InputStreamReader;
 /**
  * Created by pinguinson on 12.10.2014.
  */
-public class FlickrQuery {
-    public static final String HOST = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=";
+public class FiveHundredQuery {
+    public static final String HOST = "https://api.500px.com/v1/photos/search?rpp=10&consumer_key=";
     public static final String TAG = "Flickr";
     private String apiKey;
     private String params;
 
-    public FlickrQuery(String apiKey) {
+    public FiveHundredQuery(String apiKey) {
         this.apiKey = apiKey;
         this.params = "";
     }

@@ -3,6 +3,7 @@ package com.pinguinson.translator.tasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.pinguinson.translator.activities.ResultActivity;
 import com.pinguinson.translator.api.YandexQuery;
 
 import org.json.JSONObject;
@@ -11,8 +12,13 @@ import org.json.JSONObject;
  * Created by pinguinson on 12.10.2014.
  */
 public class TranslationTask extends AsyncTask<String, Void, String> {
+    ResultActivity activity;
 
     public static final String API_KEY = "trnsl.1.1.20141012T002112Z.ac5b7fb8c11602cb.e799fa01a22992f5fcbfe7e5b8f08726d4386a24";
+
+    public TranslationTask(ResultActivity activity) {
+        this.activity = activity;
+    }
 
     @Override
     protected String doInBackground(String... strings) {
@@ -29,5 +35,11 @@ public class TranslationTask extends AsyncTask<String, Void, String> {
             Log.e("FlickrSeacrhTask", "Search failed.", e);
         }
         return "error";
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        activity.onTranslationFinished(s);
     }
 }
