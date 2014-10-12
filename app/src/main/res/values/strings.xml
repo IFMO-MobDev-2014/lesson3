@@ -2,11 +2,5 @@
 <resources>
 
     <string name="app_name">Translator</string>
-    <string name="title_activity_search">Search</string>
-    <string name="head">Type an English word here:</string>
-    <string name="action">Translate</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_result">Result</string>
-    <string name="hello_world">Hello world!</string>
 
 </resources>
