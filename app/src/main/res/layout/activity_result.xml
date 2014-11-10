@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray">
+    
+    <TextView
+        android:id="@+id/query"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="30sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black_overlay"
+        android:gravity="center"
+        android:text="@string/translation_progress"
+    />
+
+    <TextView
+        android:id="@+id/translation"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textSize="30sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#585858"
+        android:gravity="center"
+        android:text="@string/translation_progress"
+        android:layout_below="@id/query"
+        />
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentStart="true"
+        android:clickable="true"
+        android:onClick="nextImage"
+        android:layout_below="@id/translation"
+    />
+
+    <TextView
+        android:id="@+id/counter"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:textColor="#585858"
+        android:gravity="center"
+        android:text="@string/download_progress"
+    />
+
+
+</RelativeLayout>
