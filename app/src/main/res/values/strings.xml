@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Переводчик</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="search_hint">Введите слово</string>
+    <string name="translate_button">Перевести</string>
+    <string name="translation_progress">Переводится...</string>
+    <string name="download_progress">Загрузка...</string>
+
+</resources>
