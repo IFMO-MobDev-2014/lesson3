@@ -57,8 +57,4 @@ public class SecondActivity extends Activity {
             i = (i + 1) % images.size();
         }
     }
-
-    public void back(View view) {
-
-    }
 }

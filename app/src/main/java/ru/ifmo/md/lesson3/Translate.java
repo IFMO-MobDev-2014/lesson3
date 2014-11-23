@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class Translate implements Runnable{
 
     private static String input;
-    private static final String APIKey = "trnsl.1.1.20140929T071711Z.570b47c67d97796a.a555577f122c91bea72d909962924615127a86c4";
+    private static final String APIKey = "trnsl.1.1.20141123T233635Z.1f56d125830d32d4.9e6527efde15b6ee9eac9ea94218da11b80edcf9";
     public Translate(String string) {
         input = string;
     }

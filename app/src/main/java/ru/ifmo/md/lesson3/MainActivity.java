@@ -21,12 +21,6 @@ public class MainActivity extends Activity {
         editText = (EditText) findViewById(R.id.editText);
     }
 
-    public void onButtonTranslatePushed(View view) {
-        Log.i("","onButtonTranslatePushed");
-        TranslateAsyncTask task = new TranslateAsyncTask(this);
-        task.execute(text);
-    }
-
     public void onTranslateResponse(String response) {
         translate = response;
         Log.i("translate",translate);
@@ -45,14 +39,5 @@ public class MainActivity extends Activity {
 
     }
 
-  /*  @Override
-    public void onResume() {
-        super.onResume();
-        whirl.resume();
-    }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        whirl.pause();*/
 }

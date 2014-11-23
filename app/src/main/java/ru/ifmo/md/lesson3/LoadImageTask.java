@@ -29,6 +29,7 @@ public class LoadImageTask extends AsyncTask<String, Integer, ArrayList<Bitmap>>
     public Bitmap downloadImage(String url) {
         try {
             return BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
+
         } catch (Exception e) {
             return null;
         }
