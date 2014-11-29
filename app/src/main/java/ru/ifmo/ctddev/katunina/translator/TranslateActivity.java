@@ -73,7 +73,7 @@ public class TranslateActivity extends Activity {
                 Intent intent = new Intent(TranslateActivity.this, MainActivity.class);
                 StringBuilder sb = new StringBuilder();
                 if (result == null){
-                    Toast toast = Toast.makeText(TranslateActivity.this, getString(R.string.NoInternet), Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(TranslateActivity.this, getString(R.string.NoInternet) , Toast.LENGTH_LONG);
                     toast.show();
                 }
                 else
