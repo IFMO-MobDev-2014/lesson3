@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        tools:context=".TranslateActivity">
+
+        <EditText
+            android:id="@+id/edtInput"
+            android:hint="@string/edtInput_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btnTranslate"
+            android:text="@string/btnTranslate_text"
+            android:layout_width="match_parent"
+            android:onClick="btnTranslateOnClick"
+            android:layout_height="wrap_content"/>
+        <ProgressBar
+            android:id="@+id/pbTranslating"
+            android:visibility="gone"
+            style="@android:style/Widget.Holo.ProgressBar.Horizontal"
+            android:indeterminate="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>

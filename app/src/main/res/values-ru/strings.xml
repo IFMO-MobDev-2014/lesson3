@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Переводчик</string>
+    <string name="error_no_internet">Отсутствует подключение к интернету.</string>
+    <string name="edtInput_hint">Что перевести?</string>
+    <string name="btnTranslate_text">Перевести</string>
+    <string name="NoInternet">Нет соединения с Интернетом</string>
+</resources>
