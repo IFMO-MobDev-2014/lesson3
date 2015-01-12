@@ -1,7 +1,10 @@
 package ru.ifmo.md.lesson3;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -41,5 +44,27 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this, PicturesActivity.class);
         intent.putExtra(EXTRA_MESSAGE, answer);
         startActivity(intent);
+    }
+
+    public boolean hasInternetConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm == null) {
+            return false;
+        }
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        if (netInfo == null) {
+            return false;
+        }
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected()) {
+                    return true;
+                }
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected()) {
+                    return true;
+                }
+        }
+        return false;
     }
 }
