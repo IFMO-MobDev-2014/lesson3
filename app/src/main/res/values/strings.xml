@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">lesson3</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">Translation</string>
     <string name="action_settings">Settings</string>
+    <string name="word">Words to translate</string>
+string>    <string name="button_send">Send</string>
+string>    <string name="button_back">Back</string>
+string>    <string name="title_activity_main">TranslationActivity</string>
+    <string name="title_activity_pictures">PicturesActivity</string>
+    <string name="translate">TRANSLATE</string>
+    <string name="empty_message">Ошибка: введите слово для перевода</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

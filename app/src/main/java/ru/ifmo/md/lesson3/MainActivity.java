@@ -1,43 +1,45 @@
 package ru.ifmo.md.lesson3;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
+    public static final String EXTRA_MESSAGE = "ru.ifmo.ms.lesson3.WORD";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        TextView textView = (TextView) findViewById(R.id.hello_world);
-        textView.setText("CHECK3");
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public void sendWords(View view) {
+        String phrase = ((EditText) findViewById(R.id.words)).getText().toString();
+        if (phrase.isEmpty()) {
+            Toast myToast = Toast.makeText(getApplicationContext(), getString(R.string.empty_message), Toast.LENGTH_SHORT);
+            myToast.setGravity(Gravity.CENTER, 0, 0);
+            myToast.show();
+        } else {
+            translate();
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    void translate() {
+        startPicturesActivity("word");
+    }
+
+    void startPicturesActivity(String answer) {
+        Intent intent = new Intent(this, PicturesActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, answer);
+        startActivity(intent);
     }
 }
