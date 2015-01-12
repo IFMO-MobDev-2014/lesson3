@@ -1,2 +1,0 @@
-configurations.create("default")
-artifacts.add("default", file('urlimageviewhelper-1.0.4.jar'))
