@@ -15,7 +15,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         TextView textView = (TextView) findViewById(R.id.hello_world);
-        textView.setText("CHECK");
+        textView.setText("CHECK2");
     }
 
 
