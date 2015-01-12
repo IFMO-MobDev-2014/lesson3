@@ -11,5 +11,6 @@ string>    <string name="title_activity_main">TranslationActivity</string>
     <string name="translate">TRANSLATE</string>
     <string name="empty_message">Ошибка: введите слово для перевода</string>
     <string name="hello_world">Hello world!</string>
+    <string name="check_internet">Ошибка: Невозможно выполнить сетевой запрос. Проверьте наличие Интернет соединения</string>
 
 </resources>
