@@ -1,6 +1,5 @@
 package homework3.translater;
 import android.os.AsyncTask;
-
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import java.io.IOException;
@@ -14,12 +13,10 @@ import javax.xml.parsers.ParserConfigurationException;
  * Created by Anstanasia Maksimovskih on 29.09.2014.
  */
 
-
-
 public class Translator extends AsyncTask<String, String, String>{
     final static String key = "trnsl.1.1.20140929T153338Z.b0695ea50453dbf6.45c30639fe49d07b9a5b4febf8a44fe4985a3670";
 
-
+    @Override
     protected String doInBackground(String... text) {
         String link = "https://translate.yandex.net/api/v1.5/tr/translate?" +
                 "key=" + key +
@@ -47,14 +44,8 @@ public class Translator extends AsyncTask<String, String, String>{
         return "ERROR";
     }
 
-
+    @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        //rewrite
-        Main.x = s.subSequence(0, s.length());
-        Main.tv.setText(Main.x);
     }
-
-
-
 }
